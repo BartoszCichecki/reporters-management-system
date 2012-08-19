@@ -1,10 +1,14 @@
 /**
- * Project: Reporters Management System - Server
- * File:    VersionableEntity.java
+ * Project:   Reporters Management System - Server
+ * File:      VersionableEntity.java
+ * License: 
+ *            This file is licensed under GNU General Public License version 3
+ *            http://www.gnu.org/licenses/gpl-3.0.txt
  *
- * Author:  Bartosz Cichecki
- * Date:    16-08-2012
+ * Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
+ * Date:      16-08-2012
  */
+
 package pl.bcichecki.rms.model;
 
 /**

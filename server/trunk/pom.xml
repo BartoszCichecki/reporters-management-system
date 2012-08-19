@@ -156,6 +156,7 @@
 									<targetPath>${project.basedir}/target/temp/${project.build.finalName}_${project.version}</targetPath>
 									<includes>
 										<include>readme*</include>
+										<include>license*</include>
 									</includes>
 									<filtering>true</filtering>
 									<filterWithDollarOnly>true</filterWithDollarOnly>
