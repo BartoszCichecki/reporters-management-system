@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -31,7 +32,6 @@ public class MessageRecipent extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = 8831025727208405070L;
-
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "MESSAGE", nullable = false, unique = false)
 	protected Message message;
@@ -44,6 +44,13 @@ public class MessageRecipent extends AbstractEntity {
 
 	public MessageRecipent() {
 		super();
+	}
+
+	public MessageRecipent(Message message, User recipent, Date readDate) {
+		super();
+		this.message = message;
+		this.recipent = recipent;
+		this.readDate = readDate;
 	}
 
 	@Override

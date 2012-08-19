@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -35,6 +36,12 @@ public class AddressDataContact extends AbstractEntity {
 
 	public AddressDataContact() {
 		super();
+	}
+
+	public AddressDataContact(ContactType type, String value) {
+		super();
+		this.type = type;
+		this.value = value;
 	}
 
 	@Override

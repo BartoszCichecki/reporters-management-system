@@ -1,2 +1,2 @@
-cd ${tomcat}\bin
-shutdown.bat
+cd ${mvn.tomcat}\bin
+catalina.bat stop

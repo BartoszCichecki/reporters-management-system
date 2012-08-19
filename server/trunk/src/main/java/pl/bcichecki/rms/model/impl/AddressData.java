@@ -21,6 +21,7 @@ import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -49,6 +50,18 @@ public class AddressData extends AbstractEntity {
 
 	public AddressData() {
 		super();
+	}
+
+	public AddressData(String street, String streetNumber, String houseNumber, String zipCode, String city,
+			String country, Set<AddressDataContact> contacts) {
+		super();
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.houseNumber = houseNumber;
+		this.zipCode = zipCode;
+		this.city = city;
+		this.country = country;
+		this.contacts = contacts;
 	}
 
 	@Override

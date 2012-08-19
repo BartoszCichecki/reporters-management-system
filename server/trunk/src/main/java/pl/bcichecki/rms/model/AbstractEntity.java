@@ -39,16 +39,16 @@ public abstract class AbstractEntity implements AuditableEntity<User>, Serializa
 	@Column(name = "ID", nullable = false, unique = true)
 	protected Long id;
 	@ManyToOne
-	@JoinColumn(name = "CREATED_BY", nullable = false, unique = false)
+	@JoinColumn(name = "CREATED_BY", nullable = true, unique = false)
 	protected User creationUser;
 	@ManyToOne
-	@JoinColumn(name = "MODIFIED_BY", nullable = false, unique = false)
+	@JoinColumn(name = "MODIFIED_BY", nullable = true, unique = false)
 	protected User modificationUser;
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CREATION_DATE", nullable = false, unique = false)
+	@Column(name = "CREATION_DATE", nullable = true, unique = false)
 	protected Date creationDate;
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "MODIFICATION_DATE", nullable = false, unique = false)
+	@Column(name = "MODIFICATION_DATE", nullable = true, unique = false)
 	protected Date modificationDate;
 	@Version
 	@Column(name = "VERSION", nullable = false, unique = false)

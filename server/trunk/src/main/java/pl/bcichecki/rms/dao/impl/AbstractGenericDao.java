@@ -1,5 +1,5 @@
 /**
- * Project: Reporters Management System - Server
+get  * Project: Reporters Management System - Server
  * File:    AbstractGenericDao.java
  *
  * Author:  Bartosz Cichecki

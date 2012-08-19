@@ -1,6 +1,6 @@
 /**
  * Project: Reporters Management System - Server
- * File:    LoginHistoryEntry.java
+ * File:    LoginHistory.java
  * 
  * Author:  Bartosz Cichecki
  * Date:    07-08-2012
@@ -27,7 +27,7 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 @Entity
 @Table(name = "LOGIN_HISTORY")
-public class LoginHistoryEntry extends AbstractEntity {
+public class LoginHistory extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = -8583688459079578896L;
@@ -43,8 +43,16 @@ public class LoginHistoryEntry extends AbstractEntity {
 	@Column(name = "LOGOUT_SUCCESSFUL", nullable = false, unique = false)
 	protected boolean logoutSuccessful;
 
-	public LoginHistoryEntry() {
+	public LoginHistory() {
 		super();
+	}
+
+	public LoginHistory(User user, Date date, boolean loginSuccessful, boolean logoutSuccessful) {
+		super();
+		this.user = user;
+		this.date = date;
+		this.loginSuccessful = loginSuccessful;
+		this.logoutSuccessful = logoutSuccessful;
 	}
 
 	@Override
@@ -58,7 +66,7 @@ public class LoginHistoryEntry extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		LoginHistoryEntry other = (LoginHistoryEntry) obj;
+		LoginHistory other = (LoginHistory) obj;
 		if (date == null) {
 			if (other.date != null) {
 				return false;

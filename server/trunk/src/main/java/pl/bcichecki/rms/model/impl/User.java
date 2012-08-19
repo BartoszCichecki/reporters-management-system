@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -34,11 +35,11 @@ public class User extends AbstractEntity {
 	protected String username;
 	@Column(name = "PASSWORD", nullable = false, unique = false)
 	protected String password;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ROLE", referencedColumnName = "ID", nullable = false)
 	protected Role role;
-	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = false)
+	@OneToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = true, unique = true)
 	protected AddressData address;
 	@Column(name = "LOCKED", nullable = false, unique = false)
 	protected boolean locked;
@@ -47,6 +48,16 @@ public class User extends AbstractEntity {
 
 	public User() {
 		super();
+	}
+
+	public User(String username, String password, Role role, AddressData address, boolean locked, String comment) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.address = address;
+		this.locked = locked;
+		this.comment = comment;
 	}
 
 	@Override

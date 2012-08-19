@@ -25,6 +25,7 @@ import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -50,6 +51,15 @@ public class Message extends AbstractEntity {
 
 	public Message() {
 		super();
+	}
+
+	public Message(User sender, Set<MessageRecipent> recipents, String topic, String content, Date date) {
+		super();
+		this.sender = sender;
+		this.recipents = recipents;
+		this.topic = topic;
+		this.content = content;
+		this.date = date;
 	}
 
 	@Override

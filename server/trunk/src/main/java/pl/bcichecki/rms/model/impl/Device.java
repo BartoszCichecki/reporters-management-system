@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -32,6 +33,12 @@ public class Device extends AbstractEntity {
 
 	public Device() {
 		super();
+	}
+
+	public Device(String name, String description) {
+		super();
+		this.name = name;
+		this.description = description;
 	}
 
 	@Override

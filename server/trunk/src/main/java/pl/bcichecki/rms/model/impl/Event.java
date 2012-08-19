@@ -28,6 +28,7 @@ import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -68,6 +69,20 @@ public class Event extends AbstractEntity {
 
 	public Event() {
 		super();
+	}
+
+	public Event(String title, EventType type, String description, Date startDate, Date endDate, AddressData address,
+			Set<User> participants, Set<Device> devices, boolean locked) {
+		super();
+		this.title = title;
+		this.type = type;
+		this.description = description;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.address = address;
+		this.participants = participants;
+		this.devices = devices;
+		this.locked = locked;
 	}
 
 	@Override

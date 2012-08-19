@@ -13,7 +13,7 @@ package pl.bcichecki.rms.model.impl;
  */
 public enum ContactType {
 
-	PHONE("phone"), FAX("fax"), EMAIL("email");
+	PHONE("phone"), FAX("fax"), EMAIL("email"), FACEBOOK("facebook"), SKYPE("skype");
 
 	private String value;
 

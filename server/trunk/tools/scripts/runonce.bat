@@ -1,18 +1,23 @@
 @echo off
 
-SET DB_ADDRESS=localhost
-SET DB_PORT=3306
+
+SET DB_ADDRESS=${mvn.db.url}
+SET DB_PORT=${mvn.db.port}
 SET DB_ROOT=root
 SET DB_ROOT_PASSWD=root
+
 
 ECHO ${project.name}
 ECHO Database configurator
 ECHO:
 ECHO *** WARNING! ***
 ECHO:
-ECHO This script will (re)create users and schemas required by RMS Server in your database.
-ECHO Database:  %DB_ADDRESS%:%DB_PORT%
-ECHO As user:   %DB_ROOT%
+ECHO This script will (re)create users and schemas required by RMS Server in your database!
+ECHO NOTICE:
+ECHO If you modified connection parameters in rms-server.properties and want this script to work you also need to modify this is script and corresponding SQL file!
+ECHO Connection parameters:
+ECHO  - Database:  %DB_ADDRESS%:%DB_PORT%
+ECHO  - As user:   %DB_ROOT%
 ECHO:
 SET /P ANS=Are you sure want to continue (Y/N)? 
 

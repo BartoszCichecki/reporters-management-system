@@ -13,7 +13,7 @@ package pl.bcichecki.rms.model.impl;
  */
 public enum PrivilegeType {
 
-	LOGIN("login"), GET_ALL_USERS("getAllUsers");
+	ADD_USER("addUser");
 
 	private String value;
 

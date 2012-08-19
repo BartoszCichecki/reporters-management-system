@@ -24,6 +24,7 @@ import javax.persistence.UniqueConstraint;
 
 import pl.bcichecki.rms.model.AbstractEntity;
 
+
 /**
  * @author Bartosz Cichecki
  */
@@ -45,6 +46,12 @@ public class Role extends AbstractEntity {
 
 	public Role() {
 		super();
+	}
+
+	public Role(String name, Set<PrivilegeType> privileges) {
+		super();
+		this.name = name;
+		this.privileges = privileges;
 	}
 
 	@Override
