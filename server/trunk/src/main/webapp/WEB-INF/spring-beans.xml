@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Project: Reporters Management System - Server
+	File: spring-beans.xml
+	License:
+	This file is licensed under GNU General Public License version 3
+	http://www.gnu.org/licenses/gpl-3.0.txt
+
+	Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
+	Date: 07-08-2012
+-->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
