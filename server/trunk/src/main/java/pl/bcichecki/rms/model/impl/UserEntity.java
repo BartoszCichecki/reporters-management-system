@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      User.java
+ * File:      UserEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -28,7 +28,7 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 @Entity
 @Table(name = "USERS")
-public class User extends AbstractEntity {
+public class UserEntity extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = -3895708148603521817L;
@@ -39,20 +39,21 @@ public class User extends AbstractEntity {
 	protected String password;
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ROLE", referencedColumnName = "ID", nullable = false)
-	protected Role role;
+	protected RoleEntity role;
 	@OneToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = true, unique = true)
-	protected AddressData address;
+	protected AddressDataEntity address;
 	@Column(name = "LOCKED", nullable = false, unique = false)
 	protected boolean locked;
 	@Column(name = "COMMENT", nullable = true, unique = false, length = 1000)
 	protected String comment;
 
-	public User() {
+	public UserEntity() {
 		super();
 	}
 
-	public User(String username, String password, Role role, AddressData address, boolean locked, String comment) {
+	public UserEntity(String username, String password, RoleEntity role, AddressDataEntity address, boolean locked,
+			String comment) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -73,7 +74,7 @@ public class User extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		User other = (User) obj;
+		UserEntity other = (UserEntity) obj;
 		if (address == null) {
 			if (other.address != null) {
 				return false;
@@ -115,7 +116,7 @@ public class User extends AbstractEntity {
 		return true;
 	}
 
-	public AddressData getAddress() {
+	public AddressDataEntity getAddress() {
 		return address;
 	}
 
@@ -127,7 +128,7 @@ public class User extends AbstractEntity {
 		return password;
 	}
 
-	public Role getRole() {
+	public RoleEntity getRole() {
 		return role;
 	}
 
@@ -152,7 +153,7 @@ public class User extends AbstractEntity {
 		return locked;
 	}
 
-	public void setAddress(AddressData address) {
+	public void setAddress(AddressDataEntity address) {
 		this.address = address;
 	}
 
@@ -168,7 +169,7 @@ public class User extends AbstractEntity {
 		this.password = password;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(RoleEntity role) {
 		this.role = role;
 	}
 

@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      MessageRecipent.java
+ * File:      MessageRecipentEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -31,25 +31,25 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 @Entity
 @Table(name = "MESSAGE_RECIPENTS")
-public class MessageRecipent extends AbstractEntity {
+public class MessageRecipentEntity extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = 8831025727208405070L;
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "MESSAGE", nullable = false, unique = false)
-	protected Message message;
+	protected MessageEntity message;
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "RECIPENT_USER", nullable = false, unique = false)
-	protected User recipent;
+	protected UserEntity recipent;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "READ_DATE", nullable = true, unique = false)
 	protected Date readDate;
 
-	public MessageRecipent() {
+	public MessageRecipentEntity() {
 		super();
 	}
 
-	public MessageRecipent(Message message, User recipent, Date readDate) {
+	public MessageRecipentEntity(MessageEntity message, UserEntity recipent, Date readDate) {
 		super();
 		this.message = message;
 		this.recipent = recipent;
@@ -67,7 +67,7 @@ public class MessageRecipent extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		MessageRecipent other = (MessageRecipent) obj;
+		MessageRecipentEntity other = (MessageRecipentEntity) obj;
 		if (message == null) {
 			if (other.message != null) {
 				return false;
@@ -92,7 +92,7 @@ public class MessageRecipent extends AbstractEntity {
 		return true;
 	}
 
-	public Message getMessage() {
+	public MessageEntity getMessage() {
 		return message;
 	}
 
@@ -100,7 +100,7 @@ public class MessageRecipent extends AbstractEntity {
 		return readDate;
 	}
 
-	public User getRecipent() {
+	public UserEntity getRecipent() {
 		return recipent;
 	}
 
@@ -114,7 +114,7 @@ public class MessageRecipent extends AbstractEntity {
 		return result;
 	}
 
-	public void setMessage(Message message) {
+	public void setMessage(MessageEntity message) {
 		this.message = message;
 	}
 
@@ -122,7 +122,7 @@ public class MessageRecipent extends AbstractEntity {
 		this.readDate = readDate;
 	}
 
-	public void setRecipent(User recipent) {
+	public void setRecipent(UserEntity recipent) {
 		this.recipent = recipent;
 	}
 

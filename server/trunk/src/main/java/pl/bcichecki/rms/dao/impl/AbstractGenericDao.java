@@ -62,6 +62,7 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<T> getAll() throws IllegalStateException, IllegalArgumentException, QueryTimeoutException,
 			TransactionRequiredException, PessimisticLockException, LockTimeoutException, PersistenceException {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
@@ -72,12 +73,14 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<T> getAllByCriteria(CriteriaQuery<T> criteria) throws IllegalStateException, QueryTimeoutException,
 			TransactionRequiredException, PessimisticLockException, LockTimeoutException, PersistenceException {
 		return manager.createQuery(criteria).getResultList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public T getByCriteria(CriteriaQuery<T> criteria) throws NoResultException, NonUniqueResultException,
 			IllegalStateException, QueryTimeoutException, TransactionRequiredException, PessimisticLockException,
 			LockTimeoutException, PersistenceException {
@@ -85,12 +88,13 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public T getById(Serializable id) throws IllegalArgumentException {
 		return manager.find(entityClazz, id);
 	}
 
 	@Override
-	public CriteriaBuilder getQueryBuilder() throws IllegalStateException {
+	public CriteriaBuilder getCriteriaBuilder() throws IllegalStateException {
 		return manager.getCriteriaBuilder();
 	}
 

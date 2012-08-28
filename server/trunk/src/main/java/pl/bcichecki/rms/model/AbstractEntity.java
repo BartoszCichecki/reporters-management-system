@@ -27,13 +27,13 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import pl.bcichecki.rms.model.impl.User;
+import pl.bcichecki.rms.model.impl.UserEntity;
 
 /**
  * @author Bartosz Cichecki
  */
 @MappedSuperclass
-public abstract class AbstractEntity implements AuditableEntity<User>, Serializable, VersionableEntity<Long> {
+public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Serializable, VersionableEntity<Long> {
 
 	@Transient
 	private static final long serialVersionUID = -4067696286632039806L;
@@ -44,10 +44,10 @@ public abstract class AbstractEntity implements AuditableEntity<User>, Serializa
 	protected Long id;
 	@ManyToOne
 	@JoinColumn(name = "CREATED_BY", nullable = true, unique = false)
-	protected User creationUser;
+	protected UserEntity creationUser;
 	@ManyToOne
 	@JoinColumn(name = "MODIFIED_BY", nullable = true, unique = false)
-	protected User modificationUser;
+	protected UserEntity modificationUser;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATION_DATE", nullable = true, unique = false)
 	protected Date creationDate;
@@ -121,13 +121,14 @@ public abstract class AbstractEntity implements AuditableEntity<User>, Serializa
 	}
 
 	@Override
-	public User getCreationUser() {
+	public UserEntity getCreationUser() {
 		return creationUser;
 	}
 
 	@Override
-	public User getCurrentUser() {
-		// TODO Get current user from somewhere. Maybe session?
+	public UserEntity getCurrentUser() {
+		// TODO Get current user from somewhere. Maybe session? Remember about
+		// MA!
 		return null;
 	}
 
@@ -141,7 +142,7 @@ public abstract class AbstractEntity implements AuditableEntity<User>, Serializa
 	}
 
 	@Override
-	public User getModificationUser() {
+	public UserEntity getModificationUser() {
 		return modificationUser;
 	}
 
@@ -182,7 +183,7 @@ public abstract class AbstractEntity implements AuditableEntity<User>, Serializa
 	}
 
 	@Override
-	public void setCreationUser(User creationUser) {
+	public void setCreationUser(UserEntity creationUser) {
 		this.creationUser = creationUser;
 	}
 
@@ -196,7 +197,7 @@ public abstract class AbstractEntity implements AuditableEntity<User>, Serializa
 	}
 
 	@Override
-	public void setModificationUser(User modificationUser) {
+	public void setModificationUser(UserEntity modificationUser) {
 		this.modificationUser = modificationUser;
 	}
 

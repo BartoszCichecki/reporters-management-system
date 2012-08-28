@@ -12,11 +12,11 @@
 package pl.bcichecki.rms.dao.impl;
 
 import pl.bcichecki.rms.dao.DevicesDao;
-import pl.bcichecki.rms.model.impl.Device;
+import pl.bcichecki.rms.model.impl.DeviceEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public class DevicesDaoImpl extends AbstractGenericDao<Device> implements DevicesDao {
+public class DevicesDaoImpl extends AbstractGenericDao<DeviceEntity> implements DevicesDao {
 
 }

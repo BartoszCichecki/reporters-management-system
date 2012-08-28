@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      Role.java
+ * File:      RoleEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -32,7 +32,7 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 @Entity
 @Table(name = "ROLES")
-public class Role extends AbstractEntity {
+public class RoleEntity extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = -113983953800149169L;
@@ -46,11 +46,11 @@ public class Role extends AbstractEntity {
 	@Column(name = "PRIVILEGE", nullable = false, unique = false)
 	protected Set<PrivilegeType> privileges;
 
-	public Role() {
+	public RoleEntity() {
 		super();
 	}
 
-	public Role(String name, Set<PrivilegeType> privileges) {
+	public RoleEntity(String name, Set<PrivilegeType> privileges) {
 		super();
 		this.name = name;
 		this.privileges = privileges;
@@ -67,7 +67,7 @@ public class Role extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Role other = (Role) obj;
+		RoleEntity other = (RoleEntity) obj;
 		if (name == null) {
 			if (other.name != null) {
 				return false;

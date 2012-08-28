@@ -11,11 +11,11 @@
 
 package pl.bcichecki.rms.dao;
 
-import pl.bcichecki.rms.model.impl.Device;
+import pl.bcichecki.rms.model.impl.DeviceEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public interface DevicesDao extends GenericDao<Device> {
+public interface DevicesDao extends GenericDao<DeviceEntity> {
 
 }

@@ -11,11 +11,11 @@
 
 package pl.bcichecki.rms.dao;
 
-import pl.bcichecki.rms.model.impl.MessageRecipent;
+import pl.bcichecki.rms.model.impl.MessageRecipentEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public interface MessageRecipentsDao extends GenericDao<MessageRecipent> {
+public interface MessageRecipentsDao extends GenericDao<MessageRecipentEntity> {
 
 }

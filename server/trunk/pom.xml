@@ -27,6 +27,9 @@
 			</roles>
 		</developer>
 	</developers>
+	<prerequisites>
+		<maven>2.2.1</maven>
+	</prerequisites>
 	<properties>
 		<mvn.db.driverClassName>com.mysql.jdbc.Driver</mvn.db.driverClassName>
 		<mvn.db.type>mysql</mvn.db.type>
@@ -36,9 +39,12 @@
 		<mvn.db.username>rms</mvn.db.username>
 		<mvn.db.password>rms123</mvn.db.password>
 		<mvn.db.generateDdl>true</mvn.db.generateDdl>
-		<mvn.madm.enabled>true</mvn.madm.enabled>
+		<mvn.madm.locked>false</mvn.madm.locked>
 		<mvn.madm.username>rmsmadm</mvn.madm.username>
 		<mvn.madm.password>rmsmadm123</mvn.madm.password>
+		<mvn.madm.passHash>3122235d4f537a6147328667e86148091b30f4542ba07a5272266f495db5fe73b486589ddf563c562d9922b63c217746a97c8afea09c17d60f6889aae2937062</mvn.madm.passHash>
+		<mvn.session.length>60</mvn.session.length>
+		<mvn.session.nonceKey>hwdCO9qCI2sPd42EH07FHqYxIiaZENwMJ1KJHKGWW5wOCcXKNp</mvn.session.nonceKey>
 		<mvn.tomcat>apache-tomcat-7.0.29</mvn.tomcat>
 	</properties>
 	<build>
@@ -47,7 +53,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.5</version>
 				<executions>
 					<execution>
 						<id>auto-clean</id>
@@ -61,7 +66,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
 				<executions>
 					<execution>
 						<id>delete-installs-during-initialize</id>
@@ -95,7 +99,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -124,7 +127,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 					<source>1.7</source>
@@ -137,7 +139,6 @@
 			<plugin>
 				<groupId>com.github.goldin</groupId>
 				<artifactId>copy-maven-plugin</artifactId>
-				<version>0.2.5</version>
 				<executions>
 					<execution>
 						<id>prepare-package</id>
@@ -187,6 +188,17 @@
 									<filterWithDollarOnly>true</filterWithDollarOnly>
 								</resource>
 								<resource>
+									<directory>${project.basedir}/tools/tomcat-conf</directory>
+									<targetPath>${project.basedir}/target/temp/${project.build.finalName}_${project.version}/${mvn.tomcat}/conf</targetPath>
+								</resource>
+								<resource>
+									<directory>${project.basedir}/tools/cert</directory>
+									<targetPath>${project.basedir}/target/temp/${project.build.finalName}_${project.version}/${mvn.tomcat}/ssl</targetPath>
+									<includes>
+										<include>server.p12</include>
+									</includes>
+								</resource>
+								<resource>
 									<directory>${project.basedir}/target/temp/${project.build.finalName}_${project.version}</directory>
 									<targetPath>${user.home}/${project.build.finalName}_${project.version}.tar.gz</targetPath>
 									<pack>true</pack>
@@ -215,7 +227,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
 				<configuration>
 					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 				</configuration>
@@ -223,7 +234,54 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.7</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.3.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.3.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.2</version>
+				</plugin>
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -233,12 +291,9 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId> org.apache.maven.plugins 
-										</groupId>
-										<artifactId> maven-clean-plugin 
-										</artifactId>
-										<versionRange> [2.5,) 
-										</versionRange>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-clean-plugin</artifactId>
+										<versionRange>[2.5,)</versionRange>
 										<goals>
 											<goal>clean</goal>
 										</goals>
@@ -249,12 +304,9 @@
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId> org.apache.maven.plugins 
-										</groupId>
-										<artifactId> maven-antrun-plugin 
-										</artifactId>
-										<versionRange> [1.7,) 
-										</versionRange>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[1.7,)</versionRange>
 										<goals>
 											<goal>run</goal>
 										</goals>
@@ -267,9 +319,27 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>com.github.goldin</groupId>
+					<artifactId>copy-maven-plugin</artifactId>
+					<version>0.2.5</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+	<pluginRepositories>
+		<pluginRepository>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -328,6 +398,21 @@
 			<version>3.1.2.RELEASE</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 			<version>2.2.2</version>
@@ -366,6 +451,21 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.21</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 	</dependencies>
 </project>

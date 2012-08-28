@@ -7,5 +7,6 @@
 :: Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
 :: Date:      17-08-2012
 
+@echo off
 cd ${mvn.tomcat}\bin
 catalina.bat stop

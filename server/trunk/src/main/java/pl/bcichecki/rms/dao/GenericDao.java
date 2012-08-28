@@ -49,7 +49,7 @@ public interface GenericDao<T extends AbstractEntity> {
 
 	public T getById(Serializable id) throws IllegalArgumentException;
 
-	public CriteriaBuilder getQueryBuilder() throws IllegalStateException;
+	public CriteriaBuilder getCriteriaBuilder() throws IllegalStateException;
 
 	public void setEntityManager(EntityManager manager);
 

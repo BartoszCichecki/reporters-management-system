@@ -11,11 +11,11 @@
 
 package pl.bcichecki.rms.dao;
 
-import pl.bcichecki.rms.model.impl.Role;
+import pl.bcichecki.rms.model.impl.RoleEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public interface RolesDao extends GenericDao<Role> {
+public interface RolesDao extends GenericDao<RoleEntity> {
 
 }

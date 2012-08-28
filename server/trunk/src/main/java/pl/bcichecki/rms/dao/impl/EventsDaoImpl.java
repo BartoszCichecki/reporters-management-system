@@ -12,11 +12,11 @@
 package pl.bcichecki.rms.dao.impl;
 
 import pl.bcichecki.rms.dao.EventsDao;
-import pl.bcichecki.rms.model.impl.Event;
+import pl.bcichecki.rms.model.impl.EventEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public class EventsDaoImpl extends AbstractGenericDao<Event> implements EventsDao {
+public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements EventsDao {
 
 }

@@ -26,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pl.bcichecki.rms.dao.RolesDao;
 import pl.bcichecki.rms.model.impl.PrivilegeType;
-import pl.bcichecki.rms.model.impl.Role;
-import pl.bcichecki.rms.model.impl.Role_;
+import pl.bcichecki.rms.model.impl.RoleEntity;
+import pl.bcichecki.rms.model.impl.RoleEntity_;
 
 /**
  * @author Bartosz Cichecki
@@ -45,24 +45,24 @@ public class RolesDaoImplTest {
 	public void testRolesDao() {
 		int initialSize = rolesDao.getAll().size();
 
-		Role role = new Role();
+		RoleEntity role = new RoleEntity();
 		String testRoleName = "testRole" + System.currentTimeMillis();
 		role.setName(testRoleName);
 		Set<PrivilegeType> privileges = new HashSet<>();
-		privileges.add(PrivilegeType.ADD_USER);
+		privileges.add(PrivilegeType.GET_PROFILE);
 		role.setPrivileges(privileges);
 		rolesDao.create(role);
 
 		int sizeAfterInsertion = rolesDao.getAll().size();
 		Assert.assertEquals(initialSize + 1, sizeAfterInsertion);
 
-		CriteriaBuilder queryBuilder = rolesDao.getQueryBuilder();
-		CriteriaQuery<Role> criteriaQuery = queryBuilder.createQuery(Role.class);
-		Root<Role> root = criteriaQuery.from(Role.class);
-		Predicate predicate = queryBuilder.equal(root.get(Role_.name), testRoleName);
+		CriteriaBuilder queryBuilder = rolesDao.getCriteriaBuilder();
+		CriteriaQuery<RoleEntity> criteriaQuery = queryBuilder.createQuery(RoleEntity.class);
+		Root<RoleEntity> root = criteriaQuery.from(RoleEntity.class);
+		Predicate predicate = queryBuilder.equal(root.get(RoleEntity_.name), testRoleName);
 		criteriaQuery.where(predicate);
 
-		Role retrievedRole = rolesDao.getByCriteria(criteriaQuery);
+		RoleEntity retrievedRole = rolesDao.getByCriteria(criteriaQuery);
 		Assert.assertEquals(retrievedRole.getName(), testRoleName);
 		Assert.assertEquals(retrievedRole.getPrivileges().size(), 1);
 

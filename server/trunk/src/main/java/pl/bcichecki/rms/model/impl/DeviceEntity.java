@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      Device.java
+ * File:      DeviceEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -23,7 +23,7 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 @Entity
 @Table(name = "DEVICES")
-public class Device extends AbstractEntity {
+public class DeviceEntity extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = -1108300387924092896L;
@@ -33,11 +33,11 @@ public class Device extends AbstractEntity {
 	@Column(name = "DESCRIPTION", nullable = true, unique = false, length = 1000)
 	protected String description;
 
-	public Device() {
+	public DeviceEntity() {
 		super();
 	}
 
-	public Device(String name, String description) {
+	public DeviceEntity(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -54,7 +54,7 @@ public class Device extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Device other = (Device) obj;
+		DeviceEntity other = (DeviceEntity) obj;
 		if (description == null) {
 			if (other.description != null) {
 				return false;

@@ -20,11 +20,11 @@ USE rms;;
 
 ## DROP USERS WITH SIMILAR NAMES
 DROP PROCEDURE IF EXISTS PREPARE_USERS;;
-CREATE PROCEDURE PREPARE_USERS()
+CREATE PROCEDURE PREPARE_USERS(IN username VARCHAR(50))
 BEGIN
-    IF EXISTS(SELECT * FROM mysql.user WHERE user='rms') THEN
+    IF EXISTS(SELECT * FROM mysql.user WHERE user = username) THEN
         SET @users = NULL;        
-        SELECT GROUP_CONCAT('\'',user, '\'@\'', host, '\'') INTO @users FROM mysql.user WHERE user = 'rms';
+        SELECT GROUP_CONCAT('\'',user, '\'@\'', host, '\'') INTO @users FROM mysql.user WHERE user = username;
         SET @users = CONCAT('DROP USER ', @users);        
         PREPARE stmt1 FROM @users;
         EXECUTE stmt1;
@@ -32,7 +32,7 @@ BEGIN
         FLUSH PRIVILEGES;
     END IF;
 END;;
-CALL PREPARE_USERS();;
+CALL PREPARE_USERS('rms');;
 DROP PROCEDURE IF EXISTS PREPARE_USERS;;
 
 ## CREATE USER

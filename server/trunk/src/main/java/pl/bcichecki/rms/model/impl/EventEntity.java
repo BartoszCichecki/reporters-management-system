@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      Event.java
+ * File:      EventEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -36,7 +36,7 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 @Entity
 @Table(name = "EVENTS")
-public class Event extends AbstractEntity {
+public class EventEntity extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = -6149510997653672596L;
@@ -56,25 +56,25 @@ public class Event extends AbstractEntity {
 	protected Date endDate;
 	@OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = false)
-	protected AddressData address;
+	protected AddressDataEntity address;
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "EVENTS_USERS_LINK", joinColumns = { @JoinColumn(name = "EVENT_ID", nullable = false,
 			unique = false) }, inverseJoinColumns = { @JoinColumn(name = "USER_ID", nullable = false, unique = false) })
-	protected Set<User> participants;
+	protected Set<UserEntity> participants;
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "EVENTS_DEVICES_LINK", joinColumns = { @JoinColumn(name = "EVENT_ID", nullable = false,
 			unique = false) },
 			inverseJoinColumns = { @JoinColumn(name = "DEVICE_ID", nullable = false, unique = false) })
-	protected Set<Device> devices;
+	protected Set<DeviceEntity> devices;
 	@Column(name = "LOCKED", nullable = false, unique = false)
-	protected boolean locked;
+	protected Boolean locked;
 
-	public Event() {
+	public EventEntity() {
 		super();
 	}
 
-	public Event(String title, EventType type, String description, Date startDate, Date endDate, AddressData address,
-			Set<User> participants, Set<Device> devices, boolean locked) {
+	public EventEntity(String title, EventType type, String description, Date startDate, Date endDate,
+			AddressDataEntity address, Set<UserEntity> participants, Set<DeviceEntity> devices, Boolean locked) {
 		super();
 		this.title = title;
 		this.type = type;
@@ -98,7 +98,7 @@ public class Event extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Event other = (Event) obj;
+		EventEntity other = (EventEntity) obj;
 		if (address == null) {
 			if (other.address != null) {
 				return false;
@@ -127,7 +127,11 @@ public class Event extends AbstractEntity {
 		} else if (!endDate.equals(other.endDate)) {
 			return false;
 		}
-		if (locked != other.locked) {
+		if (locked == null) {
+			if (other.locked != null) {
+				return false;
+			}
+		} else if (!locked.equals(other.locked)) {
 			return false;
 		}
 		if (participants == null) {
@@ -157,7 +161,7 @@ public class Event extends AbstractEntity {
 		return true;
 	}
 
-	public AddressData getAddress() {
+	public AddressDataEntity getAddress() {
 		return address;
 	}
 
@@ -165,7 +169,7 @@ public class Event extends AbstractEntity {
 		return description;
 	}
 
-	public Set<Device> getDevices() {
+	public Set<DeviceEntity> getDevices() {
 		return devices;
 	}
 
@@ -173,7 +177,7 @@ public class Event extends AbstractEntity {
 		return endDate;
 	}
 
-	public Set<User> getParticipants() {
+	public Set<UserEntity> getParticipants() {
 		return participants;
 	}
 
@@ -197,7 +201,7 @@ public class Event extends AbstractEntity {
 		result = prime * result + (description == null ? 0 : description.hashCode());
 		result = prime * result + (devices == null ? 0 : devices.hashCode());
 		result = prime * result + (endDate == null ? 0 : endDate.hashCode());
-		result = prime * result + (locked ? 1231 : 1237);
+		result = prime * result + (locked == null ? 0 : locked.hashCode());
 		result = prime * result + (participants == null ? 0 : participants.hashCode());
 		result = prime * result + (startDate == null ? 0 : startDate.hashCode());
 		result = prime * result + (title == null ? 0 : title.hashCode());
@@ -205,11 +209,11 @@ public class Event extends AbstractEntity {
 		return result;
 	}
 
-	public boolean isLocked() {
+	public Boolean isLocked() {
 		return locked;
 	}
 
-	public void setAddress(AddressData address) {
+	public void setAddress(AddressDataEntity address) {
 		this.address = address;
 	}
 
@@ -217,7 +221,7 @@ public class Event extends AbstractEntity {
 		this.description = description;
 	}
 
-	public void setDevices(Set<Device> devices) {
+	public void setDevices(Set<DeviceEntity> devices) {
 		this.devices = devices;
 	}
 
@@ -225,11 +229,11 @@ public class Event extends AbstractEntity {
 		this.endDate = endDate;
 	}
 
-	public void setLocked(boolean locked) {
+	public void setLocked(Boolean locked) {
 		this.locked = locked;
 	}
 
-	public void setParticipants(Set<User> participants) {
+	public void setParticipants(Set<UserEntity> participants) {
 		this.participants = participants;
 	}
 

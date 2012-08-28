@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      AddressData.java
+ * File:      AddressDataEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -29,7 +29,7 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 @Entity
 @Table(name = "ADDRESS_DATA")
-public class AddressData extends AbstractEntity {
+public class AddressDataEntity extends AbstractEntity {
 
 	@Transient
 	private static final long serialVersionUID = 7142910058149199699L;
@@ -50,11 +50,11 @@ public class AddressData extends AbstractEntity {
 	@JoinColumn(name = "ADDRESS_DATA", referencedColumnName = "ID", nullable = false)
 	protected Set<AddressDataContact> contacts;
 
-	public AddressData() {
+	public AddressDataEntity() {
 		super();
 	}
 
-	public AddressData(String street, String streetNumber, String houseNumber, String zipCode, String city,
+	public AddressDataEntity(String street, String streetNumber, String houseNumber, String zipCode, String city,
 			String country, Set<AddressDataContact> contacts) {
 		super();
 		this.street = street;
@@ -77,7 +77,7 @@ public class AddressData extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		AddressData other = (AddressData) obj;
+		AddressDataEntity other = (AddressDataEntity) obj;
 		if (city == null) {
 			if (other.city != null) {
 				return false;

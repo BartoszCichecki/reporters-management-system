@@ -12,11 +12,11 @@
 package pl.bcichecki.rms.dao.impl;
 
 import pl.bcichecki.rms.dao.MessagesDao;
-import pl.bcichecki.rms.model.impl.Message;
+import pl.bcichecki.rms.model.impl.MessageEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public class MessagesDaoImpl extends AbstractGenericDao<Message> implements MessagesDao {
+public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implements MessagesDao {
 
 }

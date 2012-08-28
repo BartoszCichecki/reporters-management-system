@@ -11,18 +11,42 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/aop 
-       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<!-- Configuration -->
+	<mvc:annotation-driven />
 	<context:annotation-config />
 	<context:component-scan base-package="pl.bcichecki.rms.ws.rest" />
-	<mvc:annotation-driven />
+	<!-- Properties -->
 	<bean id="properties" class="pl.bcichecki.rms.utils.PropertiesUtil">
 		<property name="location" value="rms-server.properties" />
 	</bean>
-	<import resource="jpa-config-beans.xml" />
+	<!-- JPA configuration -->
+	<import resource="jpa-beans.xml" />
 	<!-- DAO beans -->
+	<bean id="addressDataContactsDao" class="pl.bcichecki.rms.dao.impl.AddressDataContactsDaoImpl" />
+	<bean id="addressDataDao" class="pl.bcichecki.rms.dao.impl.AddressDataDaoImpl" />
+	<bean id="devicesDao" class="pl.bcichecki.rms.dao.impl.DevicesDaoImpl" />
+	<bean id="eventsDao" class="pl.bcichecki.rms.dao.impl.EventsDaoImpl" />
+	<bean id="accessHistoryDao" class="pl.bcichecki.rms.dao.impl.AccessHistoryDaoImpl" />
+	<bean id="messageRecipentsDao" class="pl.bcichecki.rms.dao.impl.MessageRecipentsDaoImpl" />
+	<bean id="messagesDao" class="pl.bcichecki.rms.dao.impl.MessagesDaoImpl" />
 	<bean id="rolesDao" class="pl.bcichecki.rms.dao.impl.RolesDaoImpl" />
 	<bean id="usersDao" class="pl.bcichecki.rms.dao.impl.UsersDaoImpl" />
+	<!-- Services -->
+	<bean id="accessHistoryService" class="pl.bcichecki.rms.services.impl.AccessHistoryServiceImpl" />
+	<bean id="masterAdminService" class="pl.bcichecki.rms.services.impl.MasterAdminServiceImpl">
+		<property name="masterAdmin" ref="masterAdmin" />
+	</bean>
+	<bean id="userDetailsService" class="pl.bcichecki.rms.services.impl.UserDetailsServiceImpl" />
+	<!-- Other beans -->
+	<bean id="masterAdmin" class="pl.bcichecki.rms.model.impl.UserEntity">
+		<property name="locked" value="${madm.locked}" />
+		<property name="username" value="${madm.username}" />
+		<property name="password" value="${madm.password}" />
+	</bean>
+	<!-- Security configuration -->
+	<import resource="security-beans.xml" />
 </beans>
