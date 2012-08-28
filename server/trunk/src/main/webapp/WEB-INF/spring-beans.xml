@@ -25,6 +25,8 @@
 	</bean>
 	<!-- JPA configuration -->
 	<import resource="jpa-beans.xml" />
+	<!-- Security configuration -->
+	<import resource="security-beans.xml" />
 	<!-- DAO beans -->
 	<bean id="addressDataContactsDao" class="pl.bcichecki.rms.dao.impl.AddressDataContactsDaoImpl" />
 	<bean id="addressDataDao" class="pl.bcichecki.rms.dao.impl.AddressDataDaoImpl" />
@@ -47,6 +49,4 @@
 		<property name="username" value="${madm.username}" />
 		<property name="password" value="${madm.password}" />
 	</bean>
-	<!-- Security configuration -->
-	<import resource="security-beans.xml" />
 </beans>
