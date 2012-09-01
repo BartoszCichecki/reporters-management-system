@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import pl.bcichecki.rms.utils.PrivilegeUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -35,6 +39,13 @@ public class HelloWorldRestService {
 
 	private static Logger log = LoggerFactory.getLogger(HelloWorldRestService.class);
 
+	@PreAuthorize("hasRole('SOME_FAKE_PROFILE')")
+	@RequestMapping(value = "/denied", method = RequestMethod.GET)
+	public @ResponseBody
+	String denied() throws Exception {
+		throw new Exception("hurray!");
+	}
+
 	@ExceptionHandler(Exception.class)
 	public @ResponseBody
 	String handleException(Exception ex, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -43,7 +54,9 @@ public class HelloWorldRestService {
 		return ex.getMessage();
 	}
 
+	@Secured(PrivilegeUtils.GET_PROFILE)
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('" + PrivilegeUtils.GET_PROFILE + "')")
 	public @ResponseBody
 	String sayHello() {
 		log.info("hello");

@@ -16,13 +16,10 @@ package pl.bcichecki.rms.utils;
  */
 public class PrivilegeUtils {
 
-	public class Values {
+	public static final String GET_PROFILE = "GET_PROFILE";
+	public static final String MANAGE_PROFILE = "MANAGE_PROFILE";
 
-		public static final String GET_USERS = "getUsers";
-		public static final String GET_PROFILE = "getProfile";
-		public static final String MANAGE_USERS = "manageUsers";
-		public static final String MANAGE_PROFILE = "manageProfile";
-
-	}
+	public static final String GET_USERS = "GET_USERS";
+	public static final String MANAGE_USERS = "MANAGE_USERS";
 
 }

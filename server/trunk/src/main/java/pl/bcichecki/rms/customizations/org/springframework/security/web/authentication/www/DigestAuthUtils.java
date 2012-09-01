@@ -9,7 +9,7 @@
  * Date:      28-08-2012
  */
 
-package pl.bcichecki.rms.redefinitions.org.springframework.security.web.authentication.www;
+package pl.bcichecki.rms.customizations.org.springframework.security.web.authentication.www;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
  * This class is exact copy of
  * {@link org.springframework.security.web.authentication.www.DigestAuthUtils}
  * and is redifined here only because
- * {@link pl.bcichecki.rms.redefinitions.org.springframework.security.web.authentication.www.EventPublisherAwareDigestAuthenticationFilter}
+ * {@link pl.bcichecki.rms.customizations.org.springframework.security.web.authentication.www.EventPublisherAwareDigestAuthenticationFilter}
  * needs it. You <b>ought to</b> use the original one!
  * <p>
  * <i>Copied from Spring Security 3.1.2.RELEASE</i>

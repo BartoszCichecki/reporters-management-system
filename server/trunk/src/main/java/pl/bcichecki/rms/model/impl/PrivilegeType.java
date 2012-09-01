@@ -44,7 +44,7 @@ public enum PrivilegeType {
 		 * have to synchronize their values.
 		 */
 		try {
-			java.lang.reflect.Field field = pl.bcichecki.rms.utils.PrivilegeUtils.Values.class.getDeclaredField(name());
+			java.lang.reflect.Field field = pl.bcichecki.rms.utils.PrivilegeUtils.class.getDeclaredField(name());
 			field.setAccessible(true);
 			value = (java.lang.String) field.get(null);
 		} catch (Exception e) {

@@ -9,7 +9,7 @@
  * Date:      28-08-2012
  */
 
-package pl.bcichecki.rms.redefinitions.org.springframework.security.web.authentication.www;
+package pl.bcichecki.rms.customizations.org.springframework.security.web.authentication.www;
 
 import java.io.IOException;
 import java.util.ArrayList;

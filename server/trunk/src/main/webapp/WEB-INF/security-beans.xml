@@ -15,9 +15,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop 
        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-	<sec:global-method-security secured-annotations="enabled" authentication-manager-ref="authenticationManager" />
-	<sec:http entry-point-ref="digestAuthenticationEntryPoint" use-expressions="true" create-session="stateless"
-		authentication-manager-ref="authenticationManager">
+	<sec:global-method-security pre-post-annotations="enabled" authentication-manager-ref="authenticationManager" />
+	<sec:http entry-point-ref="digestAuthenticationEntryPoint" create-session="stateless"
+		authentication-manager-ref="authenticationManager" use-expressions="true">
 		<sec:custom-filter position="BASIC_AUTH_FILTER" ref="basicAuthenticationFilter" />
 		<sec:custom-filter after="BASIC_AUTH_FILTER" ref="digestAuthenticationFilter" />
 		<sec:intercept-url pattern="/rest/remindPass/*" access="isAnonymous()" requires-channel="https" />
@@ -50,7 +50,8 @@
 		<property name="realmName" value="rms" />
 	</bean>
 	<!-- Digest authentication -->
-	<bean id="digestAuthenticationFilter" class="pl.bcichecki.rms.redefinitions.org.springframework.security.web.authentication.www.EventPublisherAwareDigestAuthenticationFilter">
+	<bean id="digestAuthenticationFilter"
+		class="pl.bcichecki.rms.customizations.org.springframework.security.web.authentication.www.EventPublisherAwareDigestAuthenticationFilter">
 		<property name="authenticationEntryPoint" ref="digestAuthenticationEntryPoint" />
 		<property name="userDetailsService" ref="userDetailsService" />
 		<property name="createAuthenticatedToken" value="false" />
