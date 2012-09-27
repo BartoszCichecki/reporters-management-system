@@ -12,12 +12,12 @@
 package pl.bcichecki.rms.dao.impl;
 
 import pl.bcichecki.rms.dao.AddressDataContactsDao;
-import pl.bcichecki.rms.model.impl.AddressDataContact;
+import pl.bcichecki.rms.model.impl.AddressDataContactEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public class AddressDataContactsDaoImpl extends AbstractGenericDao<AddressDataContact> implements
+public class AddressDataContactsDaoImpl extends AbstractGenericDao<AddressDataContactEntity> implements
 		AddressDataContactsDao {
 
 }

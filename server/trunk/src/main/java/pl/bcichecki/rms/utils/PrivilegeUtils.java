@@ -11,15 +11,32 @@
 
 package pl.bcichecki.rms.utils;
 
+import java.util.Arrays;
+import java.util.List;
+
+import pl.bcichecki.rms.model.impl.PrivilegeType;
+
 /**
  * @author Bartosz Cichecki
  */
 public class PrivilegeUtils {
 
-	public static final String GET_PROFILE = "GET_PROFILE";
-	public static final String MANAGE_PROFILE = "MANAGE_PROFILE";
+	public class Values {
 
-	public static final String GET_USERS = "GET_USERS";
-	public static final String MANAGE_USERS = "MANAGE_USERS";
+		public static final String VIEW_DEVICES = "VIEW_DEVICES";
+		public static final String MANAGE_DEVICES = "MANAGE_DEVICES";
 
+		public static final String VIEW_PROFILE = "VIEW_PROFILE";
+		public static final String MANAGE_PROFILE = "MANAGE_PROFILE";
+
+		public static final String MANAGE_ROLES = "MANAGE_ROLES";
+
+		public static final String VIEW_USERS = "VIEW_USERS";
+		public static final String MANAGE_USERS = "MANAGE_USERS";
+
+	}
+
+	public static List<PrivilegeType> getAllPrivileges() {
+		return Arrays.asList(PrivilegeType.values());
+	}
 }

@@ -11,14 +11,9 @@
 
 package pl.bcichecki.rms.dao;
 
-import javax.persistence.LockTimeoutException;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceException;
-import javax.persistence.PessimisticLockException;
-import javax.persistence.QueryTimeoutException;
-import javax.persistence.TransactionRequiredException;
+import java.util.List;
 
+import pl.bcichecki.rms.model.impl.RoleEntity;
 import pl.bcichecki.rms.model.impl.UserEntity;
 
 /**
@@ -26,8 +21,10 @@ import pl.bcichecki.rms.model.impl.UserEntity;
  */
 public interface UsersDao extends GenericDao<UserEntity> {
 
-	public UserEntity getByUsername(String username) throws NoResultException, NonUniqueResultException,
-			IllegalStateException, QueryTimeoutException, TransactionRequiredException, PessimisticLockException,
-			LockTimeoutException, PersistenceException;
+	UserEntity getByUsername(String username);
+
+	List<UserEntity> getUsersWithRole(Long roleId, boolean idAndVersionOnly);
+
+	boolean hasUsersWithRole(RoleEntity role);
 
 }

@@ -20,7 +20,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="pl.bcichecki.rms.ws.rest" />
 	<!-- Properties -->
-	<bean id="properties" class="pl.bcichecki.rms.utils.PropertiesUtil">
+	<bean id="properties" class="pl.bcichecki.rms.utils.PropertiesUtils">
 		<property name="location" value="rms-server.properties" />
 	</bean>
 	<!-- JPA configuration -->
@@ -39,14 +39,25 @@
 	<bean id="usersDao" class="pl.bcichecki.rms.dao.impl.UsersDaoImpl" />
 	<!-- Services -->
 	<bean id="accessHistoryService" class="pl.bcichecki.rms.services.impl.AccessHistoryServiceImpl" />
-	<bean id="masterAdminService" class="pl.bcichecki.rms.services.impl.MasterAdminServiceImpl">
-		<property name="masterAdmin" ref="masterAdmin" />
+	<bean id="devicesService" class="pl.bcichecki.rms.services.impl.DevicesServiceImpl" />
+	<bean id="eventsService" class="pl.bcichecki.rms.services.impl.EventsServiceImpl" />
+	<bean id="messagesService" class="pl.bcichecki.rms.services.impl.MessagesServiceImpl" />
+	<bean id="privilegesService" class="pl.bcichecki.rms.services.impl.PrivilegesServiceImpl" />
+	<bean id="rolesService" class="pl.bcichecki.rms.services.impl.RolesServiceImpl" />
+	<bean id="usersService" class="pl.bcichecki.rms.services.impl.UsersServiceImpl" />
+	<!-- Emergency admin -->
+	<bean id="emergencyAdminService" class="pl.bcichecki.rms.services.special.EmergencyAdminServiceImpl">
+		<property name="EmergencyAdmin" ref="emergencyAdmin" />
 	</bean>
-	<bean id="userDetailsService" class="pl.bcichecki.rms.services.impl.UserDetailsServiceImpl" />
-	<!-- Other beans -->
-	<bean id="masterAdmin" class="pl.bcichecki.rms.model.impl.UserEntity">
-		<property name="locked" value="${madm.locked}" />
-		<property name="username" value="${madm.username}" />
-		<property name="password" value="${madm.password}" />
+	<bean id="userDetailsService" class="pl.bcichecki.rms.services.special.UserDetailsServiceImpl" />
+	<bean id="emergencyAdmin" class="pl.bcichecki.rms.model.impl.UserEntity">
+		<property name="locked" value="${eadm.locked}" />
+		<property name="deleted" value="${eadm.locked}" />
+		<property name="username" value="${eadm.username}" />
+		<property name="password" value="${eadm.password}" />
+	</bean>
+	<!-- Resources -->
+	<bean id="resourceBundleUtils" class="pl.bcichecki.rms.utils.ResourceBundleUtils">
+		<property name="bundlePath" value="lang/rms-server" />
 	</bean>
 </beans>

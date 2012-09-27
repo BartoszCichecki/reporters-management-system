@@ -22,14 +22,17 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "ACCESS_HISTORY")
-public class AccessHistoryEntity extends AbstractEntity {
+public class AccessHistoryEntity extends AbstractEntity implements Mergeable<AccessHistoryEntity> {
 
 	@Transient
 	private static final long serialVersionUID = -8583688459079578896L;
@@ -121,6 +124,14 @@ public class AccessHistoryEntity extends AbstractEntity {
 		result = prime * result + (ip == null ? 0 : ip.hashCode());
 		result = prime * result + (username == null ? 0 : username.hashCode());
 		return result;
+	}
+
+	@Override
+	public void merge(AccessHistoryEntity accessHistory) {
+		setUsername(StringUtils.defaultIfBlank(accessHistory.getUsername(), null));
+		setAccessDate(accessHistory.getAccessDate());
+		setAccessStatus(accessHistory.getAccessStatus());
+		setIp(StringUtils.defaultIfBlank(accessHistory.getIp(), null));
 	}
 
 	public void setAccessDate(Date accessDate) {

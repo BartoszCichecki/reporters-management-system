@@ -11,12 +11,23 @@
 
 package pl.bcichecki.rms.model.impl;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Bartosz Cichecki
  */
 public enum EventType {
 
-	MEETING("meeting"), INTERVIEW("interview");
+	MEETING("MEETING"), INTERVIEW("INTERVIEW");
+
+	public static EventType fromString(String value) {
+		for (EventType eventType : EventType.values()) {
+			if (eventType.toString().equalsIgnoreCase(StringUtils.defaultString(value))) {
+				return eventType;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
 
 	private String value;
 

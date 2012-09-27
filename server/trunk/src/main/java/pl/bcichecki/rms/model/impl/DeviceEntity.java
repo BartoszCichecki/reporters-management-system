@@ -16,14 +16,17 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "DEVICES")
-public class DeviceEntity extends AbstractEntity {
+public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEntity> {
 
 	@Transient
 	private static final long serialVersionUID = -1108300387924092896L;
@@ -87,6 +90,12 @@ public class DeviceEntity extends AbstractEntity {
 		result = prime * result + (description == null ? 0 : description.hashCode());
 		result = prime * result + (name == null ? 0 : name.hashCode());
 		return result;
+	}
+
+	@Override
+	public void merge(DeviceEntity device) {
+		setName(StringUtils.defaultString(device.getName()));
+		setDescription(StringUtils.defaultIfBlank(device.getDescription(), null));
 	}
 
 	public void setDescription(String description) {

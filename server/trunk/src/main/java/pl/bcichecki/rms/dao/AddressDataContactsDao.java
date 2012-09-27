@@ -11,11 +11,11 @@
 
 package pl.bcichecki.rms.dao;
 
-import pl.bcichecki.rms.model.impl.AddressDataContact;
+import pl.bcichecki.rms.model.impl.AddressDataContactEntity;
 
 /**
  * @author Bartosz Cichecki
  */
-public interface AddressDataContactsDao extends GenericDao<AddressDataContact> {
+public interface AddressDataContactsDao extends GenericDao<AddressDataContactEntity> {
 
 }

@@ -28,6 +28,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import pl.bcichecki.rms.model.impl.UserEntity;
+import pl.bcichecki.rms.utils.SecurityUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -127,9 +128,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 
 	@Override
 	public UserEntity getCurrentUser() {
-		// TODO Get current user from somewhere. Maybe session? Remember about
-		// MA!
-		return null;
+		return SecurityUtils.getCurrentUser();
 	}
 
 	public Long getId() {
@@ -201,4 +200,8 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 		this.modificationUser = modificationUser;
 	}
 
+	@Override
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 }

@@ -14,16 +14,8 @@ package pl.bcichecki.rms.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
-import javax.persistence.LockTimeoutException;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.PessimisticLockException;
-import javax.persistence.QueryTimeoutException;
-import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -52,49 +44,61 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 	}
 
 	@Override
-	public void create(T entity) throws EntityExistsException, IllegalArgumentException, TransactionRequiredException {
+	public boolean contains(T entity) {
+		return manager.contains(entity);
+	}
+
+	@Override
+	public void create(T entity) {
 		manager.persist(entity);
 	}
 
 	@Override
-	public void delete(T entity) throws IllegalArgumentException, TransactionRequiredException {
+	public void delete(T entity) {
 		manager.remove(entity);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<T> getAll() throws IllegalStateException, IllegalArgumentException, QueryTimeoutException,
-			TransactionRequiredException, PessimisticLockException, LockTimeoutException, PersistenceException {
+	public List<T> getAll(boolean idAndVersionOnly) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClazz);
 		Root<T> root = criteria.from(entityClazz);
+		// if (idAndVersionOnly) {
+		// criteria.select(root.get("ID").get("VERSION"));
+		// } else {
 		criteria.select(root);
+		// }
 		return manager.createQuery(criteria).getResultList();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<T> getAllByCriteria(CriteriaQuery<T> criteria) throws IllegalStateException, QueryTimeoutException,
-			TransactionRequiredException, PessimisticLockException, LockTimeoutException, PersistenceException {
+	public List<T> getAllByCriteria(CriteriaQuery<T> criteria) {
 		return manager.createQuery(criteria).getResultList();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public T getByCriteria(CriteriaQuery<T> criteria) throws NoResultException, NonUniqueResultException,
-			IllegalStateException, QueryTimeoutException, TransactionRequiredException, PessimisticLockException,
-			LockTimeoutException, PersistenceException {
-		return manager.createQuery(criteria).getSingleResult();
+	public T getByCriteria(CriteriaQuery<T> criteria) {
+		List<T> result = getAllByCriteria(criteria);
+		if (result.size() > 1) {
+			throw new IllegalStateException();
+		}
+		if (result.size() != 1) {
+			return null;
+		}
+		return result.get(0);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public T getById(Serializable id) throws IllegalArgumentException {
+	public T getById(Serializable id) {
 		return manager.find(entityClazz, id);
 	}
 
 	@Override
-	public CriteriaBuilder getCriteriaBuilder() throws IllegalStateException {
+	public CriteriaBuilder getCriteriaBuilder() {
 		return manager.getCriteriaBuilder();
 	}
 
@@ -104,7 +108,7 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 	}
 
 	@Override
-	public void update(T entity) throws IllegalArgumentException, TransactionRequiredException {
+	public void update(T entity) {
 		manager.merge(entity);
 	}
 

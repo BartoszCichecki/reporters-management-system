@@ -9,7 +9,7 @@
  * Date:      09-08-2012
  */
 
-package pl.bcichecki.rms.ws.rest;
+package pl.bcichecki.rms.ws.rest.json;
 
 import java.io.IOException;
 
@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
@@ -54,9 +53,8 @@ public class HelloWorldRestService {
 		return ex.getMessage();
 	}
 
-	@Secured(PrivilegeUtils.GET_PROFILE)
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('" + PrivilegeUtils.GET_PROFILE + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
 	public @ResponseBody
 	String sayHello() {
 		log.info("hello");

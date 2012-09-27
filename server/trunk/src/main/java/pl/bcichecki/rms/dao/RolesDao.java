@@ -11,6 +11,8 @@
 
 package pl.bcichecki.rms.dao;
 
+import java.util.List;
+
 import pl.bcichecki.rms.model.impl.RoleEntity;
 
 /**
@@ -18,4 +20,9 @@ import pl.bcichecki.rms.model.impl.RoleEntity;
  */
 public interface RolesDao extends GenericDao<RoleEntity> {
 
+	RoleEntity getByName(String name);
+
+	List<RoleEntity> getByUserId(Long id);
+
+	List<RoleEntity> getByUsername(String username);
 }

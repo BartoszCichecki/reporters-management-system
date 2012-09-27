@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public enum PrivilegeType {
 
-	GET_USERS, GET_PROFILE, MANAGE_USERS, MANAGE_PROFILE;
+	VIEW_DEVICES, MANAGE_DEVICES, VIEW_PROFILE, MANAGE_PROFILE, MANAGE_ROLES, VIEW_USERS, MANAGE_USERS;
 
 	public static PrivilegeType fromString(String value) {
 		for (PrivilegeType privilegeType : PrivilegeType.values()) {
@@ -33,18 +33,18 @@ public enum PrivilegeType {
 
 	private PrivilegeType() {
 		/*
-		 * *** HACK *** This is done to maintain this class and
-		 * PrivilegeUtils.Value more easily. It is very convenient to persist
-		 * enums with JPA, but if we want to use Spring Security in
-		 * authorization mechanism which requires values to be constants we must
-		 * use static fields. With this hack we are sure that this enum and
-		 * PrivilegeUtils.Value are synchronized. If you think about this
-		 * solution it is not that bad after all - these values won't change, so
-		 * if it runs for the first time, it will run every time and you don't
-		 * have to synchronize their values.
+		 * HACK This is done to maintain this class and PrivilegeUtils.Values
+		 * more easily. It is very convenient to persist enums with JPA, but if
+		 * we want to use Spring Security in authorization mechanism which
+		 * requires values to be constants we must use static fields. With this
+		 * hack we are sure that this enum and PrivilegeUtils.Value are
+		 * synchronized. If you think about this solution it is not that bad
+		 * after all - these values won't change, so if it runs for the first
+		 * time, it will run every time and you don't have to synchronize their
+		 * values.
 		 */
 		try {
-			java.lang.reflect.Field field = pl.bcichecki.rms.utils.PrivilegeUtils.class.getDeclaredField(name());
+			java.lang.reflect.Field field = pl.bcichecki.rms.utils.PrivilegeUtils.Values.class.getDeclaredField(name());
 			field.setAccessible(true);
 			value = (java.lang.String) field.get(null);
 		} catch (Exception e) {

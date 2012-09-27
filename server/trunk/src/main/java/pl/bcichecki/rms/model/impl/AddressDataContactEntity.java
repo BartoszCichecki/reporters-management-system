@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      AddressDataContact.java
+ * File:      AddressDataContactEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -18,14 +18,17 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "ADDRESS_DATA_CONTACTS")
-public class AddressDataContact extends AbstractEntity {
+public class AddressDataContactEntity extends AbstractEntity implements Mergeable<AddressDataContactEntity> {
 
 	@Transient
 	private static final long serialVersionUID = 7766408310811369512L;
@@ -36,11 +39,11 @@ public class AddressDataContact extends AbstractEntity {
 	@Column(name = "VALUE", nullable = false, unique = false, length = 250)
 	protected String value;
 
-	public AddressDataContact() {
+	public AddressDataContactEntity() {
 		super();
 	}
 
-	public AddressDataContact(ContactType type, String value) {
+	public AddressDataContactEntity(ContactType type, String value) {
 		super();
 		this.type = type;
 		this.value = value;
@@ -57,7 +60,7 @@ public class AddressDataContact extends AbstractEntity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		AddressDataContact other = (AddressDataContact) obj;
+		AddressDataContactEntity other = (AddressDataContactEntity) obj;
 		if (type != other.type) {
 			return false;
 		}
@@ -88,6 +91,12 @@ public class AddressDataContact extends AbstractEntity {
 		return result;
 	}
 
+	@Override
+	public void merge(AddressDataContactEntity addressDataContact) {
+		setType(addressDataContact.getType());
+		setValue(StringUtils.defaultString(addressDataContact.getValue()));
+	}
+
 	public void setType(ContactType type) {
 		this.type = type;
 	}
@@ -98,7 +107,7 @@ public class AddressDataContact extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "AddressDataContact [type=" + type + ", value=" + value + ", id=" + id + ", creationUser="
+		return "AddressDataContactEntity [type=" + type + ", value=" + value + ", id=" + id + ", creationUser="
 				+ creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate
 				+ ", modificationDate=" + modificationDate + ", version=" + version + "]";
 	}

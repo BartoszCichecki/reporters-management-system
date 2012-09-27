@@ -25,14 +25,17 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "ROLES")
-public class RoleEntity extends AbstractEntity {
+public class RoleEntity extends AbstractEntity implements Mergeable<RoleEntity> {
 
 	@Transient
 	private static final long serialVersionUID = -113983953800149169L;
@@ -100,6 +103,12 @@ public class RoleEntity extends AbstractEntity {
 		result = prime * result + (name == null ? 0 : name.hashCode());
 		result = prime * result + (privileges == null ? 0 : privileges.hashCode());
 		return result;
+	}
+
+	@Override
+	public void merge(RoleEntity role) {
+		setName(StringUtils.defaultString(role.getName()));
+		setPrivileges(role.getPrivileges());
 	}
 
 	public void setName(String name) {

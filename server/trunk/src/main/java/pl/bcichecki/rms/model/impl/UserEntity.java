@@ -21,14 +21,17 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "USERS")
-public class UserEntity extends AbstractEntity {
+public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> {
 
 	@Transient
 	private static final long serialVersionUID = -3895708148603521817L;
@@ -47,13 +50,15 @@ public class UserEntity extends AbstractEntity {
 	protected boolean locked;
 	@Column(name = "COMMENT", nullable = true, unique = false, length = 1000)
 	protected String comment;
+	@Column(name = "DELETED", nullable = false, unique = false)
+	protected boolean deleted;
 
 	public UserEntity() {
 		super();
 	}
 
 	public UserEntity(String username, String password, RoleEntity role, AddressDataEntity address, boolean locked,
-			String comment) {
+			String comment, boolean deleted) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -61,6 +66,7 @@ public class UserEntity extends AbstractEntity {
 		this.address = address;
 		this.locked = locked;
 		this.comment = comment;
+		setDeleted(deleted);
 	}
 
 	@Override
@@ -87,6 +93,9 @@ public class UserEntity extends AbstractEntity {
 				return false;
 			}
 		} else if (!comment.equals(other.comment)) {
+			return false;
+		}
+		if (deleted != other.deleted) {
 			return false;
 		}
 		if (locked != other.locked) {
@@ -142,6 +151,7 @@ public class UserEntity extends AbstractEntity {
 		int result = super.hashCode();
 		result = prime * result + (address == null ? 0 : address.hashCode());
 		result = prime * result + (comment == null ? 0 : comment.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + (locked ? 1231 : 1237);
 		result = prime * result + (password == null ? 0 : password.hashCode());
 		result = prime * result + (role == null ? 0 : role.hashCode());
@@ -149,8 +159,23 @@ public class UserEntity extends AbstractEntity {
 		return result;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
 	public boolean isLocked() {
 		return locked;
+	}
+
+	@Override
+	public void merge(UserEntity user) {
+		setUsername(StringUtils.defaultString(user.getUsername()));
+		setPassword(StringUtils.defaultString(user.getPassword()));
+		setRole(user.getRole());
+		setAddress(user.getAddress());
+		setLocked(user.isLocked());
+		setComment(StringUtils.defaultIfBlank(user.getComment(), null));
+		setDeleted(user.isDeleted());
 	}
 
 	public void setAddress(AddressDataEntity address) {
@@ -159,6 +184,10 @@ public class UserEntity extends AbstractEntity {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setLocked(boolean locked) {
@@ -179,10 +208,8 @@ public class UserEntity extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", role=" + role + ", address=" + address
-				+ ", locked=" + locked + ", comment=" + comment + ", id=" + id + ", creationUser=" + creationUser
-				+ ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
-				+ modificationDate + ", version=" + version + "]";
+		return "UserEntity [username=" + username + ", password=" + password + ", role=" + role + ", address="
+				+ address + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + "]";
 	}
 
 }

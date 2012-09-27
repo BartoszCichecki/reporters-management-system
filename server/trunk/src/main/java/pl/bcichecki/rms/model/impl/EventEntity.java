@@ -29,14 +29,17 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "EVENTS")
-public class EventEntity extends AbstractEntity {
+public class EventEntity extends AbstractEntity implements Mergeable<EventEntity> {
 
 	@Transient
 	private static final long serialVersionUID = -6149510997653672596L;
@@ -211,6 +214,19 @@ public class EventEntity extends AbstractEntity {
 
 	public Boolean isLocked() {
 		return locked;
+	}
+
+	@Override
+	public void merge(EventEntity event) {
+		setTitle(StringUtils.defaultString(event.getTitle()));
+		setType(event.getType());
+		setDescription(StringUtils.defaultIfBlank(event.getDescription(), null));
+		setStartDate(event.getStartDate());
+		setEndDate(event.getEndDate());
+		setAddress(event.getAddress());
+		setParticipants(event.getParticipants());
+		setDevices(event.getDevices());
+		setLocked(event.isLocked());
 	}
 
 	public void setAddress(AddressDataEntity address) {

@@ -26,6 +26,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
 
 /**
@@ -145,6 +147,14 @@ public class MessageEntity extends AbstractEntity {
 		result = prime * result + (sender == null ? 0 : sender.hashCode());
 		result = prime * result + (topic == null ? 0 : topic.hashCode());
 		return result;
+	}
+
+	public void merge(MessageEntity message) {
+		setSender(message.getSender());
+		setRecipents(message.getRecipents());
+		setTopic(StringUtils.defaultString(message.getTopic()));
+		setContent(StringUtils.defaultString(message.getContent()));
+		setDate(message.getDate());
 	}
 
 	public void setContent(String content) {

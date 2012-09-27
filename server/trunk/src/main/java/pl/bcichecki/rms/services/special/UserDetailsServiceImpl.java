@@ -9,12 +9,10 @@
  * Date:      21-08-2012
  */
 
-package pl.bcichecki.rms.services.impl;
+package pl.bcichecki.rms.services.special;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,16 +27,16 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.bcichecki.rms.dao.UsersDao;
 import pl.bcichecki.rms.model.impl.PrivilegeType;
 import pl.bcichecki.rms.model.impl.UserEntity;
-import pl.bcichecki.rms.services.MasterAdminService;
+import pl.bcichecki.rms.services.EmergencyAdminService;
 
 /**
  * @author Bartosz Cichecki
  */
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private MasterAdminService masterAdminService;
+	private EmergencyAdminService emergencyAdminService;
 	@Autowired
 	private UsersDao usersDao;
 
@@ -47,21 +45,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		for (PrivilegeType privilege : user.getRole().getPrivileges()) {
 			authorities.add(new SimpleGrantedAuthority(privilege.toString()));
 		}
-		return new User(user.getUsername(), user.getPassword(), !user.isLocked(), !user.isLocked(), !user.isLocked(),
+		return new User(user.getUsername(), user.getPassword(), !user.isDeleted(), !user.isLocked(), !user.isLocked(),
 				!user.isLocked(), authorities);
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if (masterAdminService.isMasterAdmin(username)) {
-			return buildUser(masterAdminService.getMasterAdmin());
+		if (emergencyAdminService.isEmergencyAdmin(username) && !emergencyAdminService.getEmergencyAdmin().isLocked()) {
+			return buildUser(emergencyAdminService.getEmergencyAdmin());
 		}
-
-		try {
-			return buildUser(usersDao.getByUsername(username));
-		} catch (NoResultException e) {
-			throw new UsernameNotFoundException("User was not found in database", e);
+		UserEntity user = usersDao.getByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User was not found in database.");
 		}
+		return buildUser(usersDao.getByUsername(username));
 	}
 
 }

@@ -18,4 +18,6 @@ public interface VersionableEntity<T> {
 
 	T getVersion();
 
+	void setVersion(T version);
+
 }

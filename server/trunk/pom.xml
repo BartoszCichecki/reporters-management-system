@@ -39,13 +39,15 @@
 		<mvn.db.username>rms</mvn.db.username>
 		<mvn.db.password>rms123</mvn.db.password>
 		<mvn.db.generateDdl>true</mvn.db.generateDdl>
-		<mvn.madm.locked>false</mvn.madm.locked>
-		<mvn.madm.username>rmsmadm</mvn.madm.username>
-		<mvn.madm.password>rmsmadm123</mvn.madm.password>
-		<mvn.madm.passHash>3122235d4f537a6147328667e86148091b30f4542ba07a5272266f495db5fe73b486589ddf563c562d9922b63c217746a97c8afea09c17d60f6889aae2937062</mvn.madm.passHash>
+		<mvn.eadm.locked>false</mvn.eadm.locked>
+		<mvn.eadm.username>eadm</mvn.eadm.username>
+		<mvn.eadm.password>eadm123</mvn.eadm.password>
+		<mvn.eadm.passHash>e0600d4457423602c0d195e467fac77aa6bd82596bf0b926308a5b913ddbfa9c51ef1608d9e062c75e82b8b777c14193ded7c55c19321059b49c6f30142403da</mvn.eadm.passHash>
 		<mvn.session.length>60</mvn.session.length>
 		<mvn.session.nonceKey>hwdCO9qCI2sPd42EH07FHqYxIiaZENwMJ1KJHKGWW5wOCcXKNp</mvn.session.nonceKey>
 		<mvn.tomcat>apache-tomcat-7.0.29</mvn.tomcat>
+		<!-- <mvn.buildTarget>${user.home}</mvn.buildTarget> -->
+		<mvn.buildTarget>E:/temp/rms</mvn.buildTarget>
 	</properties>
 	<build>
 		<finalName>rms-server</finalName>
@@ -75,8 +77,8 @@
 						</goals>
 						<configuration>
 							<target>
-								<delete file="${user.home}/${project.build.finalName}_${project.version}.tar.gz" />
-								<delete includeemptydirs="true" dir="${user.home}/${project.build.finalName}_${project.version}" />
+								<delete file="${mvn.buildTarget}/${project.build.finalName}_${project.version}.tar.gz" />
+								<delete includeemptydirs="true" dir="${mvn.buildTarget}/${project.build.finalName}_${project.version}" />
 							</target>
 						</configuration>
 					</execution>
@@ -89,7 +91,7 @@
 						<configuration>
 							<target>
 								<delete includeemptydirs="true">
-									<fileset dir="${user.home}" includes="${project.build.finalName}_*/" />
+									<fileset dir="${mvn.buildTarget}" includes="${project.build.finalName}_*/" />
 								</delete>
 							</target>
 						</configuration>
@@ -200,7 +202,7 @@
 								</resource>
 								<resource>
 									<directory>${project.basedir}/target/temp/${project.build.finalName}_${project.version}</directory>
-									<targetPath>${user.home}/${project.build.finalName}_${project.version}.tar.gz</targetPath>
+									<targetPath>${mvn.buildTarget}/${project.build.finalName}_${project.version}.tar.gz</targetPath>
 									<pack>true</pack>
 								</resource>
 							</resources>
@@ -215,8 +217,8 @@
 						<configuration>
 							<resources>
 								<resource>
-									<file>${user.home}/${project.build.finalName}_${project.version}.tar.gz</file>
-									<targetPath>${user.home}/${project.build.finalName}_${project.version}</targetPath>
+									<file>${mvn.buildTarget}/${project.build.finalName}_${project.version}.tar.gz</file>
+									<targetPath>${mvn.buildTarget}/${project.build.finalName}_${project.version}</targetPath>
 									<unpack>true</unpack>
 								</resource>
 							</resources>
@@ -252,7 +254,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.5.1</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-deploy-plugin</artifactId>
@@ -260,7 +262,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-install-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>2.4</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-release-plugin</artifactId>
@@ -276,7 +278,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.12.2</version>
+					<version>2.12.3</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-war-plugin</artifactId>
@@ -350,22 +352,22 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.6</version>
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.6</version>
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.6.6</version>
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
-			<version>1.6.6</version>
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -425,7 +427,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.1.6.Final</version>
+			<version>4.1.7.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
@@ -435,7 +437,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.1.6.Final</version>
+			<version>4.1.7.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -460,12 +462,17 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.6</version>
+			<version>1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.2</version>
 		</dependency>
 	</dependencies>
 </project>

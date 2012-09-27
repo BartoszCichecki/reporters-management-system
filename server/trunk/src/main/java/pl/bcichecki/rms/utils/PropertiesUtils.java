@@ -1,6 +1,6 @@
 /**
  * Project:   Reporters Management System - Server
- * File:      PropertiesUtil.java
+ * File:      PropertiesUtils.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 /**
  * @author Bartosz Cichecki
  */
-public class PropertiesUtil extends PropertyPlaceholderConfigurer {
+public class PropertiesUtils extends PropertyPlaceholderConfigurer {
 
 	private static Map<String, String> PROPERTIES;
 

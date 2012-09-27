@@ -14,11 +14,30 @@ package pl.bcichecki.rms.utils;
 import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import pl.bcichecki.rms.model.impl.UserEntity;
+import pl.bcichecki.rms.services.UsersService;
 
 /**
  * @author Bartosz Cichecki
  */
 public class SecurityUtils {
+
+	@Autowired
+	private static UsersService usersService;
+
+	public static Authentication getAuthentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+
+	public static UserEntity getCurrentUser() {
+		// TODO Implement
+		// Keep emergency admin in mind.
+		return null;
+	}
 
 	public static String getUUID() {
 		return UUID.randomUUID().toString();

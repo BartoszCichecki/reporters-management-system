@@ -18,4 +18,6 @@ import pl.bcichecki.rms.model.impl.DeviceEntity;
  */
 public interface DevicesDao extends GenericDao<DeviceEntity> {
 
+	DeviceEntity getByName(String name);
+
 }

@@ -14,15 +14,7 @@ package pl.bcichecki.rms.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
-import javax.persistence.LockTimeoutException;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceException;
-import javax.persistence.PessimisticLockException;
-import javax.persistence.QueryTimeoutException;
-import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -33,26 +25,24 @@ import pl.bcichecki.rms.model.AbstractEntity;
  */
 public interface GenericDao<T extends AbstractEntity> {
 
-	public void create(T entity) throws EntityExistsException, IllegalArgumentException, TransactionRequiredException;
+	boolean contains(T entity);
 
-	public void delete(T entity) throws IllegalArgumentException, TransactionRequiredException, PersistenceException;
+	void create(T entity);
 
-	public List<T> getAll() throws IllegalStateException, IllegalArgumentException, QueryTimeoutException,
-			TransactionRequiredException, PessimisticLockException, LockTimeoutException, PersistenceException;
+	void delete(T entity);
 
-	public List<T> getAllByCriteria(CriteriaQuery<T> criteria) throws IllegalStateException, QueryTimeoutException,
-			TransactionRequiredException, PessimisticLockException, LockTimeoutException, PersistenceException;
+	List<T> getAll(boolean idAndVersionOnly);
 
-	public T getByCriteria(CriteriaQuery<T> criteria) throws NoResultException, NonUniqueResultException,
-			IllegalStateException, QueryTimeoutException, TransactionRequiredException, PessimisticLockException,
-			LockTimeoutException, PersistenceException;
+	List<T> getAllByCriteria(CriteriaQuery<T> criteria);
 
-	public T getById(Serializable id) throws IllegalArgumentException;
+	T getByCriteria(CriteriaQuery<T> criteria);
 
-	public CriteriaBuilder getCriteriaBuilder() throws IllegalStateException;
+	T getById(Serializable id);
 
-	public void setEntityManager(EntityManager manager);
+	CriteriaBuilder getCriteriaBuilder();
 
-	public void update(T entity) throws IllegalArgumentException, TransactionRequiredException;
+	void setEntityManager(EntityManager manager);
+
+	void update(T entity);
 
 }

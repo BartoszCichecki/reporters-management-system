@@ -25,13 +25,14 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "MESSAGE_RECIPENTS")
-public class MessageRecipentEntity extends AbstractEntity {
+public class MessageRecipentEntity extends AbstractEntity implements Mergeable<MessageRecipentEntity> {
 
 	@Transient
 	private static final long serialVersionUID = 8831025727208405070L;
@@ -112,6 +113,13 @@ public class MessageRecipentEntity extends AbstractEntity {
 		result = prime * result + (readDate == null ? 0 : readDate.hashCode());
 		result = prime * result + (recipent == null ? 0 : recipent.hashCode());
 		return result;
+	}
+
+	@Override
+	public void merge(MessageRecipentEntity messageRecipent) {
+		setMessage(messageRecipent.getMessage());
+		setRecipent(messageRecipent.getRecipent());
+		setReadDate(messageRecipent.getReadDate());
 	}
 
 	public void setMessage(MessageEntity message) {

@@ -22,14 +22,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import pl.bcichecki.rms.model.AbstractEntity;
+import pl.bcichecki.rms.model.Mergeable;
 
 /**
  * @author Bartosz Cichecki
  */
 @Entity
 @Table(name = "ADDRESS_DATA")
-public class AddressDataEntity extends AbstractEntity {
+public class AddressDataEntity extends AbstractEntity implements Mergeable<AddressDataEntity> {
 
 	@Transient
 	private static final long serialVersionUID = 7142910058149199699L;
@@ -48,14 +51,14 @@ public class AddressDataEntity extends AbstractEntity {
 	protected String country;
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS_DATA", referencedColumnName = "ID", nullable = false)
-	protected Set<AddressDataContact> contacts;
+	protected Set<AddressDataContactEntity> contacts;
 
 	public AddressDataEntity() {
 		super();
 	}
 
 	public AddressDataEntity(String street, String streetNumber, String houseNumber, String zipCode, String city,
-			String country, Set<AddressDataContact> contacts) {
+			String country, Set<AddressDataContactEntity> contacts) {
 		super();
 		this.street = street;
 		this.streetNumber = streetNumber;
@@ -134,7 +137,7 @@ public class AddressDataEntity extends AbstractEntity {
 		return city;
 	}
 
-	public Set<AddressDataContact> getContacts() {
+	public Set<AddressDataContactEntity> getContacts() {
 		return contacts;
 	}
 
@@ -172,11 +175,22 @@ public class AddressDataEntity extends AbstractEntity {
 		return result;
 	}
 
+	@Override
+	public void merge(AddressDataEntity addressData) {
+		setStreet(StringUtils.defaultIfBlank(addressData.getStreet(), null));
+		setStreetNumber(StringUtils.defaultIfBlank(addressData.getStreetNumber(), null));
+		setHouseNumber(StringUtils.defaultIfBlank(addressData.getHouseNumber(), null));
+		setZipCode(StringUtils.defaultIfBlank(addressData.getZipCode(), null));
+		setCity(StringUtils.defaultIfBlank(addressData.getCity(), null));
+		setCountry(StringUtils.defaultIfBlank(addressData.getCountry(), null));
+		setContacts(addressData.getContacts());
+	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
 
-	public void setContacts(Set<AddressDataContact> contacts) {
+	public void setContacts(Set<AddressDataContactEntity> contacts) {
 		this.contacts = contacts;
 	}
 

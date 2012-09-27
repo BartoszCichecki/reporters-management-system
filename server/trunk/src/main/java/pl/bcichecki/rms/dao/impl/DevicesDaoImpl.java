@@ -11,12 +11,28 @@
 
 package pl.bcichecki.rms.dao.impl;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import pl.bcichecki.rms.dao.DevicesDao;
 import pl.bcichecki.rms.model.impl.DeviceEntity;
+import pl.bcichecki.rms.model.impl.DeviceEntity_;
 
 /**
  * @author Bartosz Cichecki
  */
 public class DevicesDaoImpl extends AbstractGenericDao<DeviceEntity> implements DevicesDao {
+
+	@Override
+	public DeviceEntity getByName(String name) {
+		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+		CriteriaQuery<DeviceEntity> criteriaQuery = criteriaBuilder.createQuery(DeviceEntity.class);
+		Root<DeviceEntity> root = criteriaQuery.from(DeviceEntity.class);
+		Predicate predicate = criteriaBuilder.equal(root.get(DeviceEntity_.name), name);
+		criteriaQuery.where(predicate);
+		return getByCriteria(criteriaQuery);
+	}
 
 }
