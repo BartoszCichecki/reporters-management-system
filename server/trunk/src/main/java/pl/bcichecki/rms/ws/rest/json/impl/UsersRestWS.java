@@ -27,6 +27,7 @@ import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.services.UsersService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -44,7 +45,9 @@ public class UsersRestWS extends AbstractRestWS {
 	String getUsersWithRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long roleId,
 			@RequestParam(value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly)
 			throws ServiceException {
-		return getGson().toJson(usersService.getUsersWithRole(roleId, idAndVersionOnly));
+		String json = getGson().toJson(usersService.getUsersWithRole(roleId, idAndVersionOnly));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 }

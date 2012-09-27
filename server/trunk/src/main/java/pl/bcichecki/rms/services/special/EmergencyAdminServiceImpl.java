@@ -37,7 +37,8 @@ public class EmergencyAdminServiceImpl implements EmergencyAdminService, Initial
 	@Override
 	public void afterPropertiesSet() {
 		EmergencyAdmin.setRole(new RoleEntity("Master Admin", getEmergencyAdminPrivilages()));
-		EmergencyAdmin.setPassword(SecurityUtils.hash(EmergencyAdmin.getPassword(), EmergencyAdmin.getUsername()));
+		EmergencyAdmin
+				.setPassword(SecurityUtils.hashSHA512(EmergencyAdmin.getPassword(), EmergencyAdmin.getUsername()));
 	}
 
 	@Override

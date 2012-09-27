@@ -57,7 +57,7 @@ public abstract class AbstractRestWS {
 	String handleBadRequestExceptions(Exception ex, HttpServletRequest request, HttpServletResponse response) {
 		log.info(ex.getMessage(), ex);
 
-		RestUtils.decorateHeaderForText(response);
+		RestUtils.decorateResponseHeaderForText(response);
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		return getMessage(ex, request.getLocale());
 	}
@@ -67,7 +67,7 @@ public abstract class AbstractRestWS {
 	String handleOtherExceptions(Exception ex, HttpServletRequest request, HttpServletResponse response) {
 		log.error("Internal server error!", ex);
 
-		RestUtils.decorateHeaderForText(response);
+		RestUtils.decorateResponseHeaderForText(response);
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		return "Internal server error!";
 	}
@@ -77,7 +77,7 @@ public abstract class AbstractRestWS {
 	String handleServiceExceptions(Exception ex, HttpServletRequest request, HttpServletResponse response) {
 		log.info(ex.getMessage(), ex);
 
-		RestUtils.decorateHeaderForText(response);
+		RestUtils.decorateResponseHeaderForText(response);
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		return getMessage(ex, request.getLocale());
 	}

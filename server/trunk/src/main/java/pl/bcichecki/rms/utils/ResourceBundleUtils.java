@@ -12,28 +12,15 @@
 package pl.bcichecki.rms.utils;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
 
-import org.springframework.beans.factory.InitializingBean;
+import pl.bcichecki.rms.holders.ApplicationContextHolder;
 
 /**
  * @author Bartosz Cichecki
  */
-public class ResourceBundleUtils implements InitializingBean {
-
-	private static String bundlePath;
+public class ResourceBundleUtils {
 
 	public static String getValue(String key, Locale locale) {
-		return ResourceBundle.getBundle(bundlePath, locale).getString(key);
+		return ApplicationContextHolder.getApplicationContext().getMessage(key, null, locale);
 	}
-
-	public static void setBundlePath(String bundlePath) {
-		ResourceBundleUtils.bundlePath = bundlePath;
-	}
-
-	@Override
-	public void afterPropertiesSet() {
-		ResourceBundle.getBundle(bundlePath, Locale.getDefault());
-	}
-
 }

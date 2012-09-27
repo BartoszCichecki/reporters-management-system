@@ -27,6 +27,8 @@
 	<import resource="jpa-beans.xml" />
 	<!-- Security configuration -->
 	<import resource="security-beans.xml" />
+	<!-- Application context -->
+	<bean id="applicationContextHolder" class="pl.bcichecki.rms.holders.ApplicationContextHolder" />
 	<!-- DAO beans -->
 	<bean id="addressDataContactsDao" class="pl.bcichecki.rms.dao.impl.AddressDataContactsDaoImpl" />
 	<bean id="addressDataDao" class="pl.bcichecki.rms.dao.impl.AddressDataDaoImpl" />
@@ -56,8 +58,13 @@
 		<property name="username" value="${eadm.username}" />
 		<property name="password" value="${eadm.password}" />
 	</bean>
-	<!-- Resources -->
-	<bean id="resourceBundleUtils" class="pl.bcichecki.rms.utils.ResourceBundleUtils">
-		<property name="bundlePath" value="lang/rms-server" />
+	<!-- RestUtils -->
+	<bean id="restUtils" class="pl.bcichecki.rms.ws.rest.json.utils.RestUtils">
+		<property name="hashResponseBody" value="${rest.hashResponseBody}" />
+		<property name="checkRequestBodyHash" value="${rest.checkRequestBodyHash}" />
+	</bean>
+	<!-- Messages resource -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="locale\rms-server" />
 	</bean>
 </beans>

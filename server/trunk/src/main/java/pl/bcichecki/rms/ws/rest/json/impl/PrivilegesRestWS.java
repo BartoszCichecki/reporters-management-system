@@ -42,16 +42,20 @@ public class PrivilegesRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public @ResponseBody
 	String getAllPrivileges(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateHeaderForJson(response);
-		return getGson().toJson(privilegesService.getAllPrivileges());
+		RestUtils.decorateResponseHeaderForJson(response);
+		String json = getGson().toJson(privilegesService.getAllPrivileges());
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
 	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
 	public @ResponseBody
 	String getMyPrivileges(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateHeaderForJson(response);
-		return getGson().toJson(privilegesService.getAuthenticatedUsersPrivileges());
+		RestUtils.decorateResponseHeaderForJson(response);
+		String json = getGson().toJson(privilegesService.getAuthenticatedUsersPrivileges());
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
@@ -59,8 +63,10 @@ public class PrivilegesRestWS extends AbstractRestWS {
 	public @ResponseBody
 	String getMyPrivileges(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId)
 			throws ServiceException {
-		RestUtils.decorateHeaderForJson(response);
-		return getGson().toJson(privilegesService.getUsersPrivileges(userId));
+		RestUtils.decorateResponseHeaderForJson(response);
+		String json = getGson().toJson(privilegesService.getUsersPrivileges(userId));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 }

@@ -43,7 +43,11 @@ public class SecurityUtils {
 		return UUID.randomUUID().toString();
 	}
 
-	public static String hash(String stringToHash, String salt) {
+	public static String hashMD5(String stringToHash) {
+		return DigestUtils.md5Hex(stringToHash);
+	}
+
+	public static String hashSHA512(String stringToHash, String salt) {
 		return DigestUtils.sha512Hex(stringToHash + ":" + salt);
 	}
 }

@@ -74,7 +74,9 @@ public class DevicesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getAllDevices(HttpServletRequest request, HttpServletResponse response, @RequestParam(
 			value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly) {
-		return getGson().toJson(devicesService.getAllDevices(idAndVersionOnly));
+		String json = getGson().toJson(devicesService.getAllDevices(idAndVersionOnly));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "')")
@@ -82,7 +84,9 @@ public class DevicesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
 			throws ServiceException {
-		return getGson().toJson(devicesService.getDeviceById(id));
+		String json = getGson().toJson(devicesService.getDeviceById(id));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")

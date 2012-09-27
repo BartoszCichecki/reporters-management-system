@@ -74,8 +74,10 @@ public class RolesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getAllRoles(HttpServletRequest request, HttpServletResponse response, @RequestParam(
 			value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly) {
-		RestUtils.decorateHeaderForJson(response);
-		return getGson().toJson(rolesService.getAllRoles(idAndVersionOnly));
+		RestUtils.decorateResponseHeaderForJson(response);
+		String json = getGson().toJson(rolesService.getAllRoles(idAndVersionOnly));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
@@ -83,7 +85,9 @@ public class RolesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getCurrentUsersRoles(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		return getGson().toJson(rolesService.getUsersRoles(username));
+		String json = getGson().toJson(rolesService.getUsersRoles(username));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
@@ -91,7 +95,9 @@ public class RolesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
 			throws ServiceException {
-		return getGson().toJson(rolesService.getRoleById(id));
+		String json = getGson().toJson(rolesService.getRoleById(id));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
@@ -99,7 +105,9 @@ public class RolesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getUsersRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId)
 			throws ServiceException {
-		return getGson().toJson(rolesService.getUsersRoles(userId));
+		String json = getGson().toJson(rolesService.getUsersRoles(userId));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")

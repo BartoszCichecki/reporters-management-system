@@ -29,6 +29,7 @@ import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.services.EventsService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -50,7 +51,9 @@ public class EventsRestWS extends AbstractRestWS {
 			@RequestParam(value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly,
 			@RequestParam(value = "eventsFrom", required = false) Date eventsFrom, @RequestParam(value = "eventsTill",
 					required = false) Date eventsTill) throws ServiceException {
-		return getGson().toJson(eventsService.getDevicesEvents(deviceId, eventsFrom, eventsTill));
+		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, eventsFrom, eventsTill));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
 	}
 
 }
