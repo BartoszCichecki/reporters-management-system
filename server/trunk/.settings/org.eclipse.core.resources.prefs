@@ -5,3 +5,4 @@ encoding//src/main/resources/locale/rms-server.properties=UTF-8
 encoding//src/main/resources/locale/rms-server_pl_PL.properties=ISO-8859-1
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
+encoding/<project>=UTF-8

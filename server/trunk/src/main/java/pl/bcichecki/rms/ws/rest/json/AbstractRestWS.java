@@ -22,13 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import pl.bcichecki.rms.exceptions.AbstractWithExceptionCodeException;
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.utils.ResourceBundleUtils;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
-
-import com.google.gson.Gson;
 
 /**
  * @author Bartosz Cichecki

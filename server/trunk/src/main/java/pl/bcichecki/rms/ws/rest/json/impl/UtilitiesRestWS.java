@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.gson.JsonParseException;
+
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.UserEntity;
@@ -27,8 +29,6 @@ import pl.bcichecki.rms.services.NotificationService;
 import pl.bcichecki.rms.services.UsersService;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
-
-import com.google.gson.JsonParseException;
 
 /**
  * @author Bartosz Cichecki
