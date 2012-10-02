@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.services.EventsService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
@@ -44,13 +45,14 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "')")
 	@RequestMapping(value = "/devices/{deviceId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getDevicesEvents(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			@PathVariable Long deviceId,
-			@RequestParam(value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly,
-			@RequestParam(value = "eventsFrom", required = false) Date eventsFrom, @RequestParam(value = "eventsTill",
-					required = false) Date eventsTill) throws ServiceException {
+	String getDevicesEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long deviceId, @RequestParam(
+	        value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly, @RequestParam(
+	        value = "eventsFrom", required = false) Date eventsFrom, @RequestParam(value = "eventsTill", required = false) Date eventsTill)
+	        throws BadRequestException, ServiceException {
+		if (eventsFrom != null && eventsTill != null && eventsFrom.after(eventsTill)) {
+			throw new BadRequestException("Date indicating start of period must not be after date indicating end!",
+			        "exceptions.badRequestExceptions.startDateAfterEnd");
+		}
 		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, eventsFrom, eventsTill));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;

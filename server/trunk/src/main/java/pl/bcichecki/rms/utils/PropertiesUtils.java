@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      PropertiesUtils.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -33,8 +33,7 @@ public class PropertiesUtils extends PropertyPlaceholderConfigurer {
 	private int springSystemPropertiesMode = SYSTEM_PROPERTIES_MODE_FALLBACK;
 
 	@Override
-	protected void processProperties(ConfigurableListableBeanFactory beanFactory, Properties props)
-			throws BeansException {
+	protected void processProperties(ConfigurableListableBeanFactory beanFactory, Properties props) throws BeansException {
 		super.processProperties(beanFactory, props);
 
 		PROPERTIES = new HashMap<String, String>();

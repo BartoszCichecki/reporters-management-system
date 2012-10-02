@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.JsonParseException;
-
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.RoleEntity;
@@ -34,6 +32,8 @@ import pl.bcichecki.rms.services.RolesService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
+
+import com.google.gson.JsonParseException;
 
 /**
  * @author Bartosz Cichecki
@@ -47,12 +47,10 @@ public class RolesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	void createRole(HttpServletRequest request, HttpServletResponse response) throws ServiceException,
-			BadRequestException {
+	void createRole(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
 		if (StringUtils.isBlank(requestBody)) {
-			throw new BadRequestException("You can't create \"nothing\".",
-					"exceptions.badRequestExceptions.cantCreateNothing");
+			throw new BadRequestException("You can't create \"nothing\".", "exceptions.badRequestExceptions.cantCreateNothing");
 		}
 		try {
 			RoleEntity roleEntity = getGson().fromJson(requestBody, RoleEntity.class);
@@ -64,16 +62,15 @@ public class RolesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
-			throws ServiceException {
+	void deleteRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		rolesService.deleteRole(id);
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllRoles(HttpServletRequest request, HttpServletResponse response, @RequestParam(
-			value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly) {
+	String getAllRoles(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
+	        required = false, defaultValue = "false") boolean idAndVersionOnly) {
 		RestUtils.decorateResponseHeaderForJson(response);
 		String json = getGson().toJson(rolesService.getAllRoles(idAndVersionOnly));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
@@ -93,8 +90,7 @@ public class RolesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	String getRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
-			throws ServiceException {
+	String getRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		String json = getGson().toJson(rolesService.getRoleById(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -103,8 +99,7 @@ public class RolesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getUsersRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId)
-			throws ServiceException {
+	String getUsersRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId) throws ServiceException {
 		String json = getGson().toJson(rolesService.getUsersRoles(userId));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -112,12 +107,10 @@ public class RolesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	void updateRole(HttpServletRequest request, HttpServletResponse response) throws ServiceException,
-			BadRequestException {
+	void updateRole(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
 		if (StringUtils.isBlank(requestBody)) {
-			throw new BadRequestException("You can't update \"nothing\".",
-					"exceptions.badRequestExceptions.cantUpdateNothing");
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
 		}
 		try {
 			rolesService.updateRole(getGson().fromJson(requestBody, RoleEntity.class));

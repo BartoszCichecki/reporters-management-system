@@ -25,10 +25,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.Gson;
-
 import pl.bcichecki.rms.model.impl.PrivilegeType;
 import pl.bcichecki.rms.model.impl.RoleEntity;
+
+import com.google.gson.Gson;
 
 /**
  * @author Bartosz Cichecki

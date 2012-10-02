@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      VersionableEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3

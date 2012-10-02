@@ -1,10 +1,11 @@
 /**
- * Project: Reporters Management System - Server
+ * Project: rms-server
  * File:    RolesDaoImplTest.java
  *
  * Author:  Bartosz Cichecki
  * Date:    19-08-2012
  */
+
 package pl.bcichecki.rms.dao.impl;
 
 import java.util.HashSet;

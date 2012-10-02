@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AddressDataContactsDaoImpl.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -17,7 +17,6 @@ import pl.bcichecki.rms.model.impl.AddressDataContactEntity;
 /**
  * @author Bartosz Cichecki
  */
-public class AddressDataContactsDaoImpl extends AbstractGenericDao<AddressDataContactEntity> implements
-		AddressDataContactsDao {
+public class AddressDataContactsDaoImpl extends AbstractGenericDao<AddressDataContactEntity> implements AddressDataContactsDao {
 
 }

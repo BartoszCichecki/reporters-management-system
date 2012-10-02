@@ -21,6 +21,10 @@ import pl.bcichecki.rms.holders.ApplicationContextHolder;
 public class ResourceBundleUtils {
 
 	public static String getValue(String key, Locale locale) {
-		return ApplicationContextHolder.getApplicationContext().getMessage(key, null, locale);
+		return ApplicationContextHolder.getContext().getMessage(key, null, locale);
+	}
+
+	public static String getValue(String key, Locale locale, String... variables) {
+		return ApplicationContextHolder.getContext().getMessage(key, variables, locale);
 	}
 }

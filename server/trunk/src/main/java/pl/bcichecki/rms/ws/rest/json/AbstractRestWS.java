@@ -22,13 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-
 import pl.bcichecki.rms.exceptions.AbstractWithExceptionCodeException;
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.utils.ResourceBundleUtils;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
+
+import com.google.gson.Gson;
 
 /**
  * @author Bartosz Cichecki
@@ -44,9 +44,8 @@ public abstract class AbstractRestWS {
 	}
 
 	private String getMessage(Exception ex, Locale locale) {
-		if (ex instanceof AbstractWithExceptionCodeException
-				&& ((AbstractWithExceptionCodeException) ex).getExceptionCode() != null
-				&& !StringUtils.isBlank(((AbstractWithExceptionCodeException) ex).getExceptionCode())) {
+		if (ex instanceof AbstractWithExceptionCodeException && ((AbstractWithExceptionCodeException) ex).getExceptionCode() != null
+		        && !StringUtils.isBlank(((AbstractWithExceptionCodeException) ex).getExceptionCode())) {
 			return ResourceBundleUtils.getValue(((AbstractWithExceptionCodeException) ex).getExceptionCode(), locale);
 		}
 		return ex.getMessage();

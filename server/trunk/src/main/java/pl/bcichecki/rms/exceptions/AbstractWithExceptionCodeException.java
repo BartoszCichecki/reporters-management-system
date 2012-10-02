@@ -34,8 +34,8 @@ public abstract class AbstractWithExceptionCodeException extends Exception {
 		this.exceptionCode = exceptionCode;
 	}
 
-	public AbstractWithExceptionCodeException(String message, String exceptionCode, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public AbstractWithExceptionCodeException(String message, String exceptionCode, Throwable cause, boolean enableSuppression,
+	        boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		this.exceptionCode = exceptionCode;
 	}

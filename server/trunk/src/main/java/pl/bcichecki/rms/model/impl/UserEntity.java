@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      UserEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -38,18 +38,27 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 
 	@Column(name = "USERNAME", nullable = false, unique = true, length = 32)
 	protected String username;
+
 	@Column(name = "PASSWORD", nullable = false, unique = false)
 	protected String password;
-	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ROLE", referencedColumnName = "ID", nullable = false)
+
+	@Column(name = "EMAIL", nullable = false, unique = true)
+	protected String email;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ROLE", referencedColumnName = "ID", nullable = true)
 	protected RoleEntity role;
+
 	@OneToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = true, unique = true)
 	protected AddressDataEntity address;
+
 	@Column(name = "LOCKED", nullable = false, unique = false)
 	protected boolean locked;
+
 	@Column(name = "COMMENT", nullable = true, unique = false, length = 1000)
 	protected String comment;
+
 	@Column(name = "DELETED", nullable = false, unique = false)
 	protected boolean deleted;
 
@@ -57,16 +66,17 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 		super();
 	}
 
-	public UserEntity(String username, String password, RoleEntity role, AddressDataEntity address, boolean locked,
-			String comment, boolean deleted) {
+	public UserEntity(String username, String password, String email, RoleEntity role, AddressDataEntity address, boolean locked,
+	        String comment, boolean deleted) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.email = email;
 		this.role = role;
 		this.address = address;
 		this.locked = locked;
 		this.comment = comment;
-		setDeleted(deleted);
+		this.deleted = deleted;
 	}
 
 	@Override
@@ -96,6 +106,13 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 			return false;
 		}
 		if (deleted != other.deleted) {
+			return false;
+		}
+		if (email == null) {
+			if (other.email != null) {
+				return false;
+			}
+		} else if (!email.equals(other.email)) {
 			return false;
 		}
 		if (locked != other.locked) {
@@ -133,6 +150,10 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 		return comment;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -152,6 +173,7 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 		result = prime * result + (address == null ? 0 : address.hashCode());
 		result = prime * result + (comment == null ? 0 : comment.hashCode());
 		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + (email == null ? 0 : email.hashCode());
 		result = prime * result + (locked ? 1231 : 1237);
 		result = prime * result + (password == null ? 0 : password.hashCode());
 		result = prime * result + (role == null ? 0 : role.hashCode());
@@ -171,6 +193,7 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 	public void merge(UserEntity user) {
 		setUsername(StringUtils.defaultString(user.getUsername()));
 		setPassword(StringUtils.defaultString(user.getPassword()));
+		setEmail(StringUtils.defaultString(user.getEmail()));
 		setRole(user.getRole());
 		setAddress(user.getAddress());
 		setLocked(user.isLocked());
@@ -188,6 +211,10 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public void setLocked(boolean locked) {
@@ -208,8 +235,10 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 
 	@Override
 	public String toString() {
-		return "UserEntity [username=" + username + ", password=" + password + ", role=" + role + ", address="
-				+ address + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + "]";
+		return "UserEntity [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + ", address="
+		        + address + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + ", id=" + id + ", creationUser="
+		        + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

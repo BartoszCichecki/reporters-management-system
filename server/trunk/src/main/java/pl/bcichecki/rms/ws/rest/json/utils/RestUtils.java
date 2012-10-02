@@ -26,12 +26,17 @@ import pl.bcichecki.rms.utils.SecurityUtils;
 public class RestUtils {
 
 	private static final String CONTENT_MD5 = "Content-MD5";
+
 	private static final String ENCODING_UTF8 = "UTF-8";
+
 	private static final String CONTENT_TYPE = "Content-Type";
+
 	private static final String CONTENT_APPLICATION_JSON = "application/json";
+
 	private static final String CONTENT_TEXT_PLAIN = "text/plain";
 
 	private static boolean hashResponseBody;
+
 	private static boolean checkRequestBodyHash;
 
 	private static boolean checkRequestBodyMD5(HttpServletRequest request, String requestBody) {
@@ -71,14 +76,12 @@ public class RestUtils {
 			}
 			String requestBody = sb.toString();
 			if (!checkRequestBodyMD5(request, requestBody)) {
-				throw new BadRequestException("Request body hash check failed!",
-						"exceptions.badRequestExceptions.requestBodyHashFail");
+				throw new BadRequestException("Request body hash check failed!", "exceptions.badRequestExceptions.requestBodyHashFail");
 			}
 
 			return requestBody;
 		} catch (IOException ex) {
-			throw new BadRequestException("Can't get request body!",
-					"exceptions.badRequestExceptions.cantGetRequestBody", ex);
+			throw new BadRequestException("Can't get request body!", "exceptions.badRequestExceptions.cantGetRequestBody", ex);
 		}
 	}
 

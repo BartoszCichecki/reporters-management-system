@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      PrivilegeType.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -33,15 +33,11 @@ public enum PrivilegeType {
 
 	private PrivilegeType() {
 		/*
-		 * HACK This is done to maintain this class and PrivilegeUtils.Values
-		 * more easily. It is very convenient to persist enums with JPA, but if
-		 * we want to use Spring Security in authorization mechanism which
-		 * requires values to be constants we must use static fields. With this
-		 * hack we are sure that this enum and PrivilegeUtils.Value are
-		 * synchronized. If you think about this solution it is not that bad
-		 * after all - these values won't change, so if it runs for the first
-		 * time, it will run every time and you don't have to synchronize their
-		 * values.
+		 * HACK This is done to maintain this class and PrivilegeUtils.Values more easily. It is very convenient to persist enums with JPA,
+		 * but if we want to use Spring Security in authorization mechanism which requires values to be constants we must use static fields.
+		 * With this hack we are sure that this enum and PrivilegeUtils.Value are synchronized. If you think about this solution it is not
+		 * that bad after all - these values won't change, so if it runs for the first time, it will run every time and you don't have to
+		 * synchronize their values.
 		 */
 		try {
 			java.lang.reflect.Field field = pl.bcichecki.rms.utils.PrivilegeUtils.Values.class.getDeclaredField(name());
@@ -49,7 +45,7 @@ public enum PrivilegeType {
 			value = (java.lang.String) field.get(null);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not instantinate enum value " + name()
-					+ " with value that ought to be in pl.bcichecki.rms.utils.PrivilegeUtils.Values class.", e);
+			        + " with value that ought to be in pl.bcichecki.rms.utils.PrivilegeUtils.Values class.", e);
 		}
 	}
 

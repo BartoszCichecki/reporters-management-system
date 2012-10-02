@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AbstractAuthenticationEventListener.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -21,8 +21,7 @@ import pl.bcichecki.rms.services.AccessHistoryService;
 /**
  * @author Bartosz Cichecki
  */
-public abstract class AbstractAuthenticationEventListener<E extends AbstractAuthenticationEvent> implements
-		SecurityEventListener<E> {
+public abstract class AbstractAuthenticationEventListener<E extends AbstractAuthenticationEvent> implements SecurityEventListener<E> {
 
 	@Autowired
 	protected AccessHistoryService accessHistoryService;

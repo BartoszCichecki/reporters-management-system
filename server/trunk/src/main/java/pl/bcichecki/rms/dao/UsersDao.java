@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      UsersDao.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -20,6 +20,10 @@ import pl.bcichecki.rms.model.impl.UserEntity;
  * @author Bartosz Cichecki
  */
 public interface UsersDao extends GenericDao<UserEntity> {
+
+	List<UserEntity> getAllUndeleted(boolean idAndVersionOnly);
+
+	UserEntity getByEmail(String email);
 
 	UserEntity getByUsername(String username);
 

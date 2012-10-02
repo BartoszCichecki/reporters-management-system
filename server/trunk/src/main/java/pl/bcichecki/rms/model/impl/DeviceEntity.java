@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      DeviceEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -33,6 +33,7 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 
 	@Column(name = "NAME", nullable = false, unique = true, length = 250)
 	protected String name;
+
 	@Column(name = "DESCRIPTION", nullable = true, unique = false, length = 1000)
 	protected String description;
 
@@ -108,9 +109,9 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 
 	@Override
 	public String toString() {
-		return "Device [name=" + name + ", description=" + description + ", id=" + id + ", creationUser="
-				+ creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate
-				+ ", modificationDate=" + modificationDate + ", version=" + version + "]";
+		return "Device [name=" + name + ", description=" + description + ", id=" + id + ", creationUser=" + creationUser
+		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+		        + ", version=" + version + "]";
 	}
 
 }

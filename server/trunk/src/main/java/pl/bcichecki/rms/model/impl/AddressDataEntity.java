@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AddressDataEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -11,7 +11,8 @@
 
 package pl.bcichecki.rms.model.impl;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,9 +20,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import pl.bcichecki.rms.model.AbstractEntity;
@@ -39,26 +42,33 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 
 	@Column(name = "STREET", nullable = true, unique = false, length = 250)
 	protected String street;
+
 	@Column(name = "STREET_NUMBER", nullable = true, unique = false, length = 10)
 	protected String streetNumber;
+
 	@Column(name = "HOUSE_NUMBER", nullable = true, unique = false, length = 10)
 	protected String houseNumber;
+
 	@Column(name = "ZIP_CODE", nullable = true, unique = false, length = 10)
 	protected String zipCode;
+
 	@Column(name = "CITY", nullable = true, unique = false, length = 50)
 	protected String city;
+
 	@Column(name = "COUNTRY", nullable = true, unique = false, length = 50)
 	protected String country;
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS_DATA", referencedColumnName = "ID", nullable = false)
-	protected Set<AddressDataContactEntity> contacts;
+	@OrderColumn(name = "CONTACTS_ORDER", insertable = true, updatable = true, nullable = false)
+	protected List<AddressDataContactEntity> contacts;
 
 	public AddressDataEntity() {
 		super();
 	}
 
-	public AddressDataEntity(String street, String streetNumber, String houseNumber, String zipCode, String city,
-			String country, Set<AddressDataContactEntity> contacts) {
+	public AddressDataEntity(String street, String streetNumber, String houseNumber, String zipCode, String city, String country,
+	        List<AddressDataContactEntity> contacts) {
 		super();
 		this.street = street;
 		this.streetNumber = streetNumber;
@@ -67,6 +77,13 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 		this.city = city;
 		this.country = country;
 		this.contacts = contacts;
+	}
+
+	public void addContacts(ContactType contactType, String value) {
+		if (contacts == null) {
+			contacts = new ArrayList<AddressDataContactEntity>();
+		}
+		contacts.add(new AddressDataContactEntity(contactType, value));
 	}
 
 	@Override
@@ -137,8 +154,22 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 		return city;
 	}
 
-	public Set<AddressDataContactEntity> getContacts() {
+	public List<AddressDataContactEntity> getContacts() {
 		return contacts;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getContacts(ContactType contactType) {
+		if (contacts == null) {
+			return ListUtils.EMPTY_LIST;
+		}
+		List<String> values = new ArrayList<String>();
+		for (AddressDataContactEntity addressDataContact : contacts) {
+			if (addressDataContact.getType().equals(contactType)) {
+				values.add(addressDataContact.getValue());
+			}
+		}
+		return values;
 	}
 
 	public String getCountry() {
@@ -190,7 +221,7 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 		this.city = city;
 	}
 
-	public void setContacts(Set<AddressDataContactEntity> contacts) {
+	public void setContacts(List<AddressDataContactEntity> contacts) {
 		this.contacts = contacts;
 	}
 
@@ -216,11 +247,10 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 
 	@Override
 	public String toString() {
-		return "AddressData [street=" + street + ", streetNumber=" + streetNumber + ", houseNumber=" + houseNumber
-				+ ", zipCode=" + zipCode + ", city=" + city + ", country=" + country + ", contacts=" + contacts
-				+ ", id=" + id + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser
-				+ ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
-				+ "]";
+		return "AddressData [street=" + street + ", streetNumber=" + streetNumber + ", houseNumber=" + houseNumber + ", zipCode=" + zipCode
+		        + ", city=" + city + ", country=" + country + ", contacts=" + contacts + ", id=" + id + ", creationUser=" + creationUser
+		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+		        + ", version=" + version + "]";
 	}
 
 }

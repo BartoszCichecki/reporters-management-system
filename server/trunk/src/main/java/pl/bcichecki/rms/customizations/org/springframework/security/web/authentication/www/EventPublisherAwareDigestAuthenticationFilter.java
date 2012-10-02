@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      EventPublisherAwareDigestAuthenticationFilter.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -54,47 +54,33 @@ import org.springframework.web.filter.GenericFilterBean;
 /**
  * <b>IMPORTANT NOTICE!</b>
  * <p>
- * This class is exact copy of
- * {@link org.springframework.security.web.authentication.www.DigestAuthenticationFilter}
- * beside parts responsible for publishing events and is redefined here only
- * because it was impossible to override the original one effectively. needs it.
- * You <b>ought to</b> use the original one if you don't the
- * <code>AuthenticationEventPublisher</code>!
+ * This class is exact copy of {@link org.springframework.security.web.authentication.www.DigestAuthenticationFilter} beside parts
+ * responsible for publishing events and is redefined here only because it was impossible to override the original one effectively. needs
+ * it. You <b>ought to</b> use the original one if you don't the <code>AuthenticationEventPublisher</code>!
  * <p>
  * <i>Copied from Spring Security 3.1.2.RELEASE</i>
  * <p>
- * Processes a HTTP request's Digest authorization headers, putting the result
- * into the <code>SecurityContextHolder</code>.
+ * Processes a HTTP request's Digest authorization headers, putting the result into the <code>SecurityContextHolder</code>.
  * <p>
- * For a detailed background on what this filter is designed to process, refer
- * to <a href="http://www.ietf.org/rfc/rfc2617.txt">RFC 2617</a> (which
- * superseded RFC 2069, although this filter support clients that implement
- * either RFC 2617 or RFC 2069).
+ * For a detailed background on what this filter is designed to process, refer to <a href="http://www.ietf.org/rfc/rfc2617.txt">RFC 2617</a>
+ * (which superseded RFC 2069, although this filter support clients that implement either RFC 2617 or RFC 2069).
  * <p>
- * This filter can be used to provide Digest authentication services to both
- * remoting protocol clients (such as Hessian and SOAP) as well as standard user
- * agents (such as Internet Explorer and FireFox).
+ * This filter can be used to provide Digest authentication services to both remoting protocol clients (such as Hessian and SOAP) as well as
+ * standard user agents (such as Internet Explorer and FireFox).
  * <p>
- * This Digest implementation has been designed to avoid needing to store
- * session state between invocations. All session management information is
- * stored in the "nonce" that is sent to the client by the
- * {@link DigestAuthenticationEntryPoint}.
+ * This Digest implementation has been designed to avoid needing to store session state between invocations. All session management
+ * information is stored in the "nonce" that is sent to the client by the {@link DigestAuthenticationEntryPoint}.
  * <p>
- * If authentication is successful, the resulting
- * {@link org.springframework.security.core.Authentication Authentication}
- * object will be placed into the <code>SecurityContextHolder</code>.
+ * If authentication is successful, the resulting {@link org.springframework.security.core.Authentication Authentication} object will be
+ * placed into the <code>SecurityContextHolder</code>.
  * <p>
- * If authentication fails, an
- * {@link org.springframework.security.web.AuthenticationEntryPoint
- * AuthenticationEntryPoint} implementation is called. This must always be
- * {@link DigestAuthenticationEntryPoint}, which will prompt the user to
- * authenticate again via Digest authentication.
+ * If authentication fails, an {@link org.springframework.security.web.AuthenticationEntryPoint AuthenticationEntryPoint} implementation is
+ * called. This must always be {@link DigestAuthenticationEntryPoint}, which will prompt the user to authenticate again via Digest
+ * authentication.
  * <p>
- * Note there are limitations to Digest authentication, although it is a more
- * comprehensive and secure solution than Basic authentication. Please see RFC
- * 2617 section 4 for a full discussion on the advantages of Digest
- * authentication over Basic authentication, including commentary on the
- * limitations that it still imposes.
+ * Note there are limitations to Digest authentication, although it is a more comprehensive and secure solution than Basic authentication.
+ * Please see RFC 2617 section 4 for a full discussion on the advantages of Digest authentication over Basic authentication, including
+ * commentary on the limitations that it still imposes.
  * 
  * @author Ben Alex
  * @author Luke Taylor
@@ -104,15 +90,25 @@ import org.springframework.web.filter.GenericFilterBean;
 public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilterBean implements MessageSourceAware {
 
 	private class DigestData {
+
 		private final String username;
+
 		private final String realm;
+
 		private final String nonce;
+
 		private final String uri;
+
 		private final String response;
+
 		private final String qop;
+
 		private final String nc;
+
 		private final String cnonce;
+
 		private final String section212response;
+
 		private long nonceExpiryTime;
 
 		DigestData(String header) {
@@ -130,8 +126,8 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 			cnonce = headerMap.get("cnonce"); // RFC 2617 extension
 
 			if (logger.isDebugEnabled()) {
-				logger.debug("Extracted username: '" + username + "'; realm: '" + realm + "'; nonce: '" + nonce
-						+ "'; uri: '" + uri + "'; response: '" + response + "'");
+				logger.debug("Extracted username: '" + username + "'; realm: '" + realm + "'; nonce: '" + nonce + "'; uri: '" + uri
+				        + "'; response: '" + response + "'");
 			}
 		}
 
@@ -139,8 +135,8 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 			// Compute the expected response-digest (will be in hex form)
 
 			// Don't catch IllegalArgumentException (already checked validity)
-			return DigestAuthUtils.generateDigest(passwordAlreadyEncoded, username, realm, password, httpMethod, uri,
-					qop, nonce, nc, cnonce);
+			return DigestAuthUtils.generateDigest(passwordAlreadyEncoded, username, realm, password, httpMethod, uri, qop, nonce, nc,
+			        cnonce);
 		}
 
 		String getResponse() {
@@ -160,7 +156,7 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 			// Check all required parameters were supplied (ie RFC 2069)
 			if (username == null || realm == null || nonce == null || uri == null || response == null) {
 				throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.missingMandatory",
-						new Object[] { section212response }, "Missing mandatory digest value; received header {0}"));
+				        new Object[] { section212response }, "Missing mandatory digest value; received header {0}"));
 			}
 			// Check all required parameters for an "auth" qop were supplied (ie
 			// RFC 2617)
@@ -171,22 +167,21 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 					}
 
 					throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.missingAuth",
-							new Object[] { section212response }, "Missing mandatory digest value; received header {0}"));
+					        new Object[] { section212response }, "Missing mandatory digest value; received header {0}"));
 				}
 			}
 
 			// Check realm name equals what we expected
 			if (!expectedRealm.equals(realm)) {
-				throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.incorrectRealm",
-						new Object[] { realm, expectedRealm },
-						"Response realm name '{0}' does not match system realm name of '{1}'"));
+				throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.incorrectRealm", new Object[] { realm,
+				        expectedRealm }, "Response realm name '{0}' does not match system realm name of '{1}'"));
 			}
 
 			// Check nonce was Base64 encoded (as sent by
 			// DigestAuthenticationEntryPoint)
 			if (!Base64.isBase64(nonce.getBytes())) {
-				throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.nonceEncoding",
-						new Object[] { nonce }, "Nonce is not encoded in Base64; received nonce {0}"));
+				throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.nonceEncoding", new Object[] { nonce },
+				        "Nonce is not encoded in Base64; received nonce {0}"));
 			}
 
 			// Decode nonce from Base64
@@ -197,7 +192,7 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 
 			if (nonceTokens.length != 2) {
 				throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.nonceNotTwoTokens",
-						new Object[] { nonceAsPlainText }, "Nonce should have yielded two tokens but was {0}"));
+				        new Object[] { nonceAsPlainText }, "Nonce should have yielded two tokens but was {0}"));
 			}
 
 			// Extract expiry time from nonce
@@ -206,8 +201,7 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 				nonceExpiryTime = new Long(nonceTokens[0]).longValue();
 			} catch (NumberFormatException nfe) {
 				throw new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.nonceNotNumeric",
-						new Object[] { nonceAsPlainText },
-						"Nonce token should have yielded a numeric first token, but was {0}"));
+				        new Object[] { nonceAsPlainText }, "Nonce token should have yielded a numeric first token, but was {0}"));
 			}
 
 			// Check signature of nonce matches this expiry time
@@ -215,7 +209,7 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 
 			if (!expectedNonceSignature.equals(nonceTokens[1])) {
 				new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.nonceCompromised",
-						new Object[] { nonceAsPlainText }, "Nonce token compromised {0}"));
+				        new Object[] { nonceAsPlainText }, "Nonce token compromised {0}"));
 			}
 		}
 	}
@@ -229,10 +223,15 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 	// ================================================================================================
 
 	private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
+
 	private DigestAuthenticationEntryPoint authenticationEntryPoint;
+
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+
 	private UserCache userCache = new NullUserCache();
+
 	private UserDetailsService userDetailsService;
+
 	private boolean passwordAlreadyEncoded = false;
 
 	// MODIFICATION
@@ -282,8 +281,7 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 	// END OF MODIFICATION
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException,
-			ServletException {
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 
@@ -322,8 +320,7 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 				user = userDetailsService.loadUserByUsername(digestAuth.getUsername());
 
 				if (user == null) {
-					throw new AuthenticationServiceException(
-							"AuthenticationDao returned null, which is an interface contract violation");
+					throw new AuthenticationServiceException("AuthenticationDao returned null, which is an interface contract violation");
 				}
 
 				userCache.putUserInCache(user);
@@ -350,11 +347,10 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 			if (user == null) {
 				userWasNull = true;
 				user = new User(digestAuth.getUsername(), "fakePassSoSpringShutUp", false, false, false, false,
-						new ArrayList<GrantedAuthority>());
+				        new ArrayList<GrantedAuthority>());
 			}
 
-			authenticationEventPublisher.publishAuthenticationFailure(notFound,
-					createUnsuccessfulAuthentication(request, user));
+			authenticationEventPublisher.publishAuthenticationFailure(notFound, createUnsuccessfulAuthentication(request, user));
 
 			if (userWasNull) {
 				user = null;
@@ -363,9 +359,9 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 			// END OF MODIFICATION
 
 			fail(request,
-					response,
-					new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.usernameNotFound",
-							new Object[] { digestAuth.getUsername() }, "Username {0} not found")));
+			        response,
+			        new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.usernameNotFound",
+			                new Object[] { digestAuth.getUsername() }, "Username {0} not found")));
 
 			return;
 		}
@@ -375,20 +371,18 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 		if (!serverDigestMd5.equals(digestAuth.getResponse())) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Expected response: '" + serverDigestMd5 + "' but received: '" + digestAuth.getResponse()
-						+ "'; is AuthenticationDao returning clear text passwords?");
+				        + "'; is AuthenticationDao returning clear text passwords?");
 			}
 
 			// MODIFICATION
 
 			authenticationEventPublisher.publishAuthenticationFailure(new BadCredentialsException("Bad credentials"),
-					createUnsuccessfulAuthentication(request, user));
+			        createUnsuccessfulAuthentication(request, user));
 
 			// END OF MODIFICATION
 
-			fail(request,
-					response,
-					new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.incorrectResponse",
-							"Incorrect response")));
+			fail(request, response,
+			        new BadCredentialsException(messages.getMessage("DigestAuthenticationFilter.incorrectResponse", "Incorrect response")));
 			return;
 		}
 
@@ -398,16 +392,15 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 		// but the request was otherwise appearing to be valid
 		if (digestAuth.isNonceExpired()) {
 			fail(request,
-					response,
-					new NonceExpiredException(messages.getMessage("DigestAuthenticationFilter.nonceExpired",
-							"Nonce has expired/timed out")));
+			        response,
+			        new NonceExpiredException(messages.getMessage("DigestAuthenticationFilter.nonceExpired", "Nonce has expired/timed out")));
 
 			return;
 		}
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("Authentication success for user: '" + digestAuth.getUsername() + "' with response: '"
-					+ digestAuth.getResponse() + "'");
+			logger.debug("Authentication success for user: '" + digestAuth.getUsername() + "' with response: '" + digestAuth.getResponse()
+			        + "'");
 		}
 
 		SecurityContextHolder.getContext().setAuthentication(createSuccessfulAuthentication(request, user));
@@ -415,8 +408,8 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 		chain.doFilter(request, response);
 	}
 
-	private void fail(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)
-			throws IOException, ServletException {
+	private void fail(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException,
+	        ServletException {
 		SecurityContextHolder.getContext().setAuthentication(null);
 
 		if (logger.isDebugEnabled()) {
@@ -438,8 +431,7 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 		return userDetailsService;
 	}
 
-	public void setAuthenticationDetailsSource(
-			AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource) {
+	public void setAuthenticationDetailsSource(AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource) {
 		Assert.notNull(authenticationDetailsSource, "AuthenticationDetailsSource required");
 		this.authenticationDetailsSource = authenticationDetailsSource;
 	}
@@ -457,16 +449,12 @@ public class EventPublisherAwareDigestAuthenticationFilter extends GenericFilter
 	// END OF MODIFICATION
 
 	/**
-	 * If you set this property, the Authentication object, which is created
-	 * after the successful digest authentication will be marked as
-	 * <b>authenticated</b> and filled with the authorities loaded by the
-	 * UserDetailsService. It therefore will not be re-authenticated by your
-	 * AuthenticationProvider. This means, that only the password of the user is
-	 * checked, but not the flags like isEnabled() or isAccountNonExpired(). You
-	 * will save some time by enabling this flag, as otherwise your
-	 * UserDetailsService will be called twice. A more secure option would be to
-	 * introduce a cache around your UserDetailsService, but if you don't use
-	 * these flags, you can also safely enable this option.
+	 * If you set this property, the Authentication object, which is created after the successful digest authentication will be marked as
+	 * <b>authenticated</b> and filled with the authorities loaded by the UserDetailsService. It therefore will not be re-authenticated by
+	 * your AuthenticationProvider. This means, that only the password of the user is checked, but not the flags like isEnabled() or
+	 * isAccountNonExpired(). You will save some time by enabling this flag, as otherwise your UserDetailsService will be called twice. A
+	 * more secure option would be to introduce a cache around your UserDetailsService, but if you don't use these flags, you can also
+	 * safely enable this option.
 	 * 
 	 * @param createAuthenticatedToken
 	 *            default is false

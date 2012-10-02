@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      RoleEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -42,10 +42,11 @@ public class RoleEntity extends AbstractEntity implements Mergeable<RoleEntity> 
 
 	@Column(name = "NAME", nullable = false, unique = true, length = 50)
 	protected String name;
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
 	@JoinTable(name = "PRIVILEGES", joinColumns = { @JoinColumn(name = "ROLE_ID", nullable = false, unique = false) },
-			uniqueConstraints = { @UniqueConstraint(columnNames = { "ROLE_ID", "PRIVILEGE" }) })
+	        uniqueConstraints = { @UniqueConstraint(columnNames = { "ROLE_ID", "PRIVILEGE" }) })
 	@Column(name = "PRIVILEGE", nullable = false, unique = false)
 	protected Set<PrivilegeType> privileges;
 
@@ -122,8 +123,8 @@ public class RoleEntity extends AbstractEntity implements Mergeable<RoleEntity> 
 	@Override
 	public String toString() {
 		return "Role [name=" + name + ", privileges=" + privileges + ", id=" + id + ", creationUser=" + creationUser
-				+ ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
-				+ modificationDate + ", version=" + version + "]";
+		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+		        + ", version=" + version + "]";
 	}
 
 }

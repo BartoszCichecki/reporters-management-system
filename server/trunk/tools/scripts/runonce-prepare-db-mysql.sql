@@ -1,4 +1,4 @@
-## Project:   Reporters Management System - Server
+## Project:   rms-server
 ## File:      runonce-prepare-db-mysql.sql
 ## License: 
 ##            This file is licensed under GNU General Public License version 3

@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AddressDataContactEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -36,6 +36,7 @@ public class AddressDataContactEntity extends AbstractEntity implements Mergeabl
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TYPE", nullable = false, unique = false)
 	protected ContactType type;
+
 	@Column(name = "VALUE", nullable = false, unique = false, length = 250)
 	protected String value;
 
@@ -107,9 +108,9 @@ public class AddressDataContactEntity extends AbstractEntity implements Mergeabl
 
 	@Override
 	public String toString() {
-		return "AddressDataContactEntity [type=" + type + ", value=" + value + ", id=" + id + ", creationUser="
-				+ creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate
-				+ ", modificationDate=" + modificationDate + ", version=" + version + "]";
+		return "AddressDataContactEntity [type=" + type + ", value=" + value + ", id=" + id + ", creationUser=" + creationUser
+		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+		        + ", version=" + version + "]";
 	}
 
 }

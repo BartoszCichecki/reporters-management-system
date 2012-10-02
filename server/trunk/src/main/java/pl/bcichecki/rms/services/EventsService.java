@@ -14,6 +14,7 @@ package pl.bcichecki.rms.services;
 import java.util.Date;
 import java.util.List;
 
+import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.EventEntity;
 
 /**
@@ -21,8 +22,6 @@ import pl.bcichecki.rms.model.impl.EventEntity;
  */
 public interface EventsService {
 
-	List<EventEntity> getDevicesEvents(Long deviceId, Date eventsFrom, Date eventsTill);
-
-	List<EventEntity> getDevicesEvents(String deviceName, Date eventsFrom, Date eventsTill);
+	List<EventEntity> getDevicesEvents(Long deviceId, Date eventsFrom, Date eventsTill) throws ServiceException;
 
 }

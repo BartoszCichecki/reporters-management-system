@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      SecurityUtils.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -14,10 +14,12 @@ package pl.bcichecki.rms.utils;
 import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.services.UsersService;
 
@@ -29,14 +31,31 @@ public class SecurityUtils {
 	@Autowired
 	private static UsersService usersService;
 
-	public static Authentication getAuthentication() {
-		return SecurityContextHolder.getContext().getAuthentication();
+	public static UserEntity getCurrentUser() {
+		try {
+			String username = SecurityUtils.getCurrentUserUsername();
+			if (username == null) {
+				return null;
+			}
+			return usersService.getUserByUsername(username);
+		} catch (ServiceException e) {
+			return null;
+		}
 	}
 
-	public static UserEntity getCurrentUser() {
-		// TODO Implement
-		// Keep emergency admin in mind.
-		return null;
+	public static String getCurrentUserUsername() {
+		if (SecurityContextHolder.getContext() == null || SecurityContextHolder.getContext().getAuthentication() == null) {
+			return null;
+		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication.getName() == null) {
+			throw new IllegalStateException("There is user authenticated without username?");
+		}
+		return authentication.getName();
+	}
+
+	public static String getRandomPassword() {
+		return RandomStringUtils.random(8, true, true);
 	}
 
 	public static String getUUID() {

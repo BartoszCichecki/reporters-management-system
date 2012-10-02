@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AccessStatus.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -17,8 +17,8 @@ package pl.bcichecki.rms.model.impl;
 public enum AccessStatus {
 
 	AUTHENTICATION_OK("authentication_ok"), AUTHORIZATION_OK("authorization_ok"), AUTHENTICATION_BAD_CREDENTIALS(
-			"authentication_badCredentials"), AUTHENTICATION_ACCOUNT_LOCKED("authentication_accountLocked"), AUTHORIZATION_UNSUFFICIENT_PRIVILAGES(
-			"authorization_unsufficientPrivilages");
+	        "authentication_badCredentials"), AUTHENTICATION_ACCOUNT_LOCKED("authentication_accountLocked"), AUTHORIZATION_UNSUFFICIENT_PRIVILAGES(
+	        "authorization_unsufficientPrivilages");
 
 	private String value;
 

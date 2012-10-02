@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      UserDetailsServiceImpl.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -9,7 +9,7 @@
  * Date:      21-08-2012
  */
 
-package pl.bcichecki.rms.services.special;
+package pl.bcichecki.rms.services.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,16 +37,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private EmergencyAdminService emergencyAdminService;
+
 	@Autowired
 	private UsersDao usersDao;
 
 	private UserDetails buildUser(UserEntity user) {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (PrivilegeType privilege : user.getRole().getPrivileges()) {
-			authorities.add(new SimpleGrantedAuthority(privilege.toString()));
+		if (user.getRole() != null) {
+			for (PrivilegeType privilege : user.getRole().getPrivileges()) {
+				authorities.add(new SimpleGrantedAuthority(privilege.toString()));
+			}
 		}
-		return new User(user.getUsername(), user.getPassword(), !user.isDeleted(), !user.isLocked(), !user.isLocked(),
-				!user.isLocked(), authorities);
+		return new User(user.getUsername(), user.getPassword(), !user.isDeleted(), !user.isLocked(), !user.isLocked(), !user.isLocked(),
+		        authorities);
 	}
 
 	@Override

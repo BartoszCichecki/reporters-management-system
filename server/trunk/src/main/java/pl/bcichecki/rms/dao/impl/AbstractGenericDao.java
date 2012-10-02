@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AbstractGenericDao.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -39,8 +39,7 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 
 	@SuppressWarnings("unchecked")
 	public AbstractGenericDao() {
-		entityClazz = (Class<T>) ((java.lang.reflect.ParameterizedType) this.getClass().getGenericSuperclass())
-				.getActualTypeArguments()[0];
+		entityClazz = (Class<T>) ((java.lang.reflect.ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
 	@Override
@@ -64,6 +63,7 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClazz);
 		Root<T> root = criteria.from(entityClazz);
+		// FIXME idAndVersionOnly
 		// if (idAndVersionOnly) {
 		// criteria.select(root.get("ID").get("VERSION"));
 		// } else {

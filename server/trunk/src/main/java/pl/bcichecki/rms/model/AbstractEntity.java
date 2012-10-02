@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AbstractEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -43,18 +43,23 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	@GeneratedValue
 	@Column(name = "ID", nullable = false, unique = true)
 	protected Long id;
+
 	@ManyToOne
 	@JoinColumn(name = "CREATED_BY", nullable = true, unique = false)
 	protected UserEntity creationUser;
+
 	@ManyToOne
 	@JoinColumn(name = "MODIFIED_BY", nullable = true, unique = false)
 	protected UserEntity modificationUser;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATION_DATE", nullable = true, unique = false)
 	protected Date creationDate;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "MODIFICATION_DATE", nullable = true, unique = false)
 	protected Date modificationDate;
+
 	@Version
 	@Column(name = "VERSION", nullable = false, unique = false)
 	protected Long version;

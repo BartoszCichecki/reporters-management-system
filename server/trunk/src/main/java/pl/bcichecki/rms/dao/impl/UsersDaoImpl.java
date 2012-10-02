@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      UsersDaoImpl.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -27,6 +27,26 @@ import pl.bcichecki.rms.model.impl.UserEntity_;
  * @author Bartosz Cichecki
  */
 public class UsersDaoImpl extends AbstractGenericDao<UserEntity> implements UsersDao {
+
+	@Override
+	public List<UserEntity> getAllUndeleted(boolean idAndVersionOnly) {
+		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
+		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
+		Predicate predicate = criteriaBuilder.equal(root.get(UserEntity_.deleted), false);
+		criteriaQuery.where(predicate);
+		return getAllByCriteria(criteriaQuery);
+	}
+
+	@Override
+	public UserEntity getByEmail(String email) {
+		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
+		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
+		Predicate predicate = criteriaBuilder.equal(root.get(UserEntity_.email), email);
+		criteriaQuery.where(predicate);
+		return getByCriteria(criteriaQuery);
+	}
 
 	@Override
 	public UserEntity getByUsername(String username) {

@@ -14,9 +14,14 @@ package pl.bcichecki.rms.services.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import pl.bcichecki.rms.dao.DevicesDao;
+import pl.bcichecki.rms.dao.EventsDao;
+import pl.bcichecki.rms.exceptions.impl.ServiceException;
+import pl.bcichecki.rms.model.impl.DeviceEntity;
 import pl.bcichecki.rms.model.impl.EventEntity;
 import pl.bcichecki.rms.services.EventsService;
 
@@ -26,16 +31,20 @@ import pl.bcichecki.rms.services.EventsService;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class EventsServiceImpl implements EventsService {
 
-	@Override
-	public List<EventEntity> getDevicesEvents(Long deviceId, Date eventsFrom, Date eventsTill) {
-		// TODO Implement
-		return null;
-	}
+	@Autowired
+	private EventsDao eventsDao;
+
+	@Autowired
+	private DevicesDao devicesDao;
 
 	@Override
-	public List<EventEntity> getDevicesEvents(String deviceName, Date eventsFrom, Date eventsTill) {
-		// TODO Implement
-		return null;
+	@Transactional(readOnly = true)
+	public List<EventEntity> getDevicesEvents(Long deviceId, Date eventsFrom, Date eventsTill) throws ServiceException {
+		DeviceEntity device = devicesDao.getById(deviceId);
+		if (device == null) {
+			throw new ServiceException("Device with this ID does not exist!", "exceptions.serviceExceptions.devices.notExistId");
+		}
+		return eventsDao.getDevicesEvents(device, eventsFrom, eventsTill);
 	}
 
 }

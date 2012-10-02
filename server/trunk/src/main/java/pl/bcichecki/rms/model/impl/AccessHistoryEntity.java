@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AccessHistoryEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -39,12 +39,15 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 
 	@Column(name = "USERNAME", nullable = true, unique = false)
 	protected String username;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ACCESS_DATE", nullable = false, unique = false)
 	protected Date accessDate;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "ACCESS_STATUS", nullable = false, unique = false)
 	protected AccessStatus accessStatus;
+
 	@Column(name = "USER_IP", nullable = true, unique = false)
 	protected String ip;
 
@@ -152,8 +155,9 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 
 	@Override
 	public String toString() {
-		return "AccessHistoryEntity [username=" + username + ", accessDate=" + accessDate + ", accessStatus="
-				+ accessStatus + ", ip=" + ip + "]";
+		return "AccessHistoryEntity [username=" + username + ", accessDate=" + accessDate + ", accessStatus=" + accessStatus + ", ip=" + ip
+		        + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate="
+		        + creationDate + ", modificationDate=" + modificationDate + ", version=" + version + "]";
 	}
 
 }

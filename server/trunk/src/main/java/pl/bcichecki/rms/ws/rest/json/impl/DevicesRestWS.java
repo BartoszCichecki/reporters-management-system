@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.JsonParseException;
-
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.DeviceEntity;
@@ -35,6 +33,8 @@ import pl.bcichecki.rms.services.DevicesService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
+
+import com.google.gson.JsonParseException;
 
 /**
  * @author Bartosz Cichecki
@@ -48,12 +48,10 @@ public class DevicesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	void createDevice(HttpServletRequest request, HttpServletResponse response) throws ServiceException,
-			BadRequestException {
+	void createDevice(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
 		if (StringUtils.isBlank(requestBody)) {
-			throw new BadRequestException("You can't create \"nothing\".",
-					"exceptions.badRequestExceptions.cantCreateNothing");
+			throw new BadRequestException("You can't create \"nothing\".", "exceptions.badRequestExceptions.cantCreateNothing");
 		}
 		try {
 			devicesService.createDevice(getGson().fromJson(requestBody, DeviceEntity.class));
@@ -64,16 +62,15 @@ public class DevicesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
-			throws ServiceException {
+	void deleteDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		devicesService.deleteDevice(id);
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllDevices(HttpServletRequest request, HttpServletResponse response, @RequestParam(
-			value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly) {
+	String getAllDevices(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
+	        required = false, defaultValue = "false") boolean idAndVersionOnly) {
 		String json = getGson().toJson(devicesService.getAllDevices(idAndVersionOnly));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -82,8 +79,7 @@ public class DevicesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	String getDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
-			throws ServiceException {
+	String getDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		String json = getGson().toJson(devicesService.getDeviceById(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -91,12 +87,10 @@ public class DevicesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	void updateDevice(HttpServletRequest request, HttpServletResponse response) throws IOException, ServiceException,
-			BadRequestException {
+	void updateDevice(HttpServletRequest request, HttpServletResponse response) throws IOException, ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
 		if (StringUtils.isBlank(requestBody)) {
-			throw new BadRequestException("You can't update \"nothing\".",
-					"exceptions.badRequestExceptions.cantUpdateNothing");
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
 		}
 		try {
 			devicesService.updateDevice(getGson().fromJson(requestBody, DeviceEntity.class));

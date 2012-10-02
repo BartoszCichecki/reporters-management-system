@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      EventEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -46,38 +46,48 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 
 	@Column(name = "TITLE", nullable = false, unique = false, length = 250)
 	protected String title;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TYPE", nullable = false, unique = false)
 	protected EventType type;
+
 	@Column(name = "DESCRIPTION", nullable = true, unique = false, length = 10000)
 	protected String description;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "START_DATE", nullable = false, unique = false)
 	protected Date startDate;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "END_DATE", nullable = false, unique = false)
 	protected Date endDate;
+
 	@OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = false)
 	protected AddressDataEntity address;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "EVENTS_USERS_LINK", joinColumns = { @JoinColumn(name = "EVENT_ID", nullable = false,
-			unique = false) }, inverseJoinColumns = { @JoinColumn(name = "USER_ID", nullable = false, unique = false) })
+	@JoinTable(name = "EVENTS_USERS_LINK", joinColumns = { @JoinColumn(name = "EVENT_ID", nullable = false, unique = false) },
+	        inverseJoinColumns = { @JoinColumn(name = "USER_ID", nullable = false, unique = false) })
 	protected Set<UserEntity> participants;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "EVENTS_DEVICES_LINK", joinColumns = { @JoinColumn(name = "EVENT_ID", nullable = false,
-			unique = false) },
-			inverseJoinColumns = { @JoinColumn(name = "DEVICE_ID", nullable = false, unique = false) })
+	@JoinTable(name = "EVENTS_DEVICES_LINK", joinColumns = { @JoinColumn(name = "EVENT_ID", nullable = false, unique = false) },
+	        inverseJoinColumns = { @JoinColumn(name = "DEVICE_ID", nullable = false, unique = false) })
 	protected Set<DeviceEntity> devices;
+
 	@Column(name = "LOCKED", nullable = false, unique = false)
 	protected Boolean locked;
+
+	@Column(name = "ARCHIVED", nullable = false, unique = false)
+	protected Boolean archived;
 
 	public EventEntity() {
 		super();
 	}
 
-	public EventEntity(String title, EventType type, String description, Date startDate, Date endDate,
-			AddressDataEntity address, Set<UserEntity> participants, Set<DeviceEntity> devices, Boolean locked) {
+	public EventEntity(String title, EventType type, String description, Date startDate, Date endDate, AddressDataEntity address,
+	        Set<UserEntity> participants, Set<DeviceEntity> devices, Boolean locked, Boolean archived) {
 		super();
 		this.title = title;
 		this.type = type;
@@ -88,6 +98,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		this.participants = participants;
 		this.devices = devices;
 		this.locked = locked;
+		this.archived = archived;
 	}
 
 	@Override
@@ -107,6 +118,13 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 				return false;
 			}
 		} else if (!address.equals(other.address)) {
+			return false;
+		}
+		if (archived == null) {
+			if (other.archived != null) {
+				return false;
+			}
+		} else if (!archived.equals(other.archived)) {
 			return false;
 		}
 		if (description == null) {
@@ -201,6 +219,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (address == null ? 0 : address.hashCode());
+		result = prime * result + (archived == null ? 0 : archived.hashCode());
 		result = prime * result + (description == null ? 0 : description.hashCode());
 		result = prime * result + (devices == null ? 0 : devices.hashCode());
 		result = prime * result + (endDate == null ? 0 : endDate.hashCode());
@@ -210,6 +229,10 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		result = prime * result + (title == null ? 0 : title.hashCode());
 		result = prime * result + (type == null ? 0 : type.hashCode());
 		return result;
+	}
+
+	public Boolean isArchived() {
+		return archived;
 	}
 
 	public Boolean isLocked() {
@@ -227,10 +250,16 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		setParticipants(event.getParticipants());
 		setDevices(event.getDevices());
 		setLocked(event.isLocked());
+		setArchived(event.isArchived());
+
 	}
 
 	public void setAddress(AddressDataEntity address) {
 		this.address = address;
+	}
+
+	public void setArchived(Boolean archived) {
+		this.archived = archived;
 	}
 
 	public void setDescription(String description) {
@@ -267,11 +296,11 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 
 	@Override
 	public String toString() {
-		return "Event [title=" + title + ", type=" + type + ", description=" + description + ", startDate=" + startDate
-				+ ", endDate=" + endDate + ", address=" + address + ", participants=" + participants + ", devices="
-				+ devices + ", locked=" + locked + ", id=" + id + ", creationUser=" + creationUser
-				+ ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
-				+ modificationDate + ", version=" + version + "]";
+		return "EventEntity [title=" + title + ", type=" + type + ", description=" + description + ", startDate=" + startDate
+		        + ", endDate=" + endDate + ", address=" + address + ", participants=" + participants + ", devices=" + devices + ", locked="
+		        + locked + ", archived=" + archived + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser="
+		        + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
+		        + "]";
 	}
 
 }

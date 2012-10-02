@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      PrivilegeUtils.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -24,14 +24,17 @@ public class PrivilegeUtils {
 	public class Values {
 
 		public static final String VIEW_DEVICES = "VIEW_DEVICES";
+
 		public static final String MANAGE_DEVICES = "MANAGE_DEVICES";
 
 		public static final String VIEW_PROFILE = "VIEW_PROFILE";
+
 		public static final String MANAGE_PROFILE = "MANAGE_PROFILE";
 
 		public static final String MANAGE_ROLES = "MANAGE_ROLES";
 
 		public static final String VIEW_USERS = "VIEW_USERS";
+
 		public static final String MANAGE_USERS = "MANAGE_USERS";
 
 	}

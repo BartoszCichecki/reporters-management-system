@@ -32,6 +32,7 @@ public class RolesServiceImpl implements RolesService {
 
 	@Autowired
 	private RolesDao rolesDao;
+
 	@Autowired
 	private UsersDao usersDao;
 
@@ -39,7 +40,7 @@ public class RolesServiceImpl implements RolesService {
 	public boolean createRole(RoleEntity role) throws ServiceException {
 		if (rolesDao.getByName(role.getName()) != null) {
 			throw new ServiceException("Role with such name already exist! Role must have unique names.",
-					"exceptions.serviceExceptions.roles.duplicateName");
+			        "exceptions.serviceExceptions.roles.duplicateName");
 		}
 		rolesDao.create(role);
 		return true;
@@ -49,12 +50,12 @@ public class RolesServiceImpl implements RolesService {
 	public boolean deleteRole(Long id) throws ServiceException {
 		RoleEntity role = rolesDao.getById(id);
 		if (role == null) {
-			throw new ServiceException("Role with this ID does not exist!",
-					"exceptions.serviceExceptions.roles.notExistId");
+			throw new ServiceException("You can't delete role that does not exist!",
+			        "exceptions.serviceExceptions.roles.cantDeleteNotExisting");
 		}
 		if (usersDao.hasUsersWithRole(role)) {
 			throw new ServiceException("Can't delete role that is assigned to user(s)!",
-					"exceptions.serviceExceptions.roles.cantDeleteStillAssigned");
+			        "exceptions.serviceExceptions.roles.cantDeleteStillAssigned");
 		}
 		rolesDao.delete(role);
 		return true;
@@ -71,8 +72,7 @@ public class RolesServiceImpl implements RolesService {
 	public RoleEntity getRoleById(Long id) throws ServiceException {
 		RoleEntity role = rolesDao.getById(id);
 		if (role == null) {
-			throw new ServiceException("Role with this name does not exist!",
-					"exceptions.serviceExceptions.roles.notExistName");
+			throw new ServiceException("Role with this name does not exist!", "exceptions.serviceExceptions.roles.notExistName");
 		}
 		return role;
 	}
@@ -82,8 +82,7 @@ public class RolesServiceImpl implements RolesService {
 	public RoleEntity getRoleByName(String name) throws ServiceException {
 		RoleEntity role = rolesDao.getByName(name);
 		if (role == null) {
-			throw new ServiceException("Role with this name does not exist!",
-					"exceptions.serviceExceptions.roles.notExistName");
+			throw new ServiceException("Role with this name does not exist!", "exceptions.serviceExceptions.roles.notExistId");
 		}
 		return role;
 	}
@@ -93,8 +92,7 @@ public class RolesServiceImpl implements RolesService {
 	public List<RoleEntity> getUsersRoles(Long id) throws ServiceException {
 		UserEntity user = usersDao.getById(id);
 		if (user == null) {
-			throw new ServiceException("User with this name does not exist!",
-					"exceptions.serviceExceptions.users.notExistName");
+			throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
 		}
 		return rolesDao.getByUsername(user.getUsername());
 	}
@@ -103,8 +101,7 @@ public class RolesServiceImpl implements RolesService {
 	@Transactional(readOnly = true)
 	public List<RoleEntity> getUsersRoles(String username) throws ServiceException {
 		if (usersDao.getByUsername(username) == null) {
-			throw new ServiceException("User with this name does not exist!",
-					"exceptions.serviceExceptions.users.notExistName");
+			throw new ServiceException("User with this name does not exist!", "exceptions.serviceExceptions.users.notExistName");
 		}
 		return rolesDao.getByUsername(username);
 	}
@@ -112,13 +109,13 @@ public class RolesServiceImpl implements RolesService {
 	@Override
 	public boolean updateRole(RoleEntity role) throws ServiceException {
 		if (rolesDao.getByName(role.getName()) != null) {
-			throw new ServiceException("Role with this name does not exist!",
-					"exceptions.serviceExceptions.roles.notExistName");
+			throw new ServiceException("Role with such name already exist! Roles must have unique names.",
+			        "exceptions.serviceExceptions.roles.duplicateName");
 		}
 		RoleEntity retrieved = rolesDao.getById(role.getId());
 		if (retrieved == null) {
 			throw new ServiceException("You can't update role that does not exist!",
-					"exceptions.serviceExceptions.roles.cantUpdateNotExisting");
+			        "exceptions.serviceExceptions.roles.cantUpdateNotExisting");
 		}
 		retrieved.merge(role);
 		rolesDao.update(retrieved);

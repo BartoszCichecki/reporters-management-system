@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      MessageRecipentEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -36,12 +36,15 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 
 	@Transient
 	private static final long serialVersionUID = 8831025727208405070L;
+
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "MESSAGE", nullable = false, unique = false)
 	protected MessageEntity message;
+
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "RECIPENT_USER", nullable = false, unique = false)
 	protected UserEntity recipent;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "READ_DATE", nullable = true, unique = false)
 	protected Date readDate;
@@ -136,9 +139,9 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 
 	@Override
 	public String toString() {
-		return "MessageRecipent [message=" + message + ", recipent=" + recipent + ", readDate=" + readDate + ", id="
-				+ id + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate="
-				+ creationDate + ", modificationDate=" + modificationDate + ", version=" + version + "]";
+		return "MessageRecipent [message=" + message + ", recipent=" + recipent + ", readDate=" + readDate + ", id=" + id
+		        + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate
+		        + ", modificationDate=" + modificationDate + ", version=" + version + "]";
 	}
 
 }

@@ -32,8 +32,7 @@ public class ServiceException extends AbstractWithExceptionCodeException {
 		super(message, exceptionCode, cause);
 	}
 
-	public ServiceException(String message, String exceptionCode, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
+	public ServiceException(String message, String exceptionCode, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, exceptionCode, cause, enableSuppression, writableStackTrace);
 	}
 

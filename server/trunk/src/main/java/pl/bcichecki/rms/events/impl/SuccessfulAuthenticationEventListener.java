@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      SuccessfulAuthenticationEventListener.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -19,8 +19,7 @@ import pl.bcichecki.rms.model.impl.AccessStatus;
 /**
  * @author Bartosz Cichecki
  */
-public class SuccessfulAuthenticationEventListener extends
-		AbstractAuthenticationEventListener<AuthenticationSuccessEvent> {
+public class SuccessfulAuthenticationEventListener extends AbstractAuthenticationEventListener<AuthenticationSuccessEvent> {
 
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {

@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      MessageEntity.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -43,12 +43,16 @@ public class MessageEntity extends AbstractEntity {
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "SENDER", nullable = false, unique = false)
 	protected UserEntity sender;
+
 	@OneToMany(mappedBy = "message")
 	protected Set<MessageRecipentEntity> recipents;
+
 	@Column(name = "TOPIC", nullable = false, unique = false, length = 250)
 	protected String topic;
+
 	@Column(name = "CONTENT", nullable = false, unique = false, length = 10000)
 	protected String content;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DATE_SENT", nullable = false, unique = false)
 	protected Date date;
@@ -57,8 +61,7 @@ public class MessageEntity extends AbstractEntity {
 		super();
 	}
 
-	public MessageEntity(UserEntity sender, Set<MessageRecipentEntity> recipents, String topic, String content,
-			Date date) {
+	public MessageEntity(UserEntity sender, Set<MessageRecipentEntity> recipents, String topic, String content, Date date) {
 		super();
 		this.sender = sender;
 		this.recipents = recipents;
@@ -179,10 +182,9 @@ public class MessageEntity extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Message [sender=" + sender + ", recipents=" + recipents + ", topic=" + topic + ", content=" + content
-				+ ", date=" + date + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser="
-				+ modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-				+ ", version=" + version + "]";
+		return "Message [sender=" + sender + ", recipents=" + recipents + ", topic=" + topic + ", content=" + content + ", date=" + date
+		        + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate="
+		        + creationDate + ", modificationDate=" + modificationDate + ", version=" + version + "]";
 	}
 
 }

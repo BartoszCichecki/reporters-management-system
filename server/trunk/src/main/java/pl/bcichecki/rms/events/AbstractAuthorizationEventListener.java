@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      AbstractAuthorizationEventListener.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -23,8 +23,7 @@ import pl.bcichecki.rms.services.AccessHistoryService;
 /**
  * @author Bartosz Cichecki
  */
-public abstract class AbstractAuthorizationEventListener<E extends AbstractAuthorizationEvent> implements
-		SecurityEventListener<E> {
+public abstract class AbstractAuthorizationEventListener<E extends AbstractAuthorizationEvent> implements SecurityEventListener<E> {
 
 	@Autowired
 	protected AccessHistoryService accessHistoryService;
@@ -32,22 +31,20 @@ public abstract class AbstractAuthorizationEventListener<E extends AbstractAutho
 	protected void log(E event, AccessStatus accessStatus) {
 		if (event instanceof AuthorizationFailureEvent) {
 			String username = ((AuthorizationFailureEvent) event).getAuthentication().getName();
-			WebAuthenticationDetails authDetails = (WebAuthenticationDetails) ((AuthorizationFailureEvent) event)
-					.getAuthentication().getDetails();
+			WebAuthenticationDetails authDetails = (WebAuthenticationDetails) ((AuthorizationFailureEvent) event).getAuthentication()
+			        .getDetails();
 			String userIp = ipUnknown;
 			if (authDetails != null) {
-				userIp = ((WebAuthenticationDetails) ((AuthorizationFailureEvent) event).getAuthentication()
-						.getDetails()).getRemoteAddress();
+				userIp = ((WebAuthenticationDetails) ((AuthorizationFailureEvent) event).getAuthentication().getDetails())
+				        .getRemoteAddress();
 			}
 			accessHistoryService.logAccess(username, userIp, accessStatus);
 		} else if (event instanceof AuthorizedEvent) {
 			String username = ((AuthorizedEvent) event).getAuthentication().getName();
-			WebAuthenticationDetails authDetails = (WebAuthenticationDetails) ((AuthorizedEvent) event)
-					.getAuthentication().getDetails();
+			WebAuthenticationDetails authDetails = (WebAuthenticationDetails) ((AuthorizedEvent) event).getAuthentication().getDetails();
 			String userIp = ipUnknown;
 			if (authDetails != null) {
-				userIp = ((WebAuthenticationDetails) ((AuthorizedEvent) event).getAuthentication().getDetails())
-						.getRemoteAddress();
+				userIp = ((WebAuthenticationDetails) ((AuthorizedEvent) event).getAuthentication().getDetails()).getRemoteAddress();
 			}
 			accessHistoryService.logAccess(username, userIp, accessStatus);
 		} else {

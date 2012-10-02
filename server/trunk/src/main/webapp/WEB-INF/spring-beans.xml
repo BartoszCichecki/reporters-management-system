@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-	Project: Reporters Management System - Server
-	File: spring-beans.xml
-	License:
-	This file is licensed under GNU General Public License version 3
-	http://www.gnu.org/licenses/gpl-3.0.txt
-
-	Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
-	Date: 07-08-2012
--->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
+<!-- Project: rms-server File: spring-beans.xml License: This file is licensed 
+	under GNU General Public License version 3 http://www.gnu.org/licenses/gpl-3.0.txt 
+	Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ] Date: 07-08-2012 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop 
        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
@@ -42,16 +36,19 @@
 	<!-- Services -->
 	<bean id="accessHistoryService" class="pl.bcichecki.rms.services.impl.AccessHistoryServiceImpl" />
 	<bean id="devicesService" class="pl.bcichecki.rms.services.impl.DevicesServiceImpl" />
+	<bean id="emailService" class="pl.bcichecki.rms.services.impl.EmailServiceImpl" />
 	<bean id="eventsService" class="pl.bcichecki.rms.services.impl.EventsServiceImpl" />
 	<bean id="messagesService" class="pl.bcichecki.rms.services.impl.MessagesServiceImpl" />
 	<bean id="privilegesService" class="pl.bcichecki.rms.services.impl.PrivilegesServiceImpl" />
 	<bean id="rolesService" class="pl.bcichecki.rms.services.impl.RolesServiceImpl" />
 	<bean id="usersService" class="pl.bcichecki.rms.services.impl.UsersServiceImpl" />
 	<!-- Emergency admin -->
-	<bean id="emergencyAdminService" class="pl.bcichecki.rms.services.special.EmergencyAdminServiceImpl">
-		<property name="EmergencyAdmin" ref="emergencyAdmin" />
+	<bean id="emergencyAdminService"
+		class="pl.bcichecki.rms.services.impl.EmergencyAdminServiceImpl">
+		<property name="emergencyAdmin" ref="emergencyAdmin" />
+		<property name="grantAllPrivileges" value="${eadm.grantAllPrivileges}" />
 	</bean>
-	<bean id="userDetailsService" class="pl.bcichecki.rms.services.special.UserDetailsServiceImpl" />
+	<bean id="userDetailsService" class="pl.bcichecki.rms.services.impl.UserDetailsServiceImpl" />
 	<bean id="emergencyAdmin" class="pl.bcichecki.rms.model.impl.UserEntity">
 		<property name="locked" value="${eadm.locked}" />
 		<property name="deleted" value="${eadm.locked}" />
@@ -64,7 +61,19 @@
 		<property name="checkRequestBodyHash" value="${rest.checkRequestBodyHash}" />
 	</bean>
 	<!-- Messages resource -->
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="locale\rms-server" />
+	</bean>
+	<!-- Email configuration -->
+	<bean id="emailConfiguration" class="pl.bcichecki.rms.config.EmailConfiguration">
+		<property name="from" value="${email.from}" />
+		<property name="fromAddress" value="${email.fromAddress}" />
+		<property name="password" value="${email.password}" />
+		<property name="host" value="${email.host}" />
+		<property name="port" value="${email.port}" />
+		<property name="authenticate" value="${email.authenticate}" />
+		<property name="ssl" value="${email.ssl}" />
+		<property name="tls" value="${email.tls}" />
 	</bean>
 </beans>

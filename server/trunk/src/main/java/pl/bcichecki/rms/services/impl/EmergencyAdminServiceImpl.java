@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      EmergencyAdminServiceImpl.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -9,7 +9,7 @@
  * Date:      20-08-2012
  */
 
-package pl.bcichecki.rms.services.special;
+package pl.bcichecki.rms.services.impl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,41 +29,46 @@ import pl.bcichecki.rms.utils.SecurityUtils;
  */
 public class EmergencyAdminServiceImpl implements EmergencyAdminService, InitializingBean {
 
-	private UserEntity EmergencyAdmin;
+	private UserEntity emergencyAdmin;
+
+	private boolean grantAllPrivileges;
 
 	public EmergencyAdminServiceImpl() {
 	}
 
 	@Override
 	public void afterPropertiesSet() {
-		EmergencyAdmin.setRole(new RoleEntity("Master Admin", getEmergencyAdminPrivilages()));
-		EmergencyAdmin
-				.setPassword(SecurityUtils.hashSHA512(EmergencyAdmin.getPassword(), EmergencyAdmin.getUsername()));
+		emergencyAdmin.setRole(new RoleEntity("Master Admin", getEmergencyAdminPrivilages()));
+		emergencyAdmin.setPassword(SecurityUtils.hashSHA512(emergencyAdmin.getPassword(), emergencyAdmin.getUsername()));
 	}
 
 	@Override
 	public UserEntity getEmergencyAdmin() {
-		return EmergencyAdmin;
+		return emergencyAdmin;
 	}
 
 	private Set<PrivilegeType> getEmergencyAdminPrivilages() {
 		Set<PrivilegeType> privileges = new HashSet<PrivilegeType>();
-		// FIXME Replace after managing users is finished!!!
-		// Master admin has been changed to emergency admin who can now only
-		// manage users.
-		// privileges.add(PrivilegeType.GET_USERS);
-		// privileges.add(PrivilegeType.MANAGE_USERS);
-		privileges.addAll(PrivilegeUtils.getAllPrivileges());
+		if (grantAllPrivileges) {
+			privileges.addAll(PrivilegeUtils.getAllPrivileges());
+		} else {
+			privileges.add(PrivilegeType.VIEW_USERS);
+			privileges.add(PrivilegeType.MANAGE_USERS);
+		}
 		return privileges;
 	}
 
 	@Override
 	public boolean isEmergencyAdmin(String username) {
-		return EmergencyAdmin.getUsername().equalsIgnoreCase(StringUtils.defaultString(username));
+		return emergencyAdmin.getUsername().equalsIgnoreCase(StringUtils.defaultString(username));
 	}
 
 	public void setEmergencyAdmin(UserEntity EmergencyAdmin) {
-		this.EmergencyAdmin = EmergencyAdmin;
+		emergencyAdmin = EmergencyAdmin;
+	}
+
+	public void setGrantAllPrivileges(boolean grantAllPrivileges) {
+		this.grantAllPrivileges = grantAllPrivileges;
 	}
 
 }

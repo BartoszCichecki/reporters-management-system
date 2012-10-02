@@ -20,6 +20,7 @@ import org.apache.commons.collections.SetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,6 @@ import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.PrivilegeType;
 import pl.bcichecki.rms.model.impl.RoleEntity;
 import pl.bcichecki.rms.services.PrivilegesService;
-import pl.bcichecki.rms.utils.SecurityUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -59,7 +59,7 @@ public class PrivilegesServiceImpl implements PrivilegesService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Set<PrivilegeType> getAuthenticatedUsersPrivileges() {
-		Authentication authentication = SecurityUtils.getAuthentication();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null) {
 			return SetUtils.EMPTY_SET;
 		}
@@ -74,8 +74,7 @@ public class PrivilegesServiceImpl implements PrivilegesService {
 	@Transactional(readOnly = true)
 	public Set<PrivilegeType> getUsersPrivileges(Long userId) throws ServiceException {
 		if (usersDao.getById(userId) == null) {
-			throw new ServiceException("User with this ID does not exist!",
-					"exceptions.serviceExceptions.users.notExistId");
+			throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
 
 		}
 		List<RoleEntity> roles = rolesDao.getByUserId(userId);

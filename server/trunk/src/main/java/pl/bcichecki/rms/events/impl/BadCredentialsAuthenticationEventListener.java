@@ -1,5 +1,5 @@
 /**
- * Project:   Reporters Management System - Server
+ * Project:   rms-server
  * File:      BadCredentialsAuthenticationEventListener.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
@@ -20,7 +20,7 @@ import pl.bcichecki.rms.model.impl.AccessStatus;
  * @author Bartosz Cichecki
  */
 public class BadCredentialsAuthenticationEventListener extends
-		AbstractAuthenticationEventListener<AuthenticationFailureBadCredentialsEvent> {
+        AbstractAuthenticationEventListener<AuthenticationFailureBadCredentialsEvent> {
 
 	@Override
 	public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {

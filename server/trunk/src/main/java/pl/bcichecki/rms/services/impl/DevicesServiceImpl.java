@@ -35,7 +35,7 @@ public class DevicesServiceImpl implements DevicesService {
 	public boolean createDevice(DeviceEntity device) throws ServiceException {
 		if (devicesDao.getByName(device.getName()) != null) {
 			throw new ServiceException("Device with such name already exist! Devices must have unique names.",
-					"exceptions.serviceExceptions.devices.duplicateName");
+			        "exceptions.serviceExceptions.devices.duplicateName");
 		}
 		devicesDao.create(device);
 		return true;
@@ -45,8 +45,8 @@ public class DevicesServiceImpl implements DevicesService {
 	public boolean deleteDevice(Long id) throws ServiceException {
 		DeviceEntity device = devicesDao.getById(id);
 		if (device == null) {
-			throw new ServiceException("Device with this ID does not exist!",
-					"exceptions.serviceExceptions.devices.notExistId");
+			throw new ServiceException("You can't delete device that does not exist!",
+			        "exceptions.serviceExceptions.devices.cantDeleteNotExisting");
 		}
 		devicesDao.delete(device);
 		return true;
@@ -63,8 +63,7 @@ public class DevicesServiceImpl implements DevicesService {
 	public DeviceEntity getDeviceById(Long id) throws ServiceException {
 		DeviceEntity device = devicesDao.getById(id);
 		if (device == null) {
-			throw new ServiceException("Device with this ID does not exist!",
-					"exceptions.serviceExceptions.devices.notExistId");
+			throw new ServiceException("Device with this ID does not exist!", "exceptions.serviceExceptions.devices.notExistId");
 		}
 		return device;
 	}
@@ -74,8 +73,7 @@ public class DevicesServiceImpl implements DevicesService {
 	public DeviceEntity getDeviceByName(String name) throws ServiceException {
 		DeviceEntity device = devicesDao.getByName(name);
 		if (device == null) {
-			throw new ServiceException("Device with this name does not exist!",
-					"exceptions.serviceExceptions.devices.notExistName");
+			throw new ServiceException("Device with this name does not exist!", "exceptions.serviceExceptions.devices.notExistName");
 		}
 		return device;
 	}
@@ -84,12 +82,12 @@ public class DevicesServiceImpl implements DevicesService {
 	public boolean updateDevice(DeviceEntity device) throws ServiceException {
 		if (devicesDao.getByName(device.getName()) != null) {
 			throw new ServiceException("Device with such name already exist! Devices must have unique names.",
-					"exceptions.serviceExceptions.devices.duplicateName");
+			        "exceptions.serviceExceptions.devices.duplicateName");
 		}
 		DeviceEntity retrieved = devicesDao.getById(device.getId());
 		if (retrieved == null) {
-			throw new ServiceException("You can't delete device that does not exist!",
-					"exceptions.serviceExceptions.devices.cantUpdateNotExisting");
+			throw new ServiceException("You can't update device that does not exist!",
+			        "exceptions.serviceExceptions.devices.cantUpdateNotExisting");
 		}
 		retrieved.merge(device);
 		devicesDao.update(retrieved);

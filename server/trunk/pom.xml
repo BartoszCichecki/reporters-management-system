@@ -1,5 +1,5 @@
 <!--
-	Project: Reporters Management System - Server
+	Project: rms-server
 	File: pom.xml
 	License:
 	This file is licensed under GNU General Public License version 3
@@ -31,22 +31,6 @@
 		<maven>2.2.1</maven>
 	</prerequisites>
 	<properties>
-		<mvn.db.driverClassName>com.mysql.jdbc.Driver</mvn.db.driverClassName>
-		<mvn.db.type>mysql</mvn.db.type>
-		<mvn.db.url>127.0.0.1</mvn.db.url>
-		<mvn.db.port>3306</mvn.db.port>
-		<mvn.db.databaseName>rms</mvn.db.databaseName>
-		<mvn.db.username>rms</mvn.db.username>
-		<mvn.db.password>rms123</mvn.db.password>
-		<mvn.db.generateDdl>true</mvn.db.generateDdl>
-		<mvn.eadm.locked>false</mvn.eadm.locked>
-		<mvn.eadm.username>eadm</mvn.eadm.username>
-		<mvn.eadm.password>eadm123</mvn.eadm.password>
-		<mvn.eadm.passHash>e0600d4457423602c0d195e467fac77aa6bd82596bf0b926308a5b913ddbfa9c51ef1608d9e062c75e82b8b777c14193ded7c55c19321059b49c6f30142403da</mvn.eadm.passHash>
-		<mvn.session.length>60</mvn.session.length>
-		<mvn.session.nonceKey>hwdCO9qCI2sPd42EH07FHqYxIiaZENwMJ1KJHKGWW5wOCcXKNp</mvn.session.nonceKey>
-		<mvn.rest.hashResponseBody>true</mvn.rest.hashResponseBody>
-		<mvn.rest.checkRequestBodyHash>true</mvn.rest.checkRequestBodyHash>
 		<mvn.tomcat>apache-tomcat-7.0.29</mvn.tomcat>
 		<!-- <mvn.buildTarget>${user.home}</mvn.buildTarget> -->
 		<mvn.buildTarget>E:/temp/rms</mvn.buildTarget>
@@ -470,6 +454,11 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-email</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

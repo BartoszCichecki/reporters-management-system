@@ -22,7 +22,7 @@ public class ApplicationContextHolder implements ApplicationContextAware {
 
 	private static ApplicationContext applicationContext;
 
-	public static ApplicationContext getApplicationContext() {
+	public static ApplicationContext getContext() {
 		return applicationContext;
 	}
 

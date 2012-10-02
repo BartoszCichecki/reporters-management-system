@@ -1,4 +1,4 @@
-:: Project:   Reporters Management System - Server
+:: Project:   rms-server
 :: File:      maintenance-edit-properties.bat
 :: License: 
 ::            This file is licensed under GNU General Public License version 3

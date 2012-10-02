@@ -32,8 +32,7 @@ public class BadRequestException extends AbstractWithExceptionCodeException {
 		super(message, exceptionCode, cause);
 	}
 
-	public BadRequestException(String message, String exceptionCode, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
+	public BadRequestException(String message, String exceptionCode, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, exceptionCode, cause, enableSuppression, writableStackTrace);
 	}
 
