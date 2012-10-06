@@ -11,11 +11,15 @@
 
 package pl.bcichecki.rms.dao;
 
+import java.io.Serializable;
+
 import pl.bcichecki.rms.model.impl.MessageRecipentEntity;
 
 /**
  * @author Bartosz Cichecki
  */
 public interface MessageRecipentsDao extends GenericDao<MessageRecipentEntity> {
+
+	MessageRecipentEntity getByIdAndRecipentId(Serializable id, Serializable recipentId, boolean archived, boolean deleted);
 
 }

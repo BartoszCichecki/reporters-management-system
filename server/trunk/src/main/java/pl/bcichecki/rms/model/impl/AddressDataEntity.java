@@ -60,7 +60,7 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS_DATA", referencedColumnName = "ID", nullable = false)
-	@OrderColumn(name = "CONTACTS_ORDER", insertable = true, updatable = true, nullable = false)
+	@OrderColumn(name = "ORDER", insertable = true, updatable = true, nullable = false)
 	protected List<AddressDataContactEntity> contacts;
 
 	public AddressDataEntity() {

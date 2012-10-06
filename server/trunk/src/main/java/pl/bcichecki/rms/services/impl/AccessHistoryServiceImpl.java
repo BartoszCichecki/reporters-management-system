@@ -19,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pl.bcichecki.rms.dao.AccessHistoryDao;
 import pl.bcichecki.rms.model.impl.AccessHistoryEntity;
-import pl.bcichecki.rms.model.impl.AccessStatus;
+import pl.bcichecki.rms.model.impl.AuthenticationStatus;
+import pl.bcichecki.rms.model.impl.AuthorizationStatus;
 import pl.bcichecki.rms.services.AccessHistoryService;
 
 /**
@@ -32,12 +33,19 @@ public class AccessHistoryServiceImpl implements AccessHistoryService {
 	private AccessHistoryDao accessHistoryDao;
 
 	@Override
-	public boolean logAccess(String username, String userIp, AccessStatus accessStatus) {
+	public boolean logAccess(String username, String userIp, AuthenticationStatus authenticationStatus) {
+		return logAccess(username, userIp, authenticationStatus, null);
+	}
+
+	@Override
+	public boolean logAccess(String username, String userIp, AuthenticationStatus authenticationStatus,
+	        AuthorizationStatus authorizationStatus) {
 		AccessHistoryEntity entity = new AccessHistoryEntity();
 		entity.setUsername(username);
 		entity.setIp(userIp);
 		entity.setAccessDate(new Date());
-		entity.setAccessStatus(accessStatus);
+		entity.setAuthenticationStatus(authenticationStatus);
+		entity.setAuthorizationStatus(authorizationStatus);
 		accessHistoryDao.create(entity);
 		return true;
 	}

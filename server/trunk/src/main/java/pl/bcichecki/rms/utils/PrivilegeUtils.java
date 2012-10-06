@@ -27,6 +27,12 @@ public class PrivilegeUtils {
 
 		public static final String MANAGE_DEVICES = "MANAGE_DEVICES";
 
+		public static final String VIEW_MESSAGES = "VIEW_MESSAGES";
+
+		public static final String SEND_MESSAGES = "SEND_MESSAGES";
+
+		public static final String MANAGE_MESSAGES = "MANAGE_MESSAGES";
+
 		public static final String VIEW_PROFILE = "VIEW_PROFILE";
 
 		public static final String MANAGE_PROFILE = "MANAGE_PROFILE";

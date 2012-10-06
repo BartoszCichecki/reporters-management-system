@@ -43,6 +43,19 @@ public class SecurityUtils {
 		}
 	}
 
+	public static Long getCurrentUserId() {
+		try {
+			String username = SecurityUtils.getCurrentUserUsername();
+			if (username == null) {
+				return null;
+			}
+			UserEntity user = usersService.getUserByUsername(username);
+			return user.getId();
+		} catch (ServiceException e) {
+			return null;
+		}
+	}
+
 	public static String getCurrentUserUsername() {
 		if (SecurityContextHolder.getContext() == null || SecurityContextHolder.getContext().getAuthentication() == null) {
 			return null;

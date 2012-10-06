@@ -19,8 +19,6 @@
 	</bean>
 	<!-- JPA configuration -->
 	<import resource="jpa-beans.xml" />
-	<!-- Security configuration -->
-	<import resource="security-beans.xml" />
 	<!-- Application context -->
 	<bean id="applicationContextHolder" class="pl.bcichecki.rms.holders.ApplicationContextHolder" />
 	<!-- DAO beans -->
@@ -48,13 +46,14 @@
 		<property name="emergencyAdmin" ref="emergencyAdmin" />
 		<property name="grantAllPrivileges" value="${eadm.grantAllPrivileges}" />
 	</bean>
-	<bean id="userDetailsService" class="pl.bcichecki.rms.services.impl.UserDetailsServiceImpl" />
 	<bean id="emergencyAdmin" class="pl.bcichecki.rms.model.impl.UserEntity">
 		<property name="locked" value="${eadm.locked}" />
 		<property name="deleted" value="${eadm.locked}" />
 		<property name="username" value="${eadm.username}" />
 		<property name="password" value="${eadm.password}" />
 	</bean>
+	<!-- Security configuration -->
+	<import resource="security-beans.xml" />
 	<!-- RestUtils -->
 	<bean id="restUtils" class="pl.bcichecki.rms.ws.rest.json.utils.RestUtils">
 		<property name="hashResponseBody" value="${rest.hashResponseBody}" />

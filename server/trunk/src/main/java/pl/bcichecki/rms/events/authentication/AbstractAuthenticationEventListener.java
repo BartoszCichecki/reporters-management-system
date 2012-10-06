@@ -9,13 +9,14 @@
  * Date:      27-08-2012
  */
 
-package pl.bcichecki.rms.events;
+package pl.bcichecki.rms.events.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-import pl.bcichecki.rms.model.impl.AccessStatus;
+import pl.bcichecki.rms.events.SecurityEventListener;
+import pl.bcichecki.rms.model.impl.AuthenticationStatus;
 import pl.bcichecki.rms.services.AccessHistoryService;
 
 /**
@@ -26,14 +27,14 @@ public abstract class AbstractAuthenticationEventListener<E extends AbstractAuth
 	@Autowired
 	protected AccessHistoryService accessHistoryService;
 
-	protected void log(E event, AccessStatus accessStatus) {
+	protected void log(E event, AuthenticationStatus authenticationStatus) {
 		String username = event.getAuthentication().getName();
 		WebAuthenticationDetails authDetails = (WebAuthenticationDetails) event.getAuthentication().getDetails();
 		String userIp = ipUnknown;
 		if (authDetails != null) {
 			userIp = ((WebAuthenticationDetails) event.getAuthentication().getDetails()).getRemoteAddress();
 		}
-		accessHistoryService.logAccess(username, userIp, accessStatus);
+		accessHistoryService.logAccess(username, userIp, authenticationStatus);
 	}
 
 	@Override

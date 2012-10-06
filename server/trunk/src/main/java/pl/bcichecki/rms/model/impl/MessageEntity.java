@@ -47,8 +47,8 @@ public class MessageEntity extends AbstractEntity {
 	@OneToMany(mappedBy = "message")
 	protected Set<MessageRecipentEntity> recipents;
 
-	@Column(name = "TOPIC", nullable = false, unique = false, length = 250)
-	protected String topic;
+	@Column(name = "SUBJECT", nullable = false, unique = false, length = 250)
+	protected String subject;
 
 	@Column(name = "CONTENT", nullable = false, unique = false, length = 10000)
 	protected String content;
@@ -57,17 +57,26 @@ public class MessageEntity extends AbstractEntity {
 	@Column(name = "DATE_SENT", nullable = false, unique = false)
 	protected Date date;
 
+	@Column(name = "ARCHIVED_BY_SENDER", nullable = false, unique = false)
+	protected boolean archivedBySender;
+
+	@Column(name = "DELETED_BY_SENDER", nullable = false, unique = false)
+	protected boolean deletedBySender;
+
 	public MessageEntity() {
 		super();
 	}
 
-	public MessageEntity(UserEntity sender, Set<MessageRecipentEntity> recipents, String topic, String content, Date date) {
+	public MessageEntity(UserEntity sender, Set<MessageRecipentEntity> recipents, String subject, String content, Date date,
+	        boolean archivedBySender, boolean deletedBySender) {
 		super();
 		this.sender = sender;
 		this.recipents = recipents;
-		this.topic = topic;
+		this.subject = subject;
 		this.content = content;
 		this.date = date;
+		this.archivedBySender = archivedBySender;
+		this.deletedBySender = deletedBySender;
 	}
 
 	@Override
@@ -82,6 +91,9 @@ public class MessageEntity extends AbstractEntity {
 			return false;
 		}
 		MessageEntity other = (MessageEntity) obj;
+		if (archivedBySender != other.archivedBySender) {
+			return false;
+		}
 		if (content == null) {
 			if (other.content != null) {
 				return false;
@@ -94,6 +106,9 @@ public class MessageEntity extends AbstractEntity {
 				return false;
 			}
 		} else if (!date.equals(other.date)) {
+			return false;
+		}
+		if (deletedBySender != other.deletedBySender) {
 			return false;
 		}
 		if (recipents == null) {
@@ -110,11 +125,11 @@ public class MessageEntity extends AbstractEntity {
 		} else if (!sender.equals(other.sender)) {
 			return false;
 		}
-		if (topic == null) {
-			if (other.topic != null) {
+		if (subject == null) {
+			if (other.subject != null) {
 				return false;
 			}
-		} else if (!topic.equals(other.topic)) {
+		} else if (!subject.equals(other.subject)) {
 			return false;
 		}
 		return true;
@@ -136,28 +151,44 @@ public class MessageEntity extends AbstractEntity {
 		return sender;
 	}
 
-	public String getTopic() {
-		return topic;
+	public String getSubject() {
+		return subject;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + (archivedBySender ? 1231 : 1237);
 		result = prime * result + (content == null ? 0 : content.hashCode());
 		result = prime * result + (date == null ? 0 : date.hashCode());
+		result = prime * result + (deletedBySender ? 1231 : 1237);
 		result = prime * result + (recipents == null ? 0 : recipents.hashCode());
 		result = prime * result + (sender == null ? 0 : sender.hashCode());
-		result = prime * result + (topic == null ? 0 : topic.hashCode());
+		result = prime * result + (subject == null ? 0 : subject.hashCode());
 		return result;
+	}
+
+	public boolean isArchivedBySender() {
+		return archivedBySender;
+	}
+
+	public boolean isDeletedBySender() {
+		return deletedBySender;
 	}
 
 	public void merge(MessageEntity message) {
 		setSender(message.getSender());
 		setRecipents(message.getRecipents());
-		setTopic(StringUtils.defaultString(message.getTopic()));
+		setSubject(StringUtils.defaultString(message.getSubject()));
 		setContent(StringUtils.defaultString(message.getContent()));
 		setDate(message.getDate());
+		setArchivedBySender(message.isArchivedBySender());
+		setDeletedBySender(message.isDeletedBySender());
+	}
+
+	public void setArchivedBySender(boolean archivedBySender) {
+		this.archivedBySender = archivedBySender;
 	}
 
 	public void setContent(String content) {
@@ -168,6 +199,10 @@ public class MessageEntity extends AbstractEntity {
 		this.date = date;
 	}
 
+	public void setDeletedBySender(boolean deletedBySender) {
+		this.deletedBySender = deletedBySender;
+	}
+
 	public void setRecipents(Set<MessageRecipentEntity> recipents) {
 		this.recipents = recipents;
 	}
@@ -176,15 +211,8 @@ public class MessageEntity extends AbstractEntity {
 		this.sender = sender;
 	}
 
-	public void setTopic(String topic) {
-		this.topic = topic;
-	}
-
-	@Override
-	public String toString() {
-		return "Message [sender=" + sender + ", recipents=" + recipents + ", topic=" + topic + ", content=" + content + ", date=" + date
-		        + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate="
-		        + creationDate + ", modificationDate=" + modificationDate + ", version=" + version + "]";
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
 }

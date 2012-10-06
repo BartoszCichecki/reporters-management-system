@@ -11,13 +11,16 @@
 
 package pl.bcichecki.rms.services;
 
-import pl.bcichecki.rms.model.impl.AccessStatus;
+import pl.bcichecki.rms.model.impl.AuthenticationStatus;
+import pl.bcichecki.rms.model.impl.AuthorizationStatus;
 
 /**
  * @author Bartosz Cichecki
  */
 public interface AccessHistoryService {
 
-	public boolean logAccess(String username, String userIp, AccessStatus accessStatus);
+	boolean logAccess(String username, String userIp, AuthenticationStatus accessStatus);
+
+	boolean logAccess(String username, String userIp, AuthenticationStatus authenticationStatus, AuthorizationStatus authorizationStatus);
 
 }

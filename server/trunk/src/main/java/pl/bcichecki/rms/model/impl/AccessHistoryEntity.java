@@ -45,8 +45,12 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 	protected Date accessDate;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "ACCESS_STATUS", nullable = false, unique = false)
-	protected AccessStatus accessStatus;
+	@Column(name = "AUTHENTICATION_STATUS", nullable = false, unique = false)
+	protected AuthenticationStatus authenticationStatus;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "AUTHORIZATION_STATUS", nullable = true, unique = false)
+	protected AuthorizationStatus authorizationStatus;
 
 	@Column(name = "USER_IP", nullable = true, unique = false)
 	protected String ip;
@@ -55,11 +59,13 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 		super();
 	}
 
-	public AccessHistoryEntity(String username, Date accessDate, AccessStatus accessStatus, String ip) {
+	public AccessHistoryEntity(String username, Date accessDate, AuthenticationStatus authenticationStatus,
+	        AuthorizationStatus authorizationStatus, String ip) {
 		super();
 		this.username = username;
 		this.accessDate = accessDate;
-		this.accessStatus = accessStatus;
+		this.authenticationStatus = authenticationStatus;
+		this.authorizationStatus = authorizationStatus;
 		this.ip = ip;
 	}
 
@@ -82,7 +88,10 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 		} else if (!accessDate.equals(other.accessDate)) {
 			return false;
 		}
-		if (accessStatus != other.accessStatus) {
+		if (authenticationStatus != other.authenticationStatus) {
+			return false;
+		}
+		if (authorizationStatus != other.authorizationStatus) {
 			return false;
 		}
 		if (ip == null) {
@@ -106,8 +115,12 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 		return accessDate;
 	}
 
-	public AccessStatus getAccessStatus() {
-		return accessStatus;
+	public AuthenticationStatus getAuthenticationStatus() {
+		return authenticationStatus;
+	}
+
+	public AuthorizationStatus getAuthorizationStatus() {
+		return authorizationStatus;
 	}
 
 	public String getIp() {
@@ -123,7 +136,8 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (accessDate == null ? 0 : accessDate.hashCode());
-		result = prime * result + (accessStatus == null ? 0 : accessStatus.hashCode());
+		result = prime * result + (authenticationStatus == null ? 0 : authenticationStatus.hashCode());
+		result = prime * result + (authorizationStatus == null ? 0 : authorizationStatus.hashCode());
 		result = prime * result + (ip == null ? 0 : ip.hashCode());
 		result = prime * result + (username == null ? 0 : username.hashCode());
 		return result;
@@ -133,7 +147,8 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 	public void merge(AccessHistoryEntity accessHistory) {
 		setUsername(StringUtils.defaultIfBlank(accessHistory.getUsername(), null));
 		setAccessDate(accessHistory.getAccessDate());
-		setAccessStatus(accessHistory.getAccessStatus());
+		setAuthenticationStatus(accessHistory.getAuthenticationStatus());
+		setAuthorizationStatus(accessHistory.getAuthorizationStatus());
 		setIp(StringUtils.defaultIfBlank(accessHistory.getIp(), null));
 	}
 
@@ -141,8 +156,12 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 		this.accessDate = accessDate;
 	}
 
-	public void setAccessStatus(AccessStatus accessStatus) {
-		this.accessStatus = accessStatus;
+	public void setAuthenticationStatus(AuthenticationStatus authenticationStatus) {
+		this.authenticationStatus = authenticationStatus;
+	}
+
+	public void setAuthorizationStatus(AuthorizationStatus authorizationStatus) {
+		this.authorizationStatus = authorizationStatus;
 	}
 
 	public void setIp(String ip) {
@@ -155,9 +174,10 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 
 	@Override
 	public String toString() {
-		return "AccessHistoryEntity [username=" + username + ", accessDate=" + accessDate + ", accessStatus=" + accessStatus + ", ip=" + ip
-		        + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate="
-		        + creationDate + ", modificationDate=" + modificationDate + ", version=" + version + "]";
+		return "AccessHistoryEntity [username=" + username + ", accessDate=" + accessDate + ", authenticationStatus="
+		        + authenticationStatus + ", authorizationStatus=" + authorizationStatus + ", ip=" + ip + ", id=" + id + ", creationUser="
+		        + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

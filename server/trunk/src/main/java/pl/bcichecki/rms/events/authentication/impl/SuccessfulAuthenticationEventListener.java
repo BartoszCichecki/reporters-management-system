@@ -9,12 +9,11 @@
  * Date:      28-08-2012
  */
 
-package pl.bcichecki.rms.events.impl;
+package pl.bcichecki.rms.events.authentication.impl;
 
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 
-import pl.bcichecki.rms.events.AbstractAuthenticationEventListener;
-import pl.bcichecki.rms.model.impl.AccessStatus;
+import pl.bcichecki.rms.events.authentication.AbstractAuthenticationEventListener;
 
 /**
  * @author Bartosz Cichecki
@@ -23,7 +22,8 @@ public class SuccessfulAuthenticationEventListener extends AbstractAuthenticatio
 
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
-		log(event, AccessStatus.AUTHENTICATION_OK);
+		// Authorization events handle this.
+		// log(event, AuthenticationStatus.AUTHENTICATION_OK);
 	}
 
 }

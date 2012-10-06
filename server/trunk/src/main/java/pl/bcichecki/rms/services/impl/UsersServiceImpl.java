@@ -11,10 +11,18 @@
 
 package pl.bcichecki.rms.services.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +30,9 @@ import pl.bcichecki.rms.dao.RolesDao;
 import pl.bcichecki.rms.dao.UsersDao;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.ContactType;
+import pl.bcichecki.rms.model.impl.PrivilegeType;
 import pl.bcichecki.rms.model.impl.UserEntity;
+import pl.bcichecki.rms.services.EmergencyAdminService;
 import pl.bcichecki.rms.services.UsersService;
 import pl.bcichecki.rms.utils.SecurityUtils;
 
@@ -30,7 +40,7 @@ import pl.bcichecki.rms.utils.SecurityUtils;
  * @author Bartosz Cichecki
  */
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class UsersServiceImpl implements UsersService {
+public class UsersServiceImpl implements UsersService, UserDetailsService {
 
 	@Autowired
 	private UsersDao usersDao;
@@ -38,7 +48,22 @@ public class UsersServiceImpl implements UsersService {
 	@Autowired
 	private RolesDao rolesDao;
 
+	@Autowired
+	private EmergencyAdminService emergencyAdminService;
+
+	private UserDetails buildUser(UserEntity user) {
+		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		if (user.getRole() != null) {
+			for (PrivilegeType privilege : user.getRole().getPrivileges()) {
+				authorities.add(new SimpleGrantedAuthority(privilege.toString()));
+			}
+		}
+		return new User(user.getUsername(), user.getPassword(), !user.isDeleted(), !user.isLocked(), !user.isLocked(), !user.isLocked(),
+		        authorities);
+	}
+
 	@Override
+	@Transactional(readOnly = true)
 	public boolean createUser(UserEntity user) throws ServiceException {
 		if (usersDao.getByUsername(user.getUsername()) != null) {
 			throw new ServiceException("User with such username already exist! Users must have unique usernames.",
@@ -105,6 +130,19 @@ public class UsersServiceImpl implements UsersService {
 			throw new ServiceException("Role with this ID does not exist!", "exceptions.serviceExceptions.roles.notExistId");
 		}
 		return usersDao.getUsersWithRole(roleId, idAndVersionOnly);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		if (emergencyAdminService.isEmergencyAdmin(username) && !emergencyAdminService.getEmergencyAdmin().isLocked()) {
+			return buildUser(emergencyAdminService.getEmergencyAdmin());
+		}
+		UserEntity user = usersDao.getByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User was not found in database.");
+		}
+		return buildUser(usersDao.getByUsername(username));
 	}
 
 	@Override

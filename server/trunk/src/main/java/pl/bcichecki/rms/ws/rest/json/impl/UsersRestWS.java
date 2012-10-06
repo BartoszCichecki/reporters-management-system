@@ -66,7 +66,7 @@ public class UsersRestWS extends AbstractRestWS {
 		usersService.deleteUser(id, forceDelete);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_USERS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllUsers(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
@@ -78,7 +78,7 @@ public class UsersRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_USERS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {

@@ -42,22 +42,31 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 	protected MessageEntity message;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(name = "RECIPENT_USER", nullable = false, unique = false)
+	@JoinColumn(name = "RECIPENT", nullable = false, unique = false)
 	protected UserEntity recipent;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "READ_DATE", nullable = true, unique = false)
 	protected Date readDate;
 
+	@Column(name = "ARCHIVED_BY_RECIPENT", nullable = false, unique = false)
+	protected boolean archivedByRecipent;
+
+	@Column(name = "DELETED_BY_RECIPENT", nullable = false, unique = false)
+	protected boolean deletedByRecipent;
+
 	public MessageRecipentEntity() {
 		super();
 	}
 
-	public MessageRecipentEntity(MessageEntity message, UserEntity recipent, Date readDate) {
+	public MessageRecipentEntity(MessageEntity message, UserEntity recipent, Date readDate, boolean archivedByRecipent,
+	        boolean deletedByRecipent) {
 		super();
 		this.message = message;
 		this.recipent = recipent;
 		this.readDate = readDate;
+		this.archivedByRecipent = archivedByRecipent;
+		this.deletedByRecipent = deletedByRecipent;
 	}
 
 	@Override
@@ -72,6 +81,12 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 			return false;
 		}
 		MessageRecipentEntity other = (MessageRecipentEntity) obj;
+		if (archivedByRecipent != other.archivedByRecipent) {
+			return false;
+		}
+		if (deletedByRecipent != other.deletedByRecipent) {
+			return false;
+		}
 		if (message == null) {
 			if (other.message != null) {
 				return false;
@@ -112,10 +127,20 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + (archivedByRecipent ? 1231 : 1237);
+		result = prime * result + (deletedByRecipent ? 1231 : 1237);
 		result = prime * result + (message == null ? 0 : message.hashCode());
 		result = prime * result + (readDate == null ? 0 : readDate.hashCode());
 		result = prime * result + (recipent == null ? 0 : recipent.hashCode());
 		return result;
+	}
+
+	public boolean isArchivedByRecipent() {
+		return archivedByRecipent;
+	}
+
+	public boolean isDeletedByRecipent() {
+		return deletedByRecipent;
 	}
 
 	@Override
@@ -123,6 +148,16 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 		setMessage(messageRecipent.getMessage());
 		setRecipent(messageRecipent.getRecipent());
 		setReadDate(messageRecipent.getReadDate());
+		setArchivedByRecipent(messageRecipent.isArchivedByRecipent());
+		setDeletedByRecipent(messageRecipent.isDeletedByRecipent());
+	}
+
+	public void setArchivedByRecipent(boolean archivedByRecipent) {
+		this.archivedByRecipent = archivedByRecipent;
+	}
+
+	public void setDeletedByRecipent(boolean deletedByRecipent) {
+		this.deletedByRecipent = deletedByRecipent;
 	}
 
 	public void setMessage(MessageEntity message) {
@@ -139,9 +174,10 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 
 	@Override
 	public String toString() {
-		return "MessageRecipent [message=" + message + ", recipent=" + recipent + ", readDate=" + readDate + ", id=" + id
-		        + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate
-		        + ", modificationDate=" + modificationDate + ", version=" + version + "]";
+		return "MessageRecipentEntity [message=" + message + ", recipent=" + recipent + ", readDate=" + readDate + ", archivedByRecipent="
+		        + archivedByRecipent + ", deletedByRecipent=" + deletedByRecipent + ", id=" + id + ", creationUser=" + creationUser
+		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+		        + ", version=" + version + "]";
 	}
 
 }

@@ -41,7 +41,7 @@
 	<!-- Authentication provider -->
 	<bean id="daoAuthenticationProvider"
 		class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-		<property name="userDetailsService" ref="userDetailsService" />
+		<property name="userDetailsService" ref="usersService" />
 	</bean>
 	<!-- Basic authentication -->
 	<bean id="basicAuthenticationFilter"
@@ -59,7 +59,7 @@
 	<bean id="digestAuthenticationFilter"
 		class="pl.bcichecki.rms.customizations.org.springframework.security.web.authentication.www.EventPublisherAwareDigestAuthenticationFilter">
 		<property name="authenticationEntryPoint" ref="digestAuthenticationEntryPoint" />
-		<property name="userDetailsService" ref="userDetailsService" />
+		<property name="userDetailsService" ref="usersService" />
 		<property name="createAuthenticatedToken" value="false" />
 		<property name="passwordAlreadyEncoded" value="false" />
 		<property name="authenticationEventPublisher" ref="authenticationEventPublisher" />
@@ -75,7 +75,15 @@
 		class="org.springframework.security.authentication.DefaultAuthenticationEventPublisher" />
 	<!-- Event listeners -->
 	<bean id="successfulAuthenticationEventListener"
-		class="pl.bcichecki.rms.events.impl.SuccessfulAuthenticationEventListener" />
+		class="pl.bcichecki.rms.events.authentication.impl.SuccessfulAuthenticationEventListener" />
 	<bean id="badCredentialsAuthenticationEventListener"
-		class="pl.bcichecki.rms.events.impl.BadCredentialsAuthenticationEventListener" />
+		class="pl.bcichecki.rms.events.authentication.impl.BadCredentialsAuthenticationEventListener" />
+	<bean id="accountLockedAuthenticationEventListener"
+		class="pl.bcichecki.rms.events.authentication.impl.AccountLockedAuthenticationEventListener" />
+	<bean id="accountDeletedAuthenticationEventListener"
+		class="pl.bcichecki.rms.events.authentication.impl.AccountDeletedAuthenticationEventListener" />
+	<bean id="authorizedEventListener"
+		class="pl.bcichecki.rms.events.authorization.impl.AuthorizedEventListener" />
+	<bean id="authorizationFailureEventListener"
+		class="pl.bcichecki.rms.events.authorization.impl.AuthorizationFailureEventListener" />
 </beans>
