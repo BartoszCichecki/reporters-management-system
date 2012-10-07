@@ -11,11 +11,16 @@
 
 package pl.bcichecki.rms.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import pl.bcichecki.rms.model.impl.AccessHistoryEntity;
 
 /**
  * @author Bartosz Cichecki
  */
 public interface AccessHistoryDao extends GenericDao<AccessHistoryEntity> {
+
+	List<AccessHistoryEntity> getAllByIpUsername(String ip, String username, Date from, Date till);
 
 }

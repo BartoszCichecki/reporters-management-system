@@ -161,7 +161,7 @@ public class MessagesServiceImpl implements MessagesService {
 		Long currentUserId = SecurityUtils.getCurrentUserId();
 		MessageEntity message = messagesDao.getByIdAndSenderId(id, currentUserId, true, false);
 		if (message == null) {
-			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");
+			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
 		}
 		return message;
 	}
@@ -178,7 +178,7 @@ public class MessagesServiceImpl implements MessagesService {
 	public MessageEntity getMessage(Long id) throws ServiceException {
 		MessageEntity message = messagesDao.getById(id);
 		if (message == null) {
-			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");
+			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
 		}
 		return message;
 	}
@@ -189,7 +189,7 @@ public class MessagesServiceImpl implements MessagesService {
 		Long currentUserId = SecurityUtils.getCurrentUserId();
 		MessageEntity message = messagesDao.getByIdAndSenderId(id, currentUserId, false, false);
 		if (message == null) {
-			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");
+			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
 		}
 		return message;
 	}
@@ -199,7 +199,7 @@ public class MessagesServiceImpl implements MessagesService {
 		Long currentUserId = SecurityUtils.getCurrentUserId();
 		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByIdAndRecipentId(id, currentUserId, false, false);
 		if (messageRecipent == null) {
-			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");
+			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
 		}
 		messageRecipent.setReadDate(isRead ? new Date() : null);
 		messageRecipentsDao.update(messageRecipent);

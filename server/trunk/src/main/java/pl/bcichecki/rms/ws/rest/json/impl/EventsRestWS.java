@@ -49,10 +49,6 @@ public class EventsRestWS extends AbstractRestWS {
 	        value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly, @RequestParam(
 	        value = "eventsFrom", required = false) Date eventsFrom, @RequestParam(value = "eventsTill", required = false) Date eventsTill)
 	        throws BadRequestException, ServiceException {
-		if (eventsFrom != null && eventsTill != null && eventsFrom.after(eventsTill)) {
-			throw new BadRequestException("Date indicating start of period must not be after date indicating end!",
-			        "exceptions.badRequestExceptions.startDateAfterEnd");
-		}
 		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, eventsFrom, eventsTill));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;

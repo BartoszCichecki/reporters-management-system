@@ -23,25 +23,29 @@ public class PrivilegeUtils {
 
 	public class Values {
 
-		public static final String VIEW_DEVICES = "VIEW_DEVICES";
+		public static final String MANAGE_ACCESS_HISTORY = "MANAGE_ACCESS_HISTORY";
 
 		public static final String MANAGE_DEVICES = "MANAGE_DEVICES";
 
-		public static final String VIEW_MESSAGES = "VIEW_MESSAGES";
-
-		public static final String SEND_MESSAGES = "SEND_MESSAGES";
-
 		public static final String MANAGE_MESSAGES = "MANAGE_MESSAGES";
-
-		public static final String VIEW_PROFILE = "VIEW_PROFILE";
 
 		public static final String MANAGE_PROFILE = "MANAGE_PROFILE";
 
 		public static final String MANAGE_ROLES = "MANAGE_ROLES";
 
-		public static final String VIEW_USERS = "VIEW_USERS";
-
 		public static final String MANAGE_USERS = "MANAGE_USERS";
+
+		public static final String SEND_MESSAGES = "SEND_MESSAGES";
+
+		public static final String VIEW_ACCESS_HISTORY = "VIEW_ACCESS_HISTORY";
+
+		public static final String VIEW_DEVICES = "VIEW_DEVICES";
+
+		public static final String VIEW_MESSAGES = "VIEW_MESSAGES";
+
+		public static final String VIEW_PROFILE = "VIEW_PROFILE";
+
+		public static final String VIEW_USERS = "VIEW_USERS";
 
 	}
 

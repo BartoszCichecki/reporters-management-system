@@ -41,6 +41,9 @@ public class EventsServiceImpl implements EventsService {
 	@Transactional(readOnly = true)
 	public List<EventEntity> getDevicesEvents(Long deviceId, Date eventsFrom, Date eventsTill) throws ServiceException {
 		DeviceEntity device = devicesDao.getById(deviceId);
+		if (eventsFrom != null && eventsTill != null && eventsFrom.after(eventsTill)) {
+			throw new ServiceException("Date from must be before till!", "exceptions.serviceExceptions.general.fromAfterTill");
+		}
 		if (device == null) {
 			throw new ServiceException("Device with this ID does not exist!", "exceptions.serviceExceptions.devices.notExistId");
 		}
