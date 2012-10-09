@@ -43,7 +43,7 @@ public class ProfileRestWS extends AbstractRestWS {
 	@Autowired
 	private UsersService usersService;
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
 	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
 	public @ResponseBody
 	String getProfile(HttpServletRequest request, HttpServletResponse response) throws ServiceException {

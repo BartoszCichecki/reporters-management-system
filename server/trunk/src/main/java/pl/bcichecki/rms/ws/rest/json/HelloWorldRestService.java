@@ -54,7 +54,7 @@ public class HelloWorldRestService {
 	}
 
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
 	public @ResponseBody
 	String sayHello() {
 		log.info("hello");

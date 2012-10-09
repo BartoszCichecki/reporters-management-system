@@ -60,33 +60,33 @@ public class MessagesRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/archived/inbox/{id}", method = RequestMethod.DELETE)
 	void deleteArchivedInboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
 	        throws ServiceException {
 		messagesService.deleteArchivedInboxMessage(id);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/archived/outbox/{id}", method = RequestMethod.DELETE)
 	void deleteArchivedOutboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
 	        throws ServiceException {
 		messagesService.deleteArchivedOutboxMessage(id);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/inbox/{id}", method = RequestMethod.DELETE)
 	void deleteInboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		messagesService.deleteInboxMessage(id);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	void deleteMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		messagesService.deleteMessage(id);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.CLEAN_UP_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/readBefore/{timestamp}", method = RequestMethod.DELETE)
 	@ResponseBody
 	String deleteMessageReadBefore(HttpServletRequest request, HttpServletResponse response, @PathVariable Long timestamp, @RequestParam(
@@ -97,13 +97,13 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/outbox/{id}", method = RequestMethod.DELETE)
 	void deleteOutboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		messagesService.deleteOutboxMessage(id);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/archived/inbox/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllArchivedInboxMessages(HttpServletRequest request, HttpServletResponse response) {
@@ -113,7 +113,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/archived/outbox/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllArchivedOutboxMessages(HttpServletRequest request, HttpServletResponse response) {
@@ -123,7 +123,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/inbox/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllInboxMessages(HttpServletRequest request, HttpServletResponse response) {
@@ -145,7 +145,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/outbox/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllOutboxMessages(HttpServletRequest request, HttpServletResponse response) {
@@ -155,7 +155,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/archived/inbox/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getArchivedInboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
@@ -164,7 +164,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/archived/outbox/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getArchivedOutboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id)
@@ -174,7 +174,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/inbox/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getInboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
@@ -192,7 +192,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/outbox/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getOutboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
@@ -201,7 +201,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/inbox/markRead/{id}", method = RequestMethod.POST)
 	void markMessageRead(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException,
 	        BadRequestException {
@@ -216,7 +216,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.SEND_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.SEND_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/outbox", method = RequestMethod.PUT)
 	void sendMessage(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
@@ -244,7 +244,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.UPDATE_OUTGOING_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/outbox", method = RequestMethod.POST)
 	void updateOutboxMessage(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);

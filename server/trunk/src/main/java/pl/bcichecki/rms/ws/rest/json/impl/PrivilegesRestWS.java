@@ -38,7 +38,7 @@ public class PrivilegesRestWS extends AbstractRestWS {
 	@Autowired
 	protected PrivilegesService privilegesService;
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public @ResponseBody
 	String getAllPrivileges(HttpServletRequest request, HttpServletResponse response) {
@@ -48,7 +48,7 @@ public class PrivilegesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
 	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
 	public @ResponseBody
 	String getMyPrivileges(HttpServletRequest request, HttpServletResponse response) {
@@ -58,7 +58,7 @@ public class PrivilegesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	public @ResponseBody
 	String getUsersPrivileges(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId) throws ServiceException {

@@ -42,7 +42,7 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 	@Autowired
 	private AccessHistoryService accessHistoryService;
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	void deleteAccessHistory(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
@@ -54,7 +54,7 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 		accessHistoryService.deleteAll(from, till);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
 	@RequestMapping(value = "/ip/{ip}", method = RequestMethod.DELETE)
 	void deleteAccessHistoryByIp(HttpServletRequest request, HttpServletResponse response, @PathVariable String ip, @RequestParam(
 	        value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
@@ -66,7 +66,7 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 		accessHistoryService.deleteAllByIp(ip, from, till);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
 	@RequestMapping(value = "/username/{username}", method = RequestMethod.DELETE)
 	void deleteAccessHistoryByUsername(HttpServletRequest request, HttpServletResponse response, @PathVariable String username,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
@@ -78,7 +78,7 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 		accessHistoryService.deleteAllByUsername(username, from, till);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	@ResponseBody
 	String getAccessHistory(HttpServletRequest request, HttpServletResponse response,
@@ -93,7 +93,7 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
 	@RequestMapping(value = "/ip/{ip}", method = RequestMethod.GET)
 	@ResponseBody
 	String getAccessHistoryByIp(HttpServletRequest request, HttpServletResponse response, @PathVariable String ip, @RequestParam(
@@ -108,7 +108,7 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
 	@RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
 	@ResponseBody
 	String getAccessHistoryByUsername(HttpServletRequest request, HttpServletResponse response, @PathVariable String username,

@@ -46,7 +46,7 @@ public class DevicesRestWS extends AbstractRestWS {
 	@Autowired
 	protected DevicesService devicesService;
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.CREATE_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	void createDevice(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
@@ -60,13 +60,13 @@ public class DevicesRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	void deleteDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		devicesService.deleteDevice(id);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllDevices(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
@@ -76,7 +76,7 @@ public class DevicesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
@@ -85,7 +85,7 @@ public class DevicesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.UPDATE_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	void updateDevice(HttpServletRequest request, HttpServletResponse response) throws IOException, ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);

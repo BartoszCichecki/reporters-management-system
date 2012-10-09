@@ -45,7 +45,7 @@ public class RolesRestWS extends AbstractRestWS {
 	@Autowired
 	protected RolesService rolesService;
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.CREATE_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	void createRole(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
@@ -60,13 +60,13 @@ public class RolesRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	void deleteRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
 		rolesService.deleteRole(id);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllRoles(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
@@ -77,7 +77,7 @@ public class RolesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
 	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
 	@ResponseBody
 	String getCurrentUsersRoles(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -87,7 +87,7 @@ public class RolesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
@@ -96,7 +96,7 @@ public class RolesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_USER_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
 	String getUsersRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId) throws ServiceException {
@@ -105,7 +105,7 @@ public class RolesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.UPDATE_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	void updateRole(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);

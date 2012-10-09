@@ -44,7 +44,7 @@ public class UsersRestWS extends AbstractRestWS {
 	@Autowired
 	protected UsersService usersService;
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_USERS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.CREATE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	void createUser(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
@@ -59,14 +59,15 @@ public class UsersRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_USERS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	void deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "forceDelete",
 	        required = false, defaultValue = "false") boolean forceDelete) throws ServiceException {
 		usersService.deleteUser(id, forceDelete);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "','"
+	        + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllUsers(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
@@ -78,7 +79,8 @@ public class UsersRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "','"
+	        + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
@@ -87,7 +89,7 @@ public class UsersRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_ROLE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/roles/{roleId}", method = RequestMethod.GET)
 	@ResponseBody
 	String getUsersWithRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long roleId, @RequestParam(
@@ -97,7 +99,7 @@ public class UsersRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_USERS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.UPDATE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	void updateUser(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
