@@ -17,7 +17,6 @@ import java.util.List;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.AccessHistoryEntity;
 import pl.bcichecki.rms.model.impl.AuthenticationStatus;
-import pl.bcichecki.rms.model.impl.AuthorizationStatus;
 
 /**
  * @author Bartosz Cichecki
@@ -44,8 +43,6 @@ public interface AccessHistoryService {
 
 	List<AccessHistoryEntity> getAllByUsername(String username, Date from, Date till) throws ServiceException;
 
-	boolean logAccess(String username, String userIp, AuthenticationStatus accessStatus);
-
-	boolean logAccess(String username, String userIp, AuthenticationStatus authenticationStatus, AuthorizationStatus authorizationStatus);
+	boolean logAccess(String username, String userIp, AuthenticationStatus authenticationStatus);
 
 }

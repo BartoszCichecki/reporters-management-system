@@ -19,10 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import pl.bcichecki.rms.exceptions.AbstractWithExceptionCodeException;
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
@@ -37,7 +39,13 @@ public abstract class AbstractRestWS {
 
 	private static final Logger log = LoggerFactory.getLogger(AbstractRestWS.class);
 
-	private final Gson gson = new Gson();
+	private final Gson gson;
+
+	public AbstractRestWS() {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setPrettyPrinting();
+		gson = gsonBuilder.create();
+	}
 
 	protected final Gson getGson() {
 		return gson;
@@ -51,7 +59,7 @@ public abstract class AbstractRestWS {
 		return ex.getMessage();
 	}
 
-	@ExceptionHandler({ BadRequestException.class })
+	@ExceptionHandler({ BadRequestException.class, MissingServletRequestParameterException.class })
 	@ResponseBody
 	String handleBadRequestExceptions(Exception ex, HttpServletRequest request, HttpServletResponse response) {
 		log.info(ex.getMessage(), ex);

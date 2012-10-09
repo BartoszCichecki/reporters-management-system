@@ -30,14 +30,6 @@ import pl.bcichecki.rms.model.impl.EventEntity_;
  */
 public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements EventsDao {
 
-	private Predicate[] getAsArray(List<Predicate> predicates) {
-		Predicate[] ret = new Predicate[predicates.size()];
-		for (int i = 0; i < predicates.size(); i++) {
-			ret[i] = predicates.get(i);
-		}
-		return ret;
-	}
-
 	@Override
 	public List<EventEntity> getDevicesEvents(DeviceEntity device, Date eventsFrom, Date eventsTill) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
@@ -52,9 +44,8 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 		if (eventsTill != null) {
 			predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(EventEntity_.endDate), eventsTill));
 		}
-		criteriaQuery.where(criteriaBuilder.and(getAsArray(predicates)));
+		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
 
 		return getAllByCriteria(criteriaQuery);
 	}
-
 }

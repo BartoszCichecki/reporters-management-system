@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.services.AccessHistoryService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
@@ -45,14 +46,23 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	void deleteAccessHistory(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
-	        throws ServiceException {
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from date and till date!",
+			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+		}
 		accessHistoryService.deleteAll(from, till);
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
 	@RequestMapping(value = "/ip/{ip}", method = RequestMethod.DELETE)
 	void deleteAccessHistoryByIp(HttpServletRequest request, HttpServletResponse response, @PathVariable String ip, @RequestParam(
-	        value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till) throws ServiceException {
+	        value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from date and till date!",
+			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+		}
 		accessHistoryService.deleteAllByIp(ip, from, till);
 	}
 
@@ -60,7 +70,11 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/username/{username}", method = RequestMethod.DELETE)
 	void deleteAccessHistoryByUsername(HttpServletRequest request, HttpServletResponse response, @PathVariable String username,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
-	        throws ServiceException {
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from date and till date!",
+			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+		}
 		accessHistoryService.deleteAllByUsername(username, from, till);
 	}
 
@@ -69,7 +83,11 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getAccessHistory(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
-	        throws ServiceException {
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from date and till date!",
+			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+		}
 		String json = getGson().toJson(accessHistoryService.getAll(from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -79,7 +97,12 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/ip/{ip}", method = RequestMethod.GET)
 	@ResponseBody
 	String getAccessHistoryByIp(HttpServletRequest request, HttpServletResponse response, @PathVariable String ip, @RequestParam(
-	        value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till) throws ServiceException {
+	        value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from date and till date!",
+			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+		}
 		String json = getGson().toJson(accessHistoryService.getAllByIp(ip, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -90,7 +113,11 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getAccessHistoryByUsername(HttpServletRequest request, HttpServletResponse response, @PathVariable String username,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
-	        throws ServiceException {
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from date and till date!",
+			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+		}
 		String json = getGson().toJson(accessHistoryService.getAllByUsername(username, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;

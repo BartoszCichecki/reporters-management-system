@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-import pl.bcichecki.rms.events.SecurityEventListener;
+import pl.bcichecki.rms.events.listeners.SecurityEventListener;
 import pl.bcichecki.rms.model.impl.AuthenticationStatus;
 import pl.bcichecki.rms.services.AccessHistoryService;
 

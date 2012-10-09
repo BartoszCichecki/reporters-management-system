@@ -44,7 +44,7 @@ public class ProfileRestWS extends AbstractRestWS {
 	private UsersService usersService;
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "')")
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
 	public @ResponseBody
 	String getProfile(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 		RestUtils.decorateResponseHeaderForJson(response);

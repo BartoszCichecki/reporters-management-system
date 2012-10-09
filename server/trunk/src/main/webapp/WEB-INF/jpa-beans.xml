@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Project: rms-server File: jpa-config-beans.xml License: This file is 
-	licensed under GNU General Public License version 3 http://www.gnu.org/licenses/gpl-3.0.txt 
-	Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ] Date: 07-08-2012 -->
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
+<!-- Project: rms-server File: jpa-config-beans.xml License: This file is licensed under GNU General Public License version 
+	3 http://www.gnu.org/licenses/gpl-3.0.txt Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ] Date: 07-08-2012 -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop 
        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<!-- Configuration -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${db.driverClassName}" />
-		<property name="jdbcUrl"
-			value="jdbc:${db.type}://${db.url}:${db.port}/${db.databaseName}" />
+		<property name="jdbcUrl" value="jdbc:${db.type}://${db.url}:${db.port}/${db.databaseName}" />
 		<property name="user" value="${db.username}" />
 		<property name="password" value="${db.password}" />
 		<property name="initialPoolSize" value="25" />
@@ -34,13 +30,11 @@
 		<property name="testConnectionOnCheckin" value="true" />
 		<property name="autoCommitOnClose" value="false" />
 	</bean>
-	<bean id="hibernateJpaVendorAdapter"
-		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+	<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="showSql" value="true" />
 		<property name="generateDdl" value="${db.generateDdl}" />
 	</bean>
-	<bean id="enetityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<bean id="enetityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
 		<property name="packagesToScan" value="pl.bcichecki.rms.model" />

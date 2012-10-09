@@ -46,10 +46,14 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/devices/{deviceId}", method = RequestMethod.GET)
 	@ResponseBody
 	String getDevicesEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long deviceId, @RequestParam(
-	        value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly, @RequestParam(
-	        value = "eventsFrom", required = false) Date eventsFrom, @RequestParam(value = "eventsTill", required = false) Date eventsTill)
-	        throws BadRequestException, ServiceException {
-		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, eventsFrom, eventsTill));
+	        value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly, @RequestParam(value = "from",
+	        required = false) Date from, @RequestParam(value = "till", required = false) Date till) throws BadRequestException,
+	        ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from date and till date!",
+			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+		}
+		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

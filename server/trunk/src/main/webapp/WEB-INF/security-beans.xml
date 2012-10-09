@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Project: rms-server File: security-beans.xml License: This file is licensed 
-	under GNU General Public License version 3 http://www.gnu.org/licenses/gpl-3.0.txt 
-	Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ] Date: 21-08-2012 -->
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
+<!-- Project: rms-server File: security-beans.xml License: This file is licensed under GNU General Public License version 
+	3 http://www.gnu.org/licenses/gpl-3.0.txt Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ] Date: 21-08-2012 -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop 
        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-	<sec:global-method-security
-		pre-post-annotations="enabled" authentication-manager-ref="authenticationManager" />
-	<sec:http entry-point-ref="digestAuthenticationEntryPoint"
-		create-session="stateless" authentication-manager-ref="authenticationManager"
-		use-expressions="true">
-		<sec:custom-filter position="BASIC_AUTH_FILTER"
-			ref="basicAuthenticationFilter" />
-		<sec:custom-filter after="BASIC_AUTH_FILTER"
-			ref="digestAuthenticationFilter" />
-		<sec:intercept-url pattern="/rest/forgotPassword/*"
-			method="GET" access="isAnonymous()" requires-channel="https" />
-		<sec:intercept-url pattern="/rest/register" method="PUT"
-			access="isAnonymous()" requires-channel="https" />
-		<sec:intercept-url pattern="/rest/*" access="isAuthenticated()"
+	<sec:global-method-security pre-post-annotations="enabled" authentication-manager-ref="authenticationManager" />
+	<sec:http entry-point-ref="digestAuthenticationEntryPoint" create-session="stateless"
+		authentication-manager-ref="authenticationManager" use-expressions="true">
+		<sec:custom-filter position="BASIC_AUTH_FILTER" ref="basicAuthenticationFilter" />
+		<sec:custom-filter after="BASIC_AUTH_FILTER" ref="digestAuthenticationFilter" />
+		<!-- <sec:intercept-url pattern="/rest/accessHistory/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url 
+			pattern="/rest/devices/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url pattern="/rest/events/*" 
+			access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url pattern="/rest/messages/*" access="isAuthenticated()" 
+			requires-channel="https" /> <sec:intercept-url pattern="/rest/privileges/*" access="isAuthenticated()" requires-channel="https" 
+			/> <sec:intercept-url pattern="/rest/profile/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url 
+			pattern="/rest/roles/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url pattern="/rest/users/*" 
+			access="isAuthenticated()" requires-channel="https" /> -->
+		<sec:intercept-url pattern="/rest/*" access="isAuthenticated()" requires-channel="https" />
+		<sec:intercept-url pattern="/rest/forgotPassword/*" method="GET" access="isAnonymous()"
 			requires-channel="https" />
+		<sec:intercept-url pattern="/rest/register" method="PUT" access="isAnonymous()" requires-channel="https" />
 	</sec:http>
 	<!-- Authentication manager -->
-	<bean id="authenticationManager"
-		name="org.springframework.security.authentication.AuthenticationManager"
-		class="org.springframework.security.authentication.ProviderManager">
+	<bean id="authenticationManager" name="org.springframework.security.authentication.AuthenticationManager" class="org.springframework.security.authentication.ProviderManager">
 		<property name="providers">
 			<list>
 				<ref bean="daoAuthenticationProvider" />
@@ -39,20 +36,17 @@
 		<property name="clearExtraInformation" value="false" />
 	</bean>
 	<!-- Authentication provider -->
-	<bean id="daoAuthenticationProvider"
-		class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService" ref="usersService" />
 	</bean>
 	<!-- Basic authentication -->
-	<bean id="basicAuthenticationFilter"
-		class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+	<bean id="basicAuthenticationFilter" class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
 		<property name="AuthenticationManager" ref="authenticationManager" />
 		<property name="authenticationEntryPoint" ref="basicAuthenticationEntryPoint" />
 		<property name="ignoreFailure" value="true" />
 		<property name="credentialsCharset" value="UTF-8" />
 	</bean>
-	<bean id="basicAuthenticationEntryPoint"
-		class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+	<bean id="basicAuthenticationEntryPoint" class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
 		<property name="realmName" value="rms" />
 	</bean>
 	<!-- Digest authentication -->
@@ -64,26 +58,20 @@
 		<property name="passwordAlreadyEncoded" value="false" />
 		<property name="authenticationEventPublisher" ref="authenticationEventPublisher" />
 	</bean>
-	<bean id="digestAuthenticationEntryPoint"
-		class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
+	<bean id="digestAuthenticationEntryPoint" class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
 		<property name="realmName" value="rms" />
 		<property name="nonceValiditySeconds" value="${session.length}" />
 		<property name="key" value="${session.nonceKey}" />
 	</bean>
+	<!-- SecurityUtils -->
+	<bean id="securityUtils" class="pl.bcichecki.rms.utils.SecurityUtils">
+		<property name="usersService" ref="usersService" />
+	</bean>
 	<!-- Event publisher -->
-	<bean id="authenticationEventPublisher"
-		class="org.springframework.security.authentication.DefaultAuthenticationEventPublisher" />
+	<bean id="authenticationEventPublisher" class="org.springframework.security.authentication.DefaultAuthenticationEventPublisher" />
 	<!-- Event listeners -->
-	<bean id="successfulAuthenticationEventListener"
-		class="pl.bcichecki.rms.events.authentication.impl.SuccessfulAuthenticationEventListener" />
-	<bean id="badCredentialsAuthenticationEventListener"
-		class="pl.bcichecki.rms.events.authentication.impl.BadCredentialsAuthenticationEventListener" />
-	<bean id="accountLockedAuthenticationEventListener"
-		class="pl.bcichecki.rms.events.authentication.impl.AccountLockedAuthenticationEventListener" />
-	<bean id="accountDeletedAuthenticationEventListener"
-		class="pl.bcichecki.rms.events.authentication.impl.AccountDeletedAuthenticationEventListener" />
-	<bean id="authorizedEventListener"
-		class="pl.bcichecki.rms.events.authorization.impl.AuthorizedEventListener" />
-	<bean id="authorizationFailureEventListener"
-		class="pl.bcichecki.rms.events.authorization.impl.AuthorizationFailureEventListener" />
+	<bean id="successfulAuthenticationEventListener" class="pl.bcichecki.rms.events.authentication.impl.SuccessfulAuthenticationEventListener" />
+	<bean id="badCredentialsAuthenticationEventListener" class="pl.bcichecki.rms.events.authentication.impl.BadCredentialsAuthenticationEventListener" />
+	<bean id="accountLockedAuthenticationEventListener" class="pl.bcichecki.rms.events.authentication.impl.AccountLockedAuthenticationEventListener" />
+	<bean id="accountDeletedAuthenticationEventListener" class="pl.bcichecki.rms.events.authentication.impl.AccountDeletedAuthenticationEventListener" />
 </beans>

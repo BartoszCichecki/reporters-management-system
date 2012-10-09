@@ -15,7 +15,6 @@ import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -28,7 +27,6 @@ import pl.bcichecki.rms.services.UsersService;
  */
 public class SecurityUtils {
 
-	@Autowired
 	private static UsersService usersService;
 
 	public static UserEntity getCurrentUser() {
@@ -81,5 +79,9 @@ public class SecurityUtils {
 
 	public static String hashSHA512(String stringToHash, String salt) {
 		return DigestUtils.sha512Hex(stringToHash + ":" + salt);
+	}
+
+	public static void setUsersService(UsersService usersService) {
+		SecurityUtils.usersService = usersService;
 	}
 }

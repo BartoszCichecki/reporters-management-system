@@ -20,7 +20,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -60,7 +59,6 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "ADDRESS_DATA", referencedColumnName = "ID", nullable = false)
-	@OrderColumn(name = "ORDER", insertable = true, updatable = true, nullable = false)
 	protected List<AddressDataContactEntity> contacts;
 
 	public AddressDataEntity() {

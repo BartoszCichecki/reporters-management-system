@@ -43,8 +43,6 @@ import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 @RequestMapping(value = "/messages")
 public class MessagesRestWS extends AbstractRestWS {
 
-	// IDEA Let admins look into users in/outboxes?
-
 	@Autowired
 	protected MessagesService messagesService;
 
@@ -135,6 +133,7 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
+	// IDEA Let admins look into users in/outboxes?
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody

@@ -11,33 +11,11 @@
 
 package pl.bcichecki.rms.model.impl;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @author Bartosz Cichecki
  */
 public enum ContactType {
 
-	PHONE("PHONE"), FAX("FAX"), EMAIL("EMAIL"), FACEBOOK("FACEBOOK"), SKYPE("SKYPE");
-
-	public static ContactType fromString(String value) {
-		for (ContactType contactType : ContactType.values()) {
-			if (contactType.toString().equalsIgnoreCase(StringUtils.defaultString(value))) {
-				return contactType;
-			}
-		}
-		throw new IllegalArgumentException();
-	}
-
-	private String value;
-
-	private ContactType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String toString() {
-		return value;
-	}
+	PHONE, FAX, EMAIL, FACEBOOK, SKYPE;
 
 }

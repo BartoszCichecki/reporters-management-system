@@ -9,7 +9,7 @@
  * Date:      28-08-2012
  */
 
-package pl.bcichecki.rms.events;
+package pl.bcichecki.rms.events.listeners;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;

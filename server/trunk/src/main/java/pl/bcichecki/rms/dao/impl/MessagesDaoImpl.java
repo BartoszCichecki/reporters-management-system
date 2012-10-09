@@ -12,6 +12,8 @@
 package pl.bcichecki.rms.dao.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +21,14 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
 import pl.bcichecki.rms.dao.MessagesDao;
 import pl.bcichecki.rms.model.AbstractEntity_;
 import pl.bcichecki.rms.model.impl.MessageEntity;
 import pl.bcichecki.rms.model.impl.MessageEntity_;
+import pl.bcichecki.rms.model.impl.MessageRecipentEntity;
+import pl.bcichecki.rms.model.impl.MessageRecipentEntity_;
 
 /**
  * @author Bartosz Cichecki
@@ -32,8 +37,17 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 
 	@Override
 	public MessageEntity getByIdAndRecipentId(Serializable id, Serializable recipentId, boolean archived, boolean deleted) {
-		// TODO Implement method
-		return null;
+		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
+		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
+		SetJoin<MessageEntity, MessageRecipentEntity> join = root.join(MessageEntity_.recipents);
+		Collection<Predicate> predicates = new ArrayList<>();
+		predicates.add(criteriaBuilder.equal(root.get(AbstractEntity_.id), id));
+		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.recipent), recipentId));
+		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.archivedByRecipent), archived));
+		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.deletedByRecipent), deleted));
+		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
+		return getByCriteria(criteriaQuery);
 	}
 
 	@Override
@@ -51,8 +65,16 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 
 	@Override
 	public List<MessageEntity> getByRecipentId(Long recipentId, boolean archived, boolean deleted) {
-		// TODO Implement method
-		return null;
+		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
+		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
+		SetJoin<MessageEntity, MessageRecipentEntity> join = root.join(MessageEntity_.recipents);
+		Collection<Predicate> predicates = new ArrayList<>();
+		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.recipent), recipentId));
+		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.archivedByRecipent), archived));
+		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.deletedByRecipent), deleted));
+		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
+		return getAllByCriteria(criteriaQuery);
 	}
 
 	@Override
@@ -69,8 +91,16 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 
 	@Override
 	public List<MessageEntity> getMessagesReadBefore(Date date, boolean deletedOnly) {
-		// TODO Implement method
-		return null;
+		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
+		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
+		SetJoin<MessageEntity, MessageRecipentEntity> join = root.join(MessageEntity_.recipents);
+		Collection<Predicate> predicates = new ArrayList<>();
+		predicates.add(criteriaBuilder.lessThanOrEqualTo(join.get(MessageRecipentEntity_.readDate), date));
+		if (deletedOnly) {
+			predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.deletedByRecipent), true));
+		}
+		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
+		return getAllByCriteria(criteriaQuery);
 	}
-
 }

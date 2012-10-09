@@ -44,7 +44,8 @@ public class MessageEntity extends AbstractEntity {
 	@JoinColumn(name = "SENDER", nullable = false, unique = false)
 	protected UserEntity sender;
 
-	@OneToMany(mappedBy = "message")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "MESSAGE", referencedColumnName = "ID", nullable = false)
 	protected Set<MessageRecipentEntity> recipents;
 
 	@Column(name = "SUBJECT", nullable = false, unique = false, length = 250)
