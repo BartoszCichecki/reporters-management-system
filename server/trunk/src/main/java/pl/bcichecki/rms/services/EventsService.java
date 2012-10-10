@@ -28,11 +28,11 @@ public interface EventsService {
 
 	boolean deleteEvent(Long id) throws ServiceException;
 
-	List<EventEntity> getAllCurrentUserEvent(boolean archived, Date from, Date till);
+	List<EventEntity> getAllCurrentUserEvents(boolean archived, Date from, Date till);
 
 	List<EventEntity> getAllEvents(boolean archived, Date from, Date till);
 
-	List<EventEntity> getAllUserEvent(Long userId, boolean archived, Date from, Date till);
+	List<EventEntity> getAllUserEvents(Long userId, boolean archived, Date from, Date till);
 
 	List<EventEntity> getDevicesEvents(Long deviceId, boolean archived, Date eventsFrom, Date eventsTill) throws ServiceException;
 

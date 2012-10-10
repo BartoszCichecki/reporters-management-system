@@ -125,7 +125,7 @@ public class EventsRestWS extends AbstractRestWS {
 			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllCurrentUserEvent(true, from, till));
+		String json = getGson().toJson(eventsService.getAllCurrentUserEvents(true, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -141,7 +141,7 @@ public class EventsRestWS extends AbstractRestWS {
 			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllCurrentUserEvent(false, from, till));
+		String json = getGson().toJson(eventsService.getAllCurrentUserEvents(false, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -197,7 +197,7 @@ public class EventsRestWS extends AbstractRestWS {
 			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllUserEvent(userId, true, from, till));
+		String json = getGson().toJson(eventsService.getAllUserEvents(userId, true, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -213,7 +213,7 @@ public class EventsRestWS extends AbstractRestWS {
 			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllUserEvent(userId, false, from, till));
+		String json = getGson().toJson(eventsService.getAllUserEvents(userId, false, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

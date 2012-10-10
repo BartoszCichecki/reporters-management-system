@@ -23,6 +23,6 @@ public interface EventsDao extends GenericDao<EventEntity> {
 
 	List<EventEntity> getAllByUser(Long userId, boolean archived, Date from, Date till);
 
-	List<EventEntity> getDevicesEvents(Long deviceId, boolean archived, Date eventsFrom, Date eventsTill);
+	List<EventEntity> getDevicesEvents(Long deviceId, boolean archived, Date from, Date till);
 
 }

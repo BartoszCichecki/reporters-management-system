@@ -68,18 +68,18 @@ public class EventsServiceImpl implements EventsService {
 	}
 
 	@Override
-	public List<EventEntity> getAllCurrentUserEvent(boolean archived, Date from, Date till) {
+	public List<EventEntity> getAllCurrentUserEvents(boolean archived, Date from, Date till) {
 		Long currentUserId = SecurityUtils.getCurrentUserId();
-		return getAllUserEvent(currentUserId, archived, from, till);
+		return getAllUserEvents(currentUserId, archived, from, till);
 	}
 
 	@Override
 	public List<EventEntity> getAllEvents(boolean archived, Date from, Date till) {
-		return getAllUserEvent(null, archived, from, till);
+		return getAllUserEvents(null, archived, from, till);
 	}
 
 	@Override
-	public List<EventEntity> getAllUserEvent(Long userId, boolean archived, Date from, Date till) {
+	public List<EventEntity> getAllUserEvents(Long userId, boolean archived, Date from, Date till) {
 		return eventsDao.getAllByUser(userId, archived, from, till);
 	}
 
