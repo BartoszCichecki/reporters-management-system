@@ -70,11 +70,10 @@ public class UsersRestWS extends AbstractRestWS {
 	        + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllUsers(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
-	        required = false, defaultValue = "false") boolean idAndVersionOnly, @RequestParam(value = "deleted", required = false,
+	String getAllUsers(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "deleted", required = false,
 	        defaultValue = "false") boolean isDeleted) {
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(usersService.getAllUsers(idAndVersionOnly, isDeleted));
+		String json = getGson().toJson(usersService.getAllUsers(isDeleted));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -92,9 +91,8 @@ public class UsersRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_ROLE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/roles/{roleId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getUsersWithRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long roleId, @RequestParam(
-	        value = "idAndVersionOnly", required = false, defaultValue = "false") boolean idAndVersionOnly) throws ServiceException {
-		String json = getGson().toJson(usersService.getUsersWithRole(roleId, idAndVersionOnly));
+	String getUsersWithRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long roleId) throws ServiceException {
+		String json = getGson().toJson(usersService.getUsersWithRole(roleId));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

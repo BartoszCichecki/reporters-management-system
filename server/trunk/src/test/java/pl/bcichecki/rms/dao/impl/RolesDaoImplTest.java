@@ -44,7 +44,7 @@ public class RolesDaoImplTest {
 
 	@Test
 	public void testRolesDao() {
-		int initialSize = rolesDao.getAll(false).size();
+		int initialSize = rolesDao.getAll().size();
 
 		RoleEntity role = new RoleEntity();
 		String testRoleName = "testRole" + System.currentTimeMillis();
@@ -54,7 +54,7 @@ public class RolesDaoImplTest {
 		role.setPrivileges(privileges);
 		rolesDao.create(role);
 
-		int sizeAfterInsertion = rolesDao.getAll(false).size();
+		int sizeAfterInsertion = rolesDao.getAll().size();
 		Assert.assertEquals(initialSize + 1, sizeAfterInsertion);
 
 		CriteriaBuilder queryBuilder = rolesDao.getCriteriaBuilder();
@@ -69,7 +69,7 @@ public class RolesDaoImplTest {
 
 		rolesDao.delete(retrievedRole);
 
-		int sizeAfterRemoval = rolesDao.getAll(false).size();
+		int sizeAfterRemoval = rolesDao.getAll().size();
 		Assert.assertEquals(initialSize, sizeAfterRemoval);
 	}
 }

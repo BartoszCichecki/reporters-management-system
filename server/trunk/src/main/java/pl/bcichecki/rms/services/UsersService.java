@@ -25,13 +25,13 @@ public interface UsersService {
 
 	boolean deleteUser(Long id, boolean forceDelete) throws ServiceException;
 
-	List<UserEntity> getAllUsers(boolean idAndVersionOnly, boolean isDeleted);
+	List<UserEntity> getAllUsers(boolean isDeleted);
 
 	UserEntity getUserById(Long id) throws ServiceException;
 
 	UserEntity getUserByUsername(String username) throws ServiceException;
 
-	List<UserEntity> getUsersWithRole(Long roleId, boolean idAndVersionOnly) throws ServiceException;
+	List<UserEntity> getUsersWithRole(Long roleId) throws ServiceException;
 
 	String recreatePassword(String username) throws ServiceException;
 
@@ -39,6 +39,6 @@ public interface UsersService {
 
 	boolean updateUser(UserEntity user) throws ServiceException;
 
-	boolean updateUserSafely(UserEntity user, UserEntity oldUser) throws ServiceException;
+	boolean updateUserWithRestrictions(UserEntity user, UserEntity oldUser) throws ServiceException;
 
 }

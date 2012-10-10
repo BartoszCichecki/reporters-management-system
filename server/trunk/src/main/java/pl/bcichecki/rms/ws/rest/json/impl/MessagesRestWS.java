@@ -137,10 +137,9 @@ public class MessagesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllMessages(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
-	        required = false, defaultValue = "false") boolean idAndVersionOnly) {
+	String getAllMessages(HttpServletRequest request, HttpServletResponse response) {
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(messagesService.getAllMessages(idAndVersionOnly));
+		String json = getGson().toJson(messagesService.getAllMessages());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

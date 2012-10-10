@@ -11,7 +11,6 @@
 
 package pl.bcichecki.rms.dao.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -36,7 +35,7 @@ import pl.bcichecki.rms.model.impl.MessageRecipentEntity_;
 public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implements MessagesDao {
 
 	@Override
-	public MessageEntity getByIdAndRecipentId(Serializable id, Serializable recipentId, boolean archived, boolean deleted) {
+	public MessageEntity getByIdAndRecipentId(Long id, Long recipentId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
@@ -51,7 +50,7 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 	}
 
 	@Override
-	public MessageEntity getByIdAndSenderId(Serializable id, Serializable senderId, boolean archived, boolean deleted) {
+	public MessageEntity getByIdAndSenderId(Long id, Long senderId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);

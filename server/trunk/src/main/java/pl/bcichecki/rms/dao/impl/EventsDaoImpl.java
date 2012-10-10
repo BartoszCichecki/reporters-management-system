@@ -11,19 +11,11 @@
 
 package pl.bcichecki.rms.dao.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import pl.bcichecki.rms.dao.EventsDao;
-import pl.bcichecki.rms.model.impl.DeviceEntity;
 import pl.bcichecki.rms.model.impl.EventEntity;
-import pl.bcichecki.rms.model.impl.EventEntity_;
 
 /**
  * @author Bartosz Cichecki
@@ -31,21 +23,15 @@ import pl.bcichecki.rms.model.impl.EventEntity_;
 public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements EventsDao {
 
 	@Override
-	public List<EventEntity> getDevicesEvents(DeviceEntity device, Date eventsFrom, Date eventsTill) {
-		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
-		CriteriaQuery<EventEntity> criteriaQuery = criteriaBuilder.createQuery(EventEntity.class);
-		Root<EventEntity> root = criteriaQuery.from(EventEntity.class);
-
-		List<Predicate> predicates = new ArrayList<>();
-		predicates.add(criteriaBuilder.isMember(device, root.get(EventEntity_.devices)));
-		if (eventsFrom != null) {
-			predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(EventEntity_.startDate), eventsFrom));
-		}
-		if (eventsTill != null) {
-			predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(EventEntity_.endDate), eventsTill));
-		}
-		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
-
-		return getAllByCriteria(criteriaQuery);
+	public List<EventEntity> getAllByUser(Long userId, boolean archived, Date from, Date till) {
+		// TODO Implement method
+		return null;
 	}
+
+	@Override
+	public List<EventEntity> getDevicesEvents(Long deviceId, boolean archived, Date eventsFrom, Date eventsTill) {
+		// TODO Implement method
+		return null;
+	}
+
 }

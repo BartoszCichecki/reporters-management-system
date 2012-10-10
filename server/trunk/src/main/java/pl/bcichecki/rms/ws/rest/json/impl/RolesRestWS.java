@@ -22,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonParseException;
@@ -69,10 +68,9 @@ public class RolesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllRoles(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
-	        required = false, defaultValue = "false") boolean idAndVersionOnly) {
+	String getAllRoles(HttpServletRequest request, HttpServletResponse response) {
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(rolesService.getAllRoles(idAndVersionOnly));
+		String json = getGson().toJson(rolesService.getAllRoles());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

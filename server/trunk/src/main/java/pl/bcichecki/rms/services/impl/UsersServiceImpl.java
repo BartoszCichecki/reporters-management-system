@@ -95,11 +95,11 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<UserEntity> getAllUsers(boolean idAndVersionOnly, boolean isDeleted) {
+	public List<UserEntity> getAllUsers(boolean isDeleted) {
 		if (isDeleted) {
-			return usersDao.getAll(idAndVersionOnly);
+			return usersDao.getAll();
 		} else {
-			return usersDao.getAllUndeleted(idAndVersionOnly);
+			return usersDao.getAllUndeleted();
 		}
 	}
 
@@ -125,11 +125,11 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<UserEntity> getUsersWithRole(Long roleId, boolean idAndVersionOnly) throws ServiceException {
+	public List<UserEntity> getUsersWithRole(Long roleId) throws ServiceException {
 		if (rolesDao.getById(roleId) == null) {
 			throw new ServiceException("Role with this ID does not exist!", "exceptions.serviceExceptions.roles.notExistId");
 		}
-		return usersDao.getUsersWithRole(roleId, idAndVersionOnly);
+		return usersDao.getUsersWithRole(roleId);
 	}
 
 	@Override
@@ -154,7 +154,6 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 		String newPassword = SecurityUtils.getRandomPassword();
 		user.setPassword(SecurityUtils.hashSHA512(newPassword, username));
 		usersDao.update(user);
-
 		return newPassword;
 	}
 
@@ -202,7 +201,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 	}
 
 	@Override
-	public boolean updateUserSafely(UserEntity user, UserEntity oldUser) throws ServiceException {
+	public boolean updateUserWithRestrictions(UserEntity user, UserEntity oldUser) throws ServiceException {
 		user.setId(oldUser.getId());
 		user.setUsername(oldUser.getUsername());
 		user.setRole(oldUser.getRole());

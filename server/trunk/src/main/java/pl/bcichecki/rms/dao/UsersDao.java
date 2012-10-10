@@ -13,7 +13,6 @@ package pl.bcichecki.rms.dao;
 
 import java.util.List;
 
-import pl.bcichecki.rms.model.impl.RoleEntity;
 import pl.bcichecki.rms.model.impl.UserEntity;
 
 /**
@@ -21,14 +20,14 @@ import pl.bcichecki.rms.model.impl.UserEntity;
  */
 public interface UsersDao extends GenericDao<UserEntity> {
 
-	List<UserEntity> getAllUndeleted(boolean idAndVersionOnly);
+	List<UserEntity> getAllUndeleted();
 
 	UserEntity getByEmail(String email);
 
 	UserEntity getByUsername(String username);
 
-	List<UserEntity> getUsersWithRole(Long roleId, boolean idAndVersionOnly);
+	List<UserEntity> getUsersWithRole(Long roleId);
 
-	boolean hasUsersWithRole(RoleEntity role);
+	boolean hasUsersWithRole(Long roleId);
 
 }

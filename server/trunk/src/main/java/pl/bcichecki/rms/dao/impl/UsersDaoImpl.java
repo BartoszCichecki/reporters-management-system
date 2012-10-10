@@ -19,7 +19,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import pl.bcichecki.rms.dao.UsersDao;
-import pl.bcichecki.rms.model.impl.RoleEntity;
 import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.model.impl.UserEntity_;
 
@@ -29,7 +28,7 @@ import pl.bcichecki.rms.model.impl.UserEntity_;
 public class UsersDaoImpl extends AbstractGenericDao<UserEntity> implements UsersDao {
 
 	@Override
-	public List<UserEntity> getAllUndeleted(boolean idAndVersionOnly) {
+	public List<UserEntity> getAllUndeleted() {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
 		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
@@ -59,7 +58,7 @@ public class UsersDaoImpl extends AbstractGenericDao<UserEntity> implements User
 	}
 
 	@Override
-	public List<UserEntity> getUsersWithRole(Long roleId, boolean idAndVersionOnly) {
+	public List<UserEntity> getUsersWithRole(Long roleId) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
 		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
@@ -68,11 +67,11 @@ public class UsersDaoImpl extends AbstractGenericDao<UserEntity> implements User
 	}
 
 	@Override
-	public boolean hasUsersWithRole(RoleEntity role) {
+	public boolean hasUsersWithRole(Long roleId) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
 		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
-		Predicate predicate = criteriaBuilder.equal(root.get(UserEntity_.role), role);
+		Predicate predicate = criteriaBuilder.equal(root.get(UserEntity_.role), roleId);
 		criteriaQuery.where(predicate);
 		List<UserEntity> result = getAllByCriteria(criteriaQuery);
 		return result != null && result.size() > 0;

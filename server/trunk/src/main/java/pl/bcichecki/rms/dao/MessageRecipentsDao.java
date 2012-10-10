@@ -11,8 +11,6 @@
 
 package pl.bcichecki.rms.dao;
 
-import java.io.Serializable;
-
 import pl.bcichecki.rms.model.impl.MessageRecipentEntity;
 
 /**
@@ -20,6 +18,6 @@ import pl.bcichecki.rms.model.impl.MessageRecipentEntity;
  */
 public interface MessageRecipentsDao extends GenericDao<MessageRecipentEntity> {
 
-	MessageRecipentEntity getByIdAndRecipentId(Serializable id, Serializable recipentId, boolean archived, boolean deleted);
+	MessageRecipentEntity getByIdAndRecipentId(Long id, Long recipentId, boolean archived, boolean deleted);
 
 }

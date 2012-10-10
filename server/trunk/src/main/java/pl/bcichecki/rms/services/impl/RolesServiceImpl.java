@@ -21,7 +21,6 @@ import pl.bcichecki.rms.dao.RolesDao;
 import pl.bcichecki.rms.dao.UsersDao;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.RoleEntity;
-import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.services.RolesService;
 
 /**
@@ -53,7 +52,7 @@ public class RolesServiceImpl implements RolesService {
 			throw new ServiceException("You can't delete role that does not exist!",
 			        "exceptions.serviceExceptions.roles.cantDeleteNotExisting");
 		}
-		if (usersDao.hasUsersWithRole(role)) {
+		if (usersDao.hasUsersWithRole(id)) {
 			throw new ServiceException("Can't delete role that is assigned to user(s)!",
 			        "exceptions.serviceExceptions.roles.cantDeleteStillAssigned");
 		}
@@ -63,8 +62,8 @@ public class RolesServiceImpl implements RolesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<RoleEntity> getAllRoles(boolean idAndVersionOnly) {
-		return rolesDao.getAll(idAndVersionOnly);
+	public List<RoleEntity> getAllRoles() {
+		return rolesDao.getAll();
 	}
 
 	@Override
@@ -90,11 +89,10 @@ public class RolesServiceImpl implements RolesService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<RoleEntity> getUsersRoles(Long id) throws ServiceException {
-		UserEntity user = usersDao.getById(id);
-		if (user == null) {
+		if (usersDao.getById(id) == null) {
 			throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
 		}
-		return rolesDao.getByUsername(user.getUsername());
+		return rolesDao.getByUserId(id);
 	}
 
 	@Override

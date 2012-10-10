@@ -31,7 +31,7 @@ public interface GenericDao<T extends AbstractEntity> {
 
 	void delete(T entity);
 
-	List<T> getAll(boolean idAndVersionOnly);
+	List<T> getAll();
 
 	List<T> getAllByCriteria(CriteriaQuery<T> criteria);
 

@@ -11,7 +11,6 @@
 
 package pl.bcichecki.rms.dao;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +21,9 @@ import pl.bcichecki.rms.model.impl.MessageEntity;
  */
 public interface MessagesDao extends GenericDao<MessageEntity> {
 
-	MessageEntity getByIdAndRecipentId(Serializable id, Serializable recipentId, boolean archived, boolean deleted);
+	MessageEntity getByIdAndRecipentId(Long id, Long recipentId, boolean archived, boolean deleted);
 
-	MessageEntity getByIdAndSenderId(Serializable id, Serializable senderId, boolean archived, boolean deleted);
+	MessageEntity getByIdAndSenderId(Long id, Long senderId, boolean archived, boolean deleted);
 
 	List<MessageEntity> getByRecipentId(Long recipentId, boolean archived, boolean deleted);
 

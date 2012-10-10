@@ -11,8 +11,6 @@
 
 package pl.bcichecki.rms.dao.impl;
 
-import java.io.Serializable;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -29,7 +27,7 @@ import pl.bcichecki.rms.model.impl.MessageRecipentEntity_;
 public class MessageRecipentsDaoImpl extends AbstractGenericDao<MessageRecipentEntity> implements MessageRecipentsDao {
 
 	@Override
-	public MessageRecipentEntity getByIdAndRecipentId(Serializable id, Serializable recipentId, boolean archived, boolean deleted) {
+	public MessageRecipentEntity getByIdAndRecipentId(Long id, Long recipentId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageRecipentEntity> criteriaQuery = criteriaBuilder.createQuery(MessageRecipentEntity.class);
 		Root<MessageRecipentEntity> root = criteriaQuery.from(MessageRecipentEntity.class);

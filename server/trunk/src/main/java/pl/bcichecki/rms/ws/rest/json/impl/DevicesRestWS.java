@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonParseException;
@@ -69,9 +68,8 @@ public class DevicesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllDevices(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "idAndVersionOnly",
-	        required = false, defaultValue = "false") boolean idAndVersionOnly) {
-		String json = getGson().toJson(devicesService.getAllDevices(idAndVersionOnly));
+	String getAllDevices(HttpServletRequest request, HttpServletResponse response) {
+		String json = getGson().toJson(devicesService.getAllDevices());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

@@ -25,7 +25,7 @@ public interface RolesService {
 
 	boolean deleteRole(Long id) throws ServiceException;
 
-	List<RoleEntity> getAllRoles(boolean idAndVersionOnly);
+	List<RoleEntity> getAllRoles();
 
 	RoleEntity getRoleById(Long id) throws ServiceException;
 

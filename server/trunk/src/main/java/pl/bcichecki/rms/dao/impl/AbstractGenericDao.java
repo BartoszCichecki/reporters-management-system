@@ -12,12 +12,10 @@
 package pl.bcichecki.rms.dao.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -61,30 +59,12 @@ public abstract class AbstractGenericDao<T extends AbstractEntity> implements Ge
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<T> getAll(boolean idAndVersionOnly) {
+	public List<T> getAll() {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
-		if (!idAndVersionOnly) {
-			CriteriaQuery<T> criteria = builder.createQuery(entityClazz);
-			Root<T> root = criteria.from(entityClazz);
-			criteria.select(root);
-			return manager.createQuery(criteria).getResultList();
-		} else {
-			CriteriaQuery<Tuple> cq = builder.createTupleQuery();
-			Root<T> root = cq.from(entityClazz);
-			cq.multiselect(root.get("ID"), root.get("VERSION"));
-			List<Tuple> tupleResult = manager.createQuery(cq).getResultList();
-			try {
-				List<T> result = new ArrayList<T>();
-				for (Tuple tuple : tupleResult) {
-					T t = entityClazz.newInstance();
-					t.setId((Long) tuple.get(0));
-					t.setVersion((Long) tuple.get(1));
-				}
-				return result;
-			} catch (InstantiationException | IllegalAccessException ex) {
-				throw new IllegalStateException(ex.getMessage(), ex);
-			}
-		}
+		CriteriaQuery<T> criteria = builder.createQuery(entityClazz);
+		Root<T> root = criteria.from(entityClazz);
+		criteria.select(root);
+		return manager.createQuery(criteria).getResultList();
 	}
 
 	@Override

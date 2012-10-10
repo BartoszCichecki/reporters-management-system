@@ -40,7 +40,7 @@ public interface MessagesService {
 
 	List<MessageEntity> getAllInboxMessages();
 
-	List<MessageEntity> getAllMessages(boolean idAndVersionOnly);
+	List<MessageEntity> getAllMessages();
 
 	List<MessageEntity> getAllOutboxMessages();
 

@@ -65,7 +65,7 @@ public class ProfileRestWS extends AbstractRestWS {
 			if (currentUser == null) {
 				throw new IllegalStateException("Not authenticated?");
 			}
-			usersService.updateUserSafely(getGson().fromJson(requestBody, UserEntity.class), currentUser);
+			usersService.updateUserWithRestrictions(getGson().fromJson(requestBody, UserEntity.class), currentUser);
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}

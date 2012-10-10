@@ -54,8 +54,8 @@ public class DevicesServiceImpl implements DevicesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<DeviceEntity> getAllDevices(boolean idAndVersionOnly) {
-		return devicesDao.getAll(idAndVersionOnly);
+	public List<DeviceEntity> getAllDevices() {
+		return devicesDao.getAll();
 	}
 
 	@Override

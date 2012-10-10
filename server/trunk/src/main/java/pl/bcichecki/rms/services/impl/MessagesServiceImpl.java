@@ -137,8 +137,8 @@ public class MessagesServiceImpl implements MessagesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<MessageEntity> getAllMessages(boolean idAndVersionOnly) {
-		return messagesDao.getAll(idAndVersionOnly);
+	public List<MessageEntity> getAllMessages() {
+		return messagesDao.getAll();
 	}
 
 	@Override
