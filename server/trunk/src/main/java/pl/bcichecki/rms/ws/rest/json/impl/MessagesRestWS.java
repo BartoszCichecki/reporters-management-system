@@ -133,7 +133,6 @@ public class MessagesRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	// IDEA Let admins look into users in/outboxes?
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
