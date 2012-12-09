@@ -72,7 +72,7 @@ public class PrivilegesServiceImpl implements PrivilegesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Set<PrivilegeType> getUsersPrivileges(Long userId) throws ServiceException {
+	public Set<PrivilegeType> getUsersPrivileges(String userId) throws ServiceException {
 		if (usersDao.getById(userId) == null) {
 			throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
 

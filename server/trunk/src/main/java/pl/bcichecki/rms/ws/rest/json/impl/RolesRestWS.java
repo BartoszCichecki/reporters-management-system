@@ -61,7 +61,7 @@ public class RolesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
+	void deleteRole(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
 		rolesService.deleteRole(id);
 	}
 
@@ -80,7 +80,7 @@ public class RolesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String getCurrentUsersRoles(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		String json = getGson().toJson(rolesService.getUsersRoles(username));
+		String json = getGson().toJson(rolesService.getUsersRolesByUsername(username));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -88,7 +88,7 @@ public class RolesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	String getRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
+	String getRole(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
 		String json = getGson().toJson(rolesService.getRoleById(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -97,7 +97,7 @@ public class RolesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_USER_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getUsersRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId) throws ServiceException {
+	String getUsersRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable String userId) throws ServiceException {
 		String json = getGson().toJson(rolesService.getUsersRoles(userId));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;

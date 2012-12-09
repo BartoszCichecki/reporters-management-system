@@ -26,8 +26,8 @@ public interface UsersDao extends GenericDao<UserEntity> {
 
 	UserEntity getByUsername(String username);
 
-	List<UserEntity> getUsersWithRole(Long roleId);
+	List<UserEntity> getUsersWithRole(String roleId);
 
-	boolean hasUsersWithRole(Long roleId);
+	boolean hasUsersWithRole(String roleId);
 
 }

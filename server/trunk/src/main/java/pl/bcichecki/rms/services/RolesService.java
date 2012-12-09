@@ -23,17 +23,17 @@ public interface RolesService {
 
 	boolean createRole(RoleEntity role) throws ServiceException;
 
-	boolean deleteRole(Long id) throws ServiceException;
+	boolean deleteRole(String id) throws ServiceException;
 
 	List<RoleEntity> getAllRoles();
 
-	RoleEntity getRoleById(Long id) throws ServiceException;
+	RoleEntity getRoleById(String id) throws ServiceException;
 
 	RoleEntity getRoleByName(String name) throws ServiceException;
 
-	List<RoleEntity> getUsersRoles(Long id) throws ServiceException;
+	List<RoleEntity> getUsersRoles(String id) throws ServiceException;
 
-	List<RoleEntity> getUsersRoles(String username) throws ServiceException;
+	List<RoleEntity> getUsersRolesByUsername(String username) throws ServiceException;
 
 	boolean updateRole(RoleEntity role) throws ServiceException;
 

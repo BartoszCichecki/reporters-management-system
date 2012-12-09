@@ -57,7 +57,7 @@ public class EventsServiceImpl implements EventsService {
 	}
 
 	@Override
-	public boolean deleteEvent(Long id, Boolean markDeleted) throws ServiceException {
+	public boolean deleteEvent(String id, Boolean markDeleted) throws ServiceException {
 		EventEntity event = eventsDao.getById(id);
 		if (event == null) {
 			throw new ServiceException("You can't delete event that does not exist!",
@@ -74,7 +74,7 @@ public class EventsServiceImpl implements EventsService {
 
 	@Override
 	public List<EventEntity> getAllCurrentUserEvents(Boolean archived, Boolean deleted, Date from, Date till) {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		return getAllUserEvents(currentUserId, archived, deleted, from, till);
 	}
 
@@ -84,13 +84,13 @@ public class EventsServiceImpl implements EventsService {
 	}
 
 	@Override
-	public List<EventEntity> getAllUserEvents(Long userId, Boolean archived, Boolean deleted, Date from, Date till) {
+	public List<EventEntity> getAllUserEvents(String userId, Boolean archived, Boolean deleted, Date from, Date till) {
 		return eventsDao.getAllByUser(userId, archived, deleted, from, till);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<EventEntity> getDevicesEvents(Long deviceId, Boolean archived, Boolean deleted, Date eventsFrom, Date eventsTill)
+	public List<EventEntity> getDevicesEvents(String deviceId, Boolean archived, Boolean deleted, Date eventsFrom, Date eventsTill)
 	        throws ServiceException {
 		if (eventsFrom != null && eventsTill != null && eventsFrom.after(eventsTill)) {
 			throw new ServiceException("Date from must be before till!", "exceptions.serviceExceptions.general.fromAfterTill");
@@ -102,7 +102,7 @@ public class EventsServiceImpl implements EventsService {
 	}
 
 	@Override
-	public EventEntity getEvent(Long id) throws ServiceException {
+	public EventEntity getEvent(String id) throws ServiceException {
 		EventEntity event = eventsDao.getById(id);
 		if (event == null) {
 			throw new ServiceException("Event with this ID does not exist!", "exceptions.serviceExceptions.events.notExistId");

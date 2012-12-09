@@ -35,7 +35,7 @@ import pl.bcichecki.rms.model.impl.MessageRecipentEntity_;
 public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implements MessagesDao {
 
 	@Override
-	public MessageEntity getByIdAndRecipentId(Long id, Long recipentId, boolean archived, boolean deleted) {
+	public MessageEntity getByIdAndRecipentId(String id, String recipentId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
@@ -50,7 +50,7 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 	}
 
 	@Override
-	public MessageEntity getByIdAndSenderId(Long id, Long senderId, boolean archived, boolean deleted) {
+	public MessageEntity getByIdAndSenderId(String id, String senderId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
@@ -63,7 +63,7 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 	}
 
 	@Override
-	public List<MessageEntity> getByRecipentId(Long recipentId, boolean archived, boolean deleted) {
+	public List<MessageEntity> getByRecipentId(String recipentId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
@@ -77,7 +77,7 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 	}
 
 	@Override
-	public List<MessageEntity> getBySenderId(Long senderId, boolean archived, boolean deleted) {
+	public List<MessageEntity> getBySenderId(String senderId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);

@@ -79,15 +79,15 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_MY_EVENTS + "','" + PrivilegeUtils.Values.DELETE_EVENTS + "','"
 	        + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "markDeleted",
-	        required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
+	void deleteEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
+	        value = "markDeleted", required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
 		eventsService.deleteEvent(id, markDeleted);
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/archived/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
+	String getAllArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -103,7 +103,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "from",
+	String getAllEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(value = "from",
 	        required = false) Long from, @RequestParam(value = "till", required = false) Long till) throws BadRequestException,
 	        ServiceException {
 		if (from == null || till == null) {
@@ -119,7 +119,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/archive/trash/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllTrashedArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
+	String getAllTrashedArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -135,7 +135,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/trash/all", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllTrashedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
+	String getAllTrashedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -151,7 +151,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = { "/archived", "/archived/my" }, method = RequestMethod.GET)
 	@ResponseBody
-	String getCurrentUserArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
+	String getCurrentUserArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -167,7 +167,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
 	@ResponseBody
-	String getCurrentUserEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
+	String getCurrentUserEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -183,7 +183,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_DEVICE_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/archived/devices/{deviceId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getDevicesArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long deviceId, @RequestParam(
+	String getDevicesArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String deviceId, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -198,7 +198,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_DEVICE_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/devices/{deviceId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getDevicesEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long deviceId, @RequestParam(
+	String getDevicesEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String deviceId, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -213,7 +213,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	String getEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws BadRequestException,
+	String getEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws BadRequestException,
 	        ServiceException {
 		String json = getGson().toJson(eventsService.getEvent(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
@@ -223,7 +223,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_DEVICE_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/archived/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getUsersArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId, @RequestParam(
+	String getUsersArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String userId, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
@@ -239,7 +239,7 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_DEVICE_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getUsersEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId, @RequestParam(
+	String getUsersEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String userId, @RequestParam(
 	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {

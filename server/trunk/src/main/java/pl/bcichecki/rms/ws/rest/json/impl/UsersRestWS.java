@@ -61,7 +61,7 @@ public class UsersRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "markDeleted",
+	void deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(value = "markDeleted",
 	        required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
 		usersService.deleteUser(id, markDeleted);
 	}
@@ -90,7 +90,7 @@ public class UsersRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
+	String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
 		String json = getGson().toJson(usersService.getUserById(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
@@ -99,7 +99,7 @@ public class UsersRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_ROLE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/roles/{roleId}", method = RequestMethod.GET)
 	@ResponseBody
-	String getUsersWithRole(HttpServletRequest request, HttpServletResponse response, @PathVariable Long roleId) throws ServiceException {
+	String getUsersWithRole(HttpServletRequest request, HttpServletResponse response, @PathVariable String roleId) throws ServiceException {
 		String json = getGson().toJson(usersService.getUsersWithRole(roleId));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;

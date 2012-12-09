@@ -62,8 +62,8 @@ public class DevicesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "markDeleted",
-	        required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
+	void deleteDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
+	        value = "markDeleted", required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
 		devicesService.deleteDevice(id, markDeleted);
 	}
 
@@ -88,7 +88,7 @@ public class DevicesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	String getDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
+	String getDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
 		String json = getGson().toJson(devicesService.getDeviceById(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;

@@ -41,7 +41,7 @@ public class SecurityUtils {
 		}
 	}
 
-	public static Long getCurrentUserId() {
+	public static String getCurrentUserId() {
 		try {
 			String username = SecurityUtils.getCurrentUserUsername();
 			if (username == null) {

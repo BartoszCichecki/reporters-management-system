@@ -27,6 +27,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.utils.SecurityUtils;
 
@@ -40,9 +42,10 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	private static final long serialVersionUID = -4067696286632039806L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
 	@Column(name = "ID", nullable = false, unique = true)
-	protected Long id;
+	protected String id;
 
 	@ManyToOne
 	@JoinColumn(name = "CREATED_BY", nullable = true, unique = false)
@@ -63,6 +66,10 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	@Version
 	@Column(name = "VERSION", nullable = false, unique = false)
 	protected Long version;
+
+	public AbstractEntity() {
+		super();
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -136,7 +143,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 		return SecurityUtils.getCurrentUser();
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -191,7 +198,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 		this.creationUser = creationUser;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

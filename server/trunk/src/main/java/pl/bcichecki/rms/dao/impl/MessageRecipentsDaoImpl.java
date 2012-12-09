@@ -27,7 +27,7 @@ import pl.bcichecki.rms.model.impl.MessageRecipentEntity_;
 public class MessageRecipentsDaoImpl extends AbstractGenericDao<MessageRecipentEntity> implements MessageRecipentsDao {
 
 	@Override
-	public MessageRecipentEntity getByIdAndRecipentId(Long id, Long recipentId, boolean archived, boolean deleted) {
+	public MessageRecipentEntity getByIdAndRecipentId(String id, String recipentId, boolean archived, boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<MessageRecipentEntity> criteriaQuery = criteriaBuilder.createQuery(MessageRecipentEntity.class);
 		Root<MessageRecipentEntity> root = criteriaQuery.from(MessageRecipentEntity.class);

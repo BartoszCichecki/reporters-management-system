@@ -61,7 +61,8 @@ public class PrivilegesRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	public @ResponseBody
-	String getUsersPrivileges(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId) throws ServiceException {
+	String getUsersPrivileges(HttpServletRequest request, HttpServletResponse response, @PathVariable String userId)
+	        throws ServiceException {
 		RestUtils.decorateResponseHeaderForJson(response);
 		String json = getGson().toJson(privilegesService.getUsersPrivileges(userId));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);

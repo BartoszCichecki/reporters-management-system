@@ -25,6 +25,6 @@ public interface PrivilegesService {
 
 	Set<PrivilegeType> getAuthenticatedUsersPrivileges();
 
-	Set<PrivilegeType> getUsersPrivileges(Long userId) throws ServiceException;
+	Set<PrivilegeType> getUsersPrivileges(String userId) throws ServiceException;
 
 }

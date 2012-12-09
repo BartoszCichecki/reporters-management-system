@@ -11,7 +11,6 @@
 
 USE `rms`;
 
-
 -- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- Host: localhost    Database: rms
@@ -37,7 +36,7 @@ DROP TABLE IF EXISTS `access_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `access_history` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
@@ -45,8 +44,8 @@ CREATE TABLE `access_history` (
   `AUTHENTICATION_STATUS` varchar(255) NOT NULL,
   `USER_IP` varchar(255) DEFAULT NULL,
   `USERNAME` varchar(255) DEFAULT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   KEY `FK1F581C99A1A84EB8` (`CREATED_BY`),
@@ -73,18 +72,23 @@ DROP TABLE IF EXISTS `address_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `address_data` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
+  `BIRTHDAY` datetime DEFAULT NULL,
   `CITY` varchar(50) DEFAULT NULL,
   `COUNTRY` varchar(50) DEFAULT NULL,
+  `FIRST_NAME` varchar(250) DEFAULT NULL,
   `HOUSE_NUMBER` varchar(10) DEFAULT NULL,
+  `LAST_NAME` varchar(250) DEFAULT NULL,
+  `MIDDLE_NAME` varchar(250) DEFAULT NULL,
   `STREET` varchar(250) DEFAULT NULL,
   `STREET_NUMBER` varchar(10) DEFAULT NULL,
+  `TITLE` varchar(250) DEFAULT NULL,
   `ZIP_CODE` varchar(10) DEFAULT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   KEY `FK9B9B3D35A1A84EB8` (`CREATED_BY`),
@@ -111,15 +115,15 @@ DROP TABLE IF EXISTS `address_data_contacts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `address_data_contacts` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
   `TYPE` varchar(255) NOT NULL,
   `VALUE` varchar(250) NOT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
-  `ADDRESS_DATA` bigint(20) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `ADDRESS_DATA` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   KEY `FK6826501D44184EBA` (`ADDRESS_DATA`),
@@ -169,15 +173,15 @@ DROP TABLE IF EXISTS `devices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `devices` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
   `DELETED` tinyint(1) NOT NULL,
   `DESCRIPTION` longtext,
   `NAME` varchar(250) NOT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `NAME` (`NAME`),
@@ -205,7 +209,7 @@ DROP TABLE IF EXISTS `events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `events` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
@@ -217,9 +221,9 @@ CREATE TABLE `events` (
   `START_DATE` datetime NOT NULL,
   `TITLE` varchar(250) NOT NULL,
   `TYPE` varchar(255) NOT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
-  `ADDRESS` bigint(20) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `ADDRESS` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `ADDRESS` (`ADDRESS`),
@@ -249,8 +253,8 @@ DROP TABLE IF EXISTS `events_devices_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `events_devices_link` (
-  `EVENT_ID` bigint(20) NOT NULL,
-  `DEVICE_ID` bigint(20) NOT NULL,
+  `EVENT_ID` varchar(255) NOT NULL,
+  `DEVICE_ID` varchar(255) NOT NULL,
   PRIMARY KEY (`EVENT_ID`,`DEVICE_ID`),
   KEY `FKB3B07BA2202EBD61` (`EVENT_ID`),
   KEY `FKB3B07BA2BE7B1899` (`DEVICE_ID`),
@@ -276,8 +280,8 @@ DROP TABLE IF EXISTS `events_users_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `events_users_link` (
-  `EVENT_ID` bigint(20) NOT NULL,
-  `USER_ID` bigint(20) NOT NULL,
+  `EVENT_ID` varchar(255) NOT NULL,
+  `USER_ID` varchar(255) NOT NULL,
   PRIMARY KEY (`EVENT_ID`,`USER_ID`),
   KEY `FK43F8C2D7202EBD61` (`EVENT_ID`),
   KEY `FK43F8C2D7473F93B9` (`USER_ID`),
@@ -303,17 +307,17 @@ DROP TABLE IF EXISTS `message_recipents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `message_recipents` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
   `ARCHIVED_BY_RECIPENT` tinyint(1) NOT NULL,
   `DELETED_BY_RECIPENT` tinyint(1) NOT NULL,
   `READ_DATE` datetime DEFAULT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
-  `RECIPENT` bigint(20) NOT NULL,
-  `MESSAGE` bigint(20) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `RECIPENT` varchar(255) NOT NULL,
+  `MESSAGE` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   KEY `FKBDDAE4A747C43B35` (`MESSAGE`),
@@ -344,7 +348,7 @@ DROP TABLE IF EXISTS `messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `messages` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
@@ -353,9 +357,9 @@ CREATE TABLE `messages` (
   `DATE_SENT` datetime NOT NULL,
   `DELETED_BY_SENDER` tinyint(1) NOT NULL,
   `SUBJECT` varchar(250) NOT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
-  `SENDER` bigint(20) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `SENDER` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   KEY `FK131AF14CA1A84EB8` (`CREATED_BY`),
@@ -384,7 +388,7 @@ DROP TABLE IF EXISTS `privileges`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `privileges` (
-  `ROLE_ID` bigint(20) NOT NULL,
+  `ROLE_ID` varchar(255) NOT NULL,
   `PRIVILEGE` varchar(255) NOT NULL,
   PRIMARY KEY (`ROLE_ID`,`PRIVILEGE`),
   KEY `FKBA4DCBE29B9F6399` (`ROLE_ID`),
@@ -409,13 +413,13 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
   `NAME` varchar(50) NOT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `NAME` (`NAME`),
@@ -423,7 +427,7 @@ CREATE TABLE `roles` (
   KEY `FK4A8969DF3FA3337` (`MODIFIED_BY`),
   CONSTRAINT `FK4A8969DF3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
   CONSTRAINT `FK4A8969DA1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -443,7 +447,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) NOT NULL,
   `CREATION_DATE` datetime DEFAULT NULL,
   `MODIFICATION_DATE` datetime DEFAULT NULL,
   `VERSION` bigint(20) NOT NULL,
@@ -453,10 +457,10 @@ CREATE TABLE `users` (
   `LOCKED` tinyint(1) NOT NULL,
   `PASSWORD` varchar(255) NOT NULL,
   `USERNAME` varchar(32) NOT NULL,
-  `CREATED_BY` bigint(20) DEFAULT NULL,
-  `MODIFIED_BY` bigint(20) DEFAULT NULL,
-  `ADDRESS` bigint(20) DEFAULT NULL,
-  `ROLE` bigint(20) DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `ADDRESS` varchar(255) DEFAULT NULL,
+  `ROLE` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `EMAIL` (`EMAIL`),
@@ -491,4 +495,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-09 15:38:58
+-- Dump completed on 2012-12-09 23:10:36

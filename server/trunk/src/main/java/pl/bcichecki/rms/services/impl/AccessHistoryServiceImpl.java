@@ -34,7 +34,7 @@ public class AccessHistoryServiceImpl implements AccessHistoryService {
 	private AccessHistoryDao accessHistoryDao;
 
 	@Override
-	public boolean delete(Long id) throws ServiceException {
+	public boolean delete(String id) throws ServiceException {
 		AccessHistoryEntity accessHistory = accessHistoryDao.getById(id);
 		if (accessHistory == null) {
 			throw new ServiceException("Access history entry with this ID does not exist!",
@@ -73,7 +73,7 @@ public class AccessHistoryServiceImpl implements AccessHistoryService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public AccessHistoryEntity get(Long id) throws ServiceException {
+	public AccessHistoryEntity get(String id) throws ServiceException {
 		AccessHistoryEntity accessHistory = accessHistoryDao.getById(id);
 		if (accessHistory == null) {
 			throw new ServiceException("Access history entry with this ID does not exist!",

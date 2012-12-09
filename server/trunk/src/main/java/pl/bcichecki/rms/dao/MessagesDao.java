@@ -21,13 +21,13 @@ import pl.bcichecki.rms.model.impl.MessageEntity;
  */
 public interface MessagesDao extends GenericDao<MessageEntity> {
 
-	MessageEntity getByIdAndRecipentId(Long id, Long recipentId, boolean archived, boolean deleted);
+	MessageEntity getByIdAndRecipentId(String id, String recipentId, boolean archived, boolean deleted);
 
-	MessageEntity getByIdAndSenderId(Long id, Long senderId, boolean archived, boolean deleted);
+	MessageEntity getByIdAndSenderId(String id, String senderId, boolean archived, boolean deleted);
 
-	List<MessageEntity> getByRecipentId(Long recipentId, boolean archived, boolean deleted);
+	List<MessageEntity> getByRecipentId(String recipentId, boolean archived, boolean deleted);
 
-	List<MessageEntity> getBySenderId(Long senderId, boolean archived, boolean deleted);
+	List<MessageEntity> getBySenderId(String senderId, boolean archived, boolean deleted);
 
 	List<MessageEntity> getMessagesReadBefore(Date date, boolean deletedOnly);
 

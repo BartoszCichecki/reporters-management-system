@@ -22,7 +22,7 @@ public interface RolesDao extends GenericDao<RoleEntity> {
 
 	RoleEntity getByName(String name);
 
-	List<RoleEntity> getByUserId(Long id);
+	List<RoleEntity> getByUserId(String id);
 
 	List<RoleEntity> getByUsername(String username);
 }

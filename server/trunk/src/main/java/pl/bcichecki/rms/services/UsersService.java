@@ -23,17 +23,17 @@ public interface UsersService {
 
 	boolean createUser(UserEntity user) throws ServiceException;
 
-	boolean deleteUser(Long id, boolean markDeleted) throws ServiceException;
+	boolean deleteUser(String id, boolean markDeleted) throws ServiceException;
 
 	List<UserEntity> getAllActiveUsers();
 
 	List<UserEntity> getAllUsers();
 
-	UserEntity getUserById(Long id) throws ServiceException;
+	UserEntity getUserById(String id) throws ServiceException;
 
 	UserEntity getUserByUsername(String username) throws ServiceException;
 
-	List<UserEntity> getUsersWithRole(Long roleId) throws ServiceException;
+	List<UserEntity> getUsersWithRole(String roleId) throws ServiceException;
 
 	String recreatePassword(String username) throws ServiceException;
 

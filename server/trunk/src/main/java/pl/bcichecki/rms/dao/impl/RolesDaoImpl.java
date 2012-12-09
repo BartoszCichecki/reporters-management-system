@@ -42,7 +42,7 @@ public class RolesDaoImpl extends AbstractGenericDao<RoleEntity> implements Role
 	}
 
 	@Override
-	public List<RoleEntity> getByUserId(Long id) {
+	public List<RoleEntity> getByUserId(String id) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		CriteriaQuery<RoleEntity> criteriaQuery = criteriaBuilder.createQuery(RoleEntity.class);
 		Root<RoleEntity> root = criteriaQuery.from(RoleEntity.class);

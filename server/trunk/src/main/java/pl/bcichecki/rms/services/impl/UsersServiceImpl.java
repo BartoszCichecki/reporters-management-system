@@ -53,7 +53,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 
 	private UserDetails buildUser(UserEntity user) {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		if (user.getRole() != null) {
+		if (user.getRole() != null && user.getRole().getPrivileges() != null) {
 			for (PrivilegeType privilege : user.getRole().getPrivileges()) {
 				authorities.add(new SimpleGrantedAuthority(privilege.toString()));
 			}
@@ -78,7 +78,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 	}
 
 	@Override
-	public boolean deleteUser(Long id, boolean markDeleted) throws ServiceException {
+	public boolean deleteUser(String id, boolean markDeleted) throws ServiceException {
 		UserEntity user = usersDao.getById(id);
 		if (user == null) {
 			throw new ServiceException("You can't delete user that does not exist!",
@@ -106,7 +106,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public UserEntity getUserById(Long id) throws ServiceException {
+	public UserEntity getUserById(String id) throws ServiceException {
 		UserEntity user = usersDao.getById(id);
 		if (user == null) {
 			throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
@@ -126,7 +126,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<UserEntity> getUsersWithRole(Long roleId) throws ServiceException {
+	public List<UserEntity> getUsersWithRole(String roleId) throws ServiceException {
 		if (rolesDao.getById(roleId) == null) {
 			throw new ServiceException("Role with this ID does not exist!", "exceptions.serviceExceptions.roles.notExistId");
 		}

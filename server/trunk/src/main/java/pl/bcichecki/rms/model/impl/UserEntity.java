@@ -196,8 +196,8 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 		setEmail(StringUtils.defaultString(user.getEmail()));
 		setRole(user.getRole());
 		setAddress(user.getAddress());
-		setLocked(user.isLocked());
 		setComment(StringUtils.defaultIfBlank(user.getComment(), null));
+		setLocked(user.isLocked());
 		setDeleted(user.isDeleted());
 	}
 

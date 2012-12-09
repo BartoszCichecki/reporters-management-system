@@ -13,6 +13,7 @@ package pl.bcichecki.rms.services.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,14 +47,39 @@ public class MessagesServiceImpl implements MessagesService {
 	protected UsersDao usersDao;
 
 	@Override
+	public boolean archiveMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
+		MessageEntity retrievedMessage = messagesDao.getByIdAndSenderId(id, currentUserId, false, false);
+		if (retrievedMessage == null) {
+			retrievedMessage = messagesDao.getByIdAndRecipentId(id, currentUserId, false, false);
+			if (retrievedMessage == null) {
+				throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");
+			} else {
+				Set<MessageRecipentEntity> recipents = retrievedMessage.getRecipents();
+				for (MessageRecipentEntity messageRecipentEntity : recipents) {
+					if (messageRecipentEntity.getRecipent().getId() == currentUserId) {
+						messageRecipentEntity.setArchivedByRecipent(true);
+						break;
+					}
+				}
+				messagesDao.update(retrievedMessage);
+			}
+		} else {
+			retrievedMessage.setArchivedBySender(true);
+			messagesDao.update(retrievedMessage);
+		}
+		return true;
+	}
+
+	@Override
 	public boolean createMessage(MessageEntity message) throws ServiceException {
 		messagesDao.create(message);
 		return true;
 	}
 
 	@Override
-	public boolean deleteArchivedInboxMessage(Long id) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public boolean deleteArchivedInboxMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByIdAndRecipentId(id, currentUserId, true, false);
 		if (messageRecipent == null) {
 			throw new ServiceException("You can't delete message that does not exist!",
@@ -65,8 +91,8 @@ public class MessagesServiceImpl implements MessagesService {
 	}
 
 	@Override
-	public boolean deleteArchivedOutboxMessage(Long id) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public boolean deleteArchivedOutboxMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageEntity message = messagesDao.getByIdAndSenderId(id, currentUserId, true, false);
 		if (message == null) {
 			throw new ServiceException("You can't delete message that does not exist!",
@@ -78,8 +104,8 @@ public class MessagesServiceImpl implements MessagesService {
 	}
 
 	@Override
-	public boolean deleteInboxMessage(Long id) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public boolean deleteInboxMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByIdAndRecipentId(id, currentUserId, false, false);
 		if (messageRecipent == null) {
 			throw new ServiceException("You can't delete message that does not exist!",
@@ -91,7 +117,7 @@ public class MessagesServiceImpl implements MessagesService {
 	}
 
 	@Override
-	public boolean deleteMessage(Long id) throws ServiceException {
+	public boolean deleteMessage(String id) throws ServiceException {
 		MessageEntity message = messagesDao.getById(id);
 		if (message == null) {
 			throw new ServiceException("You can't delete message that does not exist!",
@@ -102,8 +128,8 @@ public class MessagesServiceImpl implements MessagesService {
 	}
 
 	@Override
-	public boolean deleteOutboxMessage(Long id) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public boolean deleteOutboxMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageEntity message = messagesDao.getByIdAndSenderId(id, currentUserId, false, false);
 		if (message == null) {
 			throw new ServiceException("You can't delete message that does not exist!",
@@ -117,21 +143,21 @@ public class MessagesServiceImpl implements MessagesService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<MessageEntity> getAllArchivedInboxMessages() {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		return messagesDao.getByRecipentId(currentUserId, true, false);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<MessageEntity> getAllArchivedOutboxMessages() {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		return messagesDao.getBySenderId(currentUserId, true, false);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<MessageEntity> getAllInboxMessages() {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		return messagesDao.getByRecipentId(currentUserId, false, false);
 	}
 
@@ -144,21 +170,21 @@ public class MessagesServiceImpl implements MessagesService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<MessageEntity> getAllOutboxMessages() {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		return messagesDao.getBySenderId(currentUserId, false, false);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public MessageEntity getArchivedInboxMessage(Long id) {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public MessageEntity getArchivedInboxMessage(String id) {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		return messagesDao.getByIdAndRecipentId(id, currentUserId, true, false);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public MessageEntity getArchivedOutboxMessage(Long id) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public MessageEntity getArchivedOutboxMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageEntity message = messagesDao.getByIdAndSenderId(id, currentUserId, true, false);
 		if (message == null) {
 			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
@@ -168,14 +194,14 @@ public class MessagesServiceImpl implements MessagesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public MessageEntity getInboxMessage(Long id) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public MessageEntity getInboxMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		return messagesDao.getByIdAndRecipentId(id, currentUserId, false, false);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public MessageEntity getMessage(Long id) throws ServiceException {
+	public MessageEntity getMessage(String id) throws ServiceException {
 		MessageEntity message = messagesDao.getById(id);
 		if (message == null) {
 			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
@@ -185,8 +211,8 @@ public class MessagesServiceImpl implements MessagesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public MessageEntity getOutboxMessage(Long id) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public MessageEntity getOutboxMessage(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageEntity message = messagesDao.getByIdAndSenderId(id, currentUserId, false, false);
 		if (message == null) {
 			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
@@ -195,8 +221,8 @@ public class MessagesServiceImpl implements MessagesService {
 	}
 
 	@Override
-	public boolean markMessageRead(Long id, boolean isRead) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+	public boolean markMessageRead(String id, boolean isRead) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByIdAndRecipentId(id, currentUserId, false, false);
 		if (messageRecipent == null) {
 			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
@@ -275,7 +301,7 @@ public class MessagesServiceImpl implements MessagesService {
 
 	@Override
 	public boolean updateOutboxMessage(MessageEntity message) throws ServiceException {
-		Long currentUserId = SecurityUtils.getCurrentUserId();
+		String currentUserId = SecurityUtils.getCurrentUserId();
 		MessageEntity retrievedMessage = messagesDao.getByIdAndSenderId(message.getId(), currentUserId, false, false);
 		if (retrievedMessage == null) {
 			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");

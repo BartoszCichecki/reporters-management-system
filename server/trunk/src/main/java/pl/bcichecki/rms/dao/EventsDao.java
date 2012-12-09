@@ -21,8 +21,8 @@ import pl.bcichecki.rms.model.impl.EventEntity;
  */
 public interface EventsDao extends GenericDao<EventEntity> {
 
-	List<EventEntity> getAllByUser(Long userId, Boolean archived, Boolean deleted, Date from, Date till);
+	List<EventEntity> getAllByUser(String userId, Boolean archived, Boolean deleted, Date from, Date till);
 
-	List<EventEntity> getDevicesEvents(Long deviceId, Boolean archived, Boolean deleted, Date from, Date till);
+	List<EventEntity> getDevicesEvents(String deviceId, Boolean archived, Boolean deleted, Date from, Date till);
 
 }

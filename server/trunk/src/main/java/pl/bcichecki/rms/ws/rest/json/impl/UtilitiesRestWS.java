@@ -48,8 +48,7 @@ public class UtilitiesRestWS extends AbstractRestWS {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.PUT)
-	void registerUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId) throws ServiceException,
-	        BadRequestException {
+	void registerUser(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
 		if (StringUtils.isBlank(requestBody)) {
 			throw new BadRequestException("You can't register \"nothing\".", "exceptions.badRequestExceptions.cantRegisterNothing");

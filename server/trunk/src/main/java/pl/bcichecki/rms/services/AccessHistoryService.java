@@ -23,7 +23,7 @@ import pl.bcichecki.rms.model.impl.AuthenticationStatus;
  */
 public interface AccessHistoryService {
 
-	boolean delete(Long id) throws ServiceException;
+	boolean delete(String id) throws ServiceException;
 
 	boolean deleteAll(Date from, Date till) throws ServiceException;
 
@@ -33,7 +33,7 @@ public interface AccessHistoryService {
 
 	boolean deleteAllByUsername(String username, Date from, Date till) throws ServiceException;
 
-	AccessHistoryEntity get(Long id) throws ServiceException;
+	AccessHistoryEntity get(String id) throws ServiceException;
 
 	List<AccessHistoryEntity> getAll(Date from, Date till) throws ServiceException;
 

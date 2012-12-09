@@ -26,18 +26,18 @@ public interface EventsService {
 
 	boolean createLockedEvent(EventEntity event) throws ServiceException;
 
-	boolean deleteEvent(Long id, Boolean markDeleted) throws ServiceException;
+	boolean deleteEvent(String id, Boolean markDeleted) throws ServiceException;
 
 	List<EventEntity> getAllCurrentUserEvents(Boolean archived, Boolean deleted, Date from, Date till);
 
 	List<EventEntity> getAllEvents(Boolean archived, Boolean deleted, Date from, Date till);
 
-	List<EventEntity> getAllUserEvents(Long userId, Boolean archived, Boolean deleted, Date from, Date till);
+	List<EventEntity> getAllUserEvents(String userId, Boolean archived, Boolean deleted, Date from, Date till);
 
-	List<EventEntity> getDevicesEvents(Long deviceId, Boolean archived, Boolean deleted, Date eventsFrom, Date eventsTill)
+	List<EventEntity> getDevicesEvents(String deviceId, Boolean archived, Boolean deleted, Date eventsFrom, Date eventsTill)
 	        throws ServiceException;
 
-	EventEntity getEvent(Long id) throws ServiceException;
+	EventEntity getEvent(String id) throws ServiceException;
 
 	boolean updateEvent(EventEntity event) throws ServiceException;
 

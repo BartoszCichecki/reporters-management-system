@@ -1,76 +1,503 @@
-## Project:   rms-server
-## File:      test_data.sql
-## License: 
-##            This file is licensed under GNU General Public License version 3
-##            http://www.gnu.org/licenses/gpl-3.0.txt
-##
-## Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
-## Date:      26-09-2012
+-- Project:   rms-server
+-- File:      db-mysql-test-data.sql
+-- License: 
+--            This file is licensed under GNU General Public License version 3
+--            http://www.gnu.org/licenses/gpl-3.0.txt
+--
+-- Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
+-- Date:      26-09-2012
 
 USE `rms`;
 
-## DELETES
-DELETE FROM `rms`.`message_recipents`;
-DELETE FROM `rms`.`messages`;
-DELETE FROM `rms`.`devices`;
-DELETE FROM `rms`.`users`;
-DELETE FROM `rms`.`address_data_contacts`;
-DELETE FROM `rms`.`address_data`;
-DELETE FROM `rms`.`privileges`;
-DELETE FROM `rms`.`roles`;
+-- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
+--
+-- Host: localhost    Database: rms
+-- ------------------------------------------------------
+-- Server version	5.5.28-log
 
-## ROLES
-INSERT INTO `rms`.`roles` (`ID`,`CREATED_BY`,`CREATION_DATE`,`MODIFICATION_DATE`,`NAME`,`VERSION`) VALUES (1,null,CURRENT_DATE(),CURRENT_DATE(),'ROLE_1',0);
-INSERT INTO `rms`.`roles` (`ID`,`CREATED_BY`,`CREATION_DATE`,`MODIFICATION_DATE`,`NAME`,`VERSION`) VALUES (2,null,CURRENT_DATE(),CURRENT_DATE(),'ROLE_2',0);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-## PRIVILEGES
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('MANAGE_ACCESS_HISTORY',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('MANAGE_DEVICES',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('MANAGE_MESSAGES',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('MANAGE_PROFILE',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('MANAGE_ROLES',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('MANAGE_USERS',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('SEND_MESSAGES',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_ACCESS_HISTORY',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_DEVICES',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_MESSAGES',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_PROFILE',1);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_USERS',1);
+--
+-- Table structure for table `access_history`
+--
 
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_DEVICES',2);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_PROFILE',2);
-INSERT INTO `rms`.`privileges` (`PRIVILEGE`,`ROLE_ID`) VALUES ('VIEW_USERS',2);
+DROP TABLE IF EXISTS `access_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `access_history` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `ACCESS_DATE` datetime NOT NULL,
+  `AUTHENTICATION_STATUS` varchar(255) NOT NULL,
+  `USER_IP` varchar(255) DEFAULT NULL,
+  `USERNAME` varchar(255) DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  KEY `FK1F581C99A1A84EB8` (`CREATED_BY`),
+  KEY `FK1F581C99F3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK1F581C99F3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK1F581C99A1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-## ADDRESS DATA
-INSERT INTO `rms`.`address_data` (`CITY`,`COUNTRY`,`CREATION_DATE`,`HOUSE_NUMBER`,`ID`,`MODIFICATION_DATE`,`STREET`,`STREET_NUMBER`,`VERSION`,`ZIP_CODE`) VALUES ('Lodz','Polska',CURRENT_DATE(),1,1,CURRENT_DATE(),'Ulica1',1,0,'11-111');
-INSERT INTO `rms`.`address_data` (`CITY`,`COUNTRY`,`CREATION_DATE`,`HOUSE_NUMBER`,`ID`,`MODIFICATION_DATE`,`STREET`,`STREET_NUMBER`,`VERSION`,`ZIP_CODE`) VALUES ('Poznan','Polska',CURRENT_DATE(),1,2,CURRENT_DATE(),'Ulica2',1,0,'21-111');
-INSERT INTO `rms`.`address_data` (`CITY`,`COUNTRY`,`CREATION_DATE`,`HOUSE_NUMBER`,`ID`,`MODIFICATION_DATE`,`STREET`,`STREET_NUMBER`,`VERSION`,`ZIP_CODE`) VALUES ('Warszawa','Polska',CURRENT_DATE(),1,3,CURRENT_DATE(),'Ulica3',1,0,'31-111');
-INSERT INTO `rms`.`address_data` (`CITY`,`COUNTRY`,`CREATION_DATE`,`HOUSE_NUMBER`,`ID`,`MODIFICATION_DATE`,`STREET`,`STREET_NUMBER`,`VERSION`,`ZIP_CODE`) VALUES ('Krakow','Polska',CURRENT_DATE(),1,4,CURRENT_DATE(),'Ulica4',1,0,'41-111');
+--
+-- Dumping data for table `access_history`
+--
 
-## ADDRESS DATA CONTACT
-INSERT INTO `rms`.`address_data_contacts` (`ADDRESS_DATA`,`CREATION_DATE`,`ID`,`MODIFICATION_DATE`,`TYPE`,`VALUE`,`VERSION`) VALUES (1,CURRENT_DATE(),1,CURRENT_DATE(),'PHONE','123-456-789',0);
-INSERT INTO `rms`.`address_data_contacts` (`ADDRESS_DATA`,`CREATION_DATE`,`ID`,`MODIFICATION_DATE`,`TYPE`,`VALUE`,`VERSION`) VALUES (1,CURRENT_DATE(),2,CURRENT_DATE(),'FAX','123-456-789-000',0);
-INSERT INTO `rms`.`address_data_contacts` (`ADDRESS_DATA`,`CREATION_DATE`,`ID`,`MODIFICATION_DATE`,`TYPE`,`VALUE`,`VERSION`) VALUES (2,CURRENT_DATE(),3,CURRENT_DATE(),'FACEBOOK','fbcontact',0);
-INSERT INTO `rms`.`address_data_contacts` (`ADDRESS_DATA`,`CREATION_DATE`,`ID`,`MODIFICATION_DATE`,`TYPE`,`VALUE`,`VERSION`) VALUES (2,CURRENT_DATE(),4,CURRENT_DATE(),'SKYPE','skypecontact',0);
-INSERT INTO `rms`.`address_data_contacts` (`ADDRESS_DATA`,`CREATION_DATE`,`ID`,`MODIFICATION_DATE`,`TYPE`,`VALUE`,`VERSION`) VALUES (3,CURRENT_DATE(),5,CURRENT_DATE(),'FACEBOOK','fbcontactbis',0);
-INSERT INTO `rms`.`address_data_contacts` (`ADDRESS_DATA`,`CREATION_DATE`,`ID`,`MODIFICATION_DATE`,`TYPE`,`VALUE`,`VERSION`) VALUES (4,CURRENT_DATE(),6,CURRENT_DATE(),'SKYPE','skypecontactbis',0);
+LOCK TABLES `access_history` WRITE;
+/*!40000 ALTER TABLE `access_history` DISABLE KEYS */;
+INSERT INTO `access_history` VALUES ('1','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'2012-12-09 12:00:00','AUTHENTICATION_OK','127.0.0.1','admin',NULL,NULL);
+/*!40000 ALTER TABLE `access_history` ENABLE KEYS */;
+UNLOCK TABLES;
 
-## USERS
-INSERT INTO `rms`.`users` (`ADDRESS`,`COMMENT`,`CREATION_DATE`,`DELETED`,`ID`,`LOCKED`,`MODIFICATION_DATE`,`PASSWORD`,`ROLE`,`USERNAME`,`VERSION`,`EMAIL`) VALUES (1,'comment_1',current_date(),false,1,false,current_date(),'123',1,'user1',0,'email1');
-INSERT INTO `rms`.`users` (`ADDRESS`,`COMMENT`,`CREATION_DATE`,`DELETED`,`ID`,`LOCKED`,`MODIFICATION_DATE`,`PASSWORD`,`ROLE`,`USERNAME`,`VERSION`,`EMAIL`) VALUES (2,'comment_2',current_date(),false,2,false,current_date(),'123',1,'user2',0,'email2');
-INSERT INTO `rms`.`users` (`ADDRESS`,`COMMENT`,`CREATION_DATE`,`DELETED`,`ID`,`LOCKED`,`MODIFICATION_DATE`,`PASSWORD`,`ROLE`,`USERNAME`,`VERSION`,`EMAIL`) VALUES (3,'comment_3',current_date(),false,3,false,current_date(),'123',2,'user3',0,'email3');
+--
+-- Table structure for table `address_data`
+--
 
-## DEVICES
-INSERT INTO `rms`.`devices` (`CREATION_DATE`,`DESCRIPTION`,`ID`,`MODIFICATION_DATE`,`NAME`,`VERSION`) VALUES (current_date(),'desc1',1,current_date(),'dev1',0);
-INSERT INTO `rms`.`devices` (`CREATION_DATE`,`DESCRIPTION`,`ID`,`MODIFICATION_DATE`,`NAME`,`VERSION`) VALUES (current_date(),'desc2',2,current_date(),'dev2',0);
-INSERT INTO `rms`.`devices` (`CREATION_DATE`,`DESCRIPTION`,`ID`,`MODIFICATION_DATE`,`NAME`,`VERSION`) VALUES (current_date(),'desc3',3,current_date(),'dev3',0);
+DROP TABLE IF EXISTS `address_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `address_data` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `BIRTHDAY` datetime DEFAULT NULL,
+  `CITY` varchar(50) DEFAULT NULL,
+  `COUNTRY` varchar(50) DEFAULT NULL,
+  `FIRST_NAME` varchar(250) DEFAULT NULL,
+  `HOUSE_NUMBER` varchar(10) DEFAULT NULL,
+  `LAST_NAME` varchar(250) DEFAULT NULL,
+  `MIDDLE_NAME` varchar(250) DEFAULT NULL,
+  `STREET` varchar(250) DEFAULT NULL,
+  `STREET_NUMBER` varchar(10) DEFAULT NULL,
+  `TITLE` varchar(250) DEFAULT NULL,
+  `ZIP_CODE` varchar(10) DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  KEY `FK9B9B3D35A1A84EB8` (`CREATED_BY`),
+  KEY `FK9B9B3D35F3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK9B9B3D35F3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK9B9B3D35A1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-## MESSAGES
-INSERT INTO `rms`.`messages` (`ID`,`ARCHIVED_BY_SENDER`,`CONTENT`,`CREATED_BY`,`CREATION_DATE`,`DATE_SENT`,`DELETED_BY_SENDER`,`MODIFICATION_DATE`,`MODIFIED_BY`,`SENDER`,`SUBJECT`,`VERSION`) VALUES (1,0,"CONTENT_1",1,current_date(),current_date(),0,current_date(),1,1,"TOPIC_1",0);
-INSERT INTO `rms`.`messages` (`ID`,`ARCHIVED_BY_SENDER`,`CONTENT`,`CREATED_BY`,`CREATION_DATE`,`DATE_SENT`,`DELETED_BY_SENDER`,`MODIFICATION_DATE`,`MODIFIED_BY`,`SENDER`,`SUBJECT`,`VERSION`) VALUES (2,1,"CONTENT_2",2,current_date(),current_date(),0,current_date(),2,2,"TOPIC_2",0);
+--
+-- Dumping data for table `address_data`
+--
 
-## MESSAGE RECIPENTS
-INSERT INTO `rms`.`message_recipents`(`ARCHIVED_BY_RECIPENT`,`CREATED_BY`,`CREATION_DATE`,`DELETED_BY_RECIPENT`,`ID`,`MESSAGE`,`MODIFICATION_DATE`,`MODIFIED_BY`,`READ_DATE`,`RECIPENT`,`VERSION`)VALUES(0,1,current_date(),0,1,1,current_date(),1,null,2,0);
-INSERT INTO `rms`.`message_recipents`(`ARCHIVED_BY_RECIPENT`,`CREATED_BY`,`CREATION_DATE`,`DELETED_BY_RECIPENT`,`ID`,`MESSAGE`,`MODIFICATION_DATE`,`MODIFIED_BY`,`READ_DATE`,`RECIPENT`,`VERSION`)VALUES(1,1,current_date(),0,2,1,current_date(),1,null,3,0);
-INSERT INTO `rms`.`message_recipents`(`ARCHIVED_BY_RECIPENT`,`CREATED_BY`,`CREATION_DATE`,`DELETED_BY_RECIPENT`,`ID`,`MESSAGE`,`MODIFICATION_DATE`,`MODIFIED_BY`,`READ_DATE`,`RECIPENT`,`VERSION`)VALUES(0,2,current_date(),0,3,2,current_date(),2,current_date(),1,0);
-INSERT INTO `rms`.`message_recipents`(`ARCHIVED_BY_RECIPENT`,`CREATED_BY`,`CREATION_DATE`,`DELETED_BY_RECIPENT`,`ID`,`MESSAGE`,`MODIFICATION_DATE`,`MODIFIED_BY`,`READ_DATE`,`RECIPENT`,`VERSION`)VALUES(0,2,current_date(),1,4,2,current_date(),2,current_date(),3,0);
+LOCK TABLES `address_data` WRITE;
+/*!40000 ALTER TABLE `address_data` DISABLE KEYS */;
+INSERT INTO `address_data` VALUES ('1','2012-12-09 12:00:00','2012-12-09 12:00:00',1,NULL,'£ódŸ','PL',NULL,'1',NULL,NULL,'B³otna','2',NULL,'11-111',NULL,NULL),('2','2012-12-09 12:00:00','2012-12-09 12:00:00',1,NULL,'Warszawa','PL',NULL,'2',NULL,NULL,'Pi³sudskiego','4',NULL,'22-234','1','1'),('3','2012-12-09 12:00:00','2012-12-09 12:00:00',2,NULL,'£ódŸ','PL',NULL,'6',NULL,NULL,'Sierotki Marysi','7',NULL,'65-783','1','1'),('4','2012-12-09 12:00:00','2012-12-09 12:00:00',1,NULL,'Kraków','PL',NULL,'65',NULL,NULL,'Rzgowska','11',NULL,'92-564','1','1'),('5','2012-12-09 12:00:00','2012-12-09 12:00:00',1,NULL,'Lublin','PL',NULL,'12',NULL,NULL,'Jutrzenki','34',NULL,'85-521','1','1');
+/*!40000 ALTER TABLE `address_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `address_data_contacts`
+--
+
+DROP TABLE IF EXISTS `address_data_contacts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `address_data_contacts` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `TYPE` varchar(255) NOT NULL,
+  `VALUE` varchar(250) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `ADDRESS_DATA` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  KEY `FK6826501D44184EBA` (`ADDRESS_DATA`),
+  KEY `FK6826501DA1A84EB8` (`CREATED_BY`),
+  KEY `FK6826501DF3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK6826501DF3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK6826501D44184EBA` FOREIGN KEY (`ADDRESS_DATA`) REFERENCES `address_data` (`ID`),
+  CONSTRAINT `FK6826501DA1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `address_data_contacts`
+--
+
+LOCK TABLES `address_data_contacts` WRITE;
+/*!40000 ALTER TABLE `address_data_contacts` DISABLE KEYS */;
+INSERT INTO `address_data_contacts` VALUES ('1','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'EMAIL','gogo@gmail.com',NULL,NULL,'1'),('10','2012-12-09 12:00:00','2012-12-09 12:00:00',2,'FACEBOOK','jackie.jackie@facebook.com','1','1','5'),('2','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'PHONE','555-555-555',NULL,NULL,'1'),('3','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'FACEBOOK','gogo@gmail.com',NULL,NULL,'1'),('4','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'PHONE','444-444-444','1','1','2'),('5','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'FAX','444-444-333','1','1','2'),('6','2012-12-09 12:00:00','2012-12-09 12:00:00',2,'SKYPE','jackie@wp.pl','1','1','2'),('7','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'EMAIL','misiek@onet.pl','1','1','3'),('8','2012-12-09 12:00:00','2012-12-09 12:00:00',3,'EMAIL','outlander@gmail.com','1','1','4'),('9','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'PHONE','+48-699-666-444','1','1','5');
+/*!40000 ALTER TABLE `address_data_contacts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `c3p0_test_table`
+--
+
+DROP TABLE IF EXISTS `c3p0_test_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `c3p0_test_table` (
+  `a` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `c3p0_test_table`
+--
+
+LOCK TABLES `c3p0_test_table` WRITE;
+/*!40000 ALTER TABLE `c3p0_test_table` DISABLE KEYS */;
+/*!40000 ALTER TABLE `c3p0_test_table` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `devices`
+--
+
+DROP TABLE IF EXISTS `devices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `devices` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `DELETED` tinyint(1) NOT NULL,
+  `DESCRIPTION` longtext,
+  `NAME` varchar(250) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  UNIQUE KEY `NAME` (`NAME`),
+  KEY `FK87C438BDA1A84EB8` (`CREATED_BY`),
+  KEY `FK87C438BDF3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK87C438BDF3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK87C438BDA1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `devices`
+--
+
+LOCK TABLES `devices` WRITE;
+/*!40000 ALTER TABLE `devices` DISABLE KEYS */;
+INSERT INTO `devices` VALUES ('1','2012-12-09 12:00:00','2012-12-09 12:00:00',1,0,'Dyktafon Sony DCT-H32, ³adowarka sieciowa, pokrowiec, mikrofon kierunkowy, pude³ko','Dyktafon Sony DCT-H32','1','1'),('2','2012-12-09 12:00:00','2012-12-09 12:00:00',1,0,'Aparat Nikon D800, ³adowarka sieciowa, statyw, karta pamiêci Compact Flash 8GB','Aparat Nikon D800','1','1'),('3','2012-12-09 12:00:00','2012-12-09 12:00:00',1,1,'Aparat Zenith, pokrowiec','Aparat Zenith','1','1'),('4','2012-12-09 12:00:00','2012-12-09 12:00:00',2,0,'Dyktafon Panasonic AX322, pokrowiec','Dyktafon Panasonic AX322','1','1'),('5','2012-12-09 12:00:00','2012-12-09 12:00:00',1,0,'Kamera LG GH-332-A, ³adowarka, pokrowiec, mikrofon kierunkowy','Kamera LG GH-332-A','1','1'),('6','2012-12-09 12:00:00','2012-12-09 12:00:00',4,1,'Kamera VHS Philips SHA-888, ³adowarka, adapter VHS','Kamera VHS Philips SHA-888','1','1');
+/*!40000 ALTER TABLE `devices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `events`
+--
+
+DROP TABLE IF EXISTS `events`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `events` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `ARCHIVED` tinyint(1) NOT NULL,
+  `DELETED` tinyint(1) NOT NULL,
+  `DESCRIPTION` longtext,
+  `END_DATE` datetime NOT NULL,
+  `LOCKED` tinyint(1) NOT NULL,
+  `START_DATE` datetime NOT NULL,
+  `TITLE` varchar(250) NOT NULL,
+  `TYPE` varchar(255) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `ADDRESS` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  UNIQUE KEY `ADDRESS` (`ADDRESS`),
+  KEY `FK7A9AD519A1A84EB8` (`CREATED_BY`),
+  KEY `FK7A9AD519EFF68599` (`ADDRESS`),
+  KEY `FK7A9AD519F3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK7A9AD519F3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK7A9AD519A1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK7A9AD519EFF68599` FOREIGN KEY (`ADDRESS`) REFERENCES `address_data` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events`
+--
+
+LOCK TABLES `events` WRITE;
+/*!40000 ALTER TABLE `events` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `events_devices_link`
+--
+
+DROP TABLE IF EXISTS `events_devices_link`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `events_devices_link` (
+  `EVENT_ID` varchar(255) NOT NULL,
+  `DEVICE_ID` varchar(255) NOT NULL,
+  PRIMARY KEY (`EVENT_ID`,`DEVICE_ID`),
+  KEY `FKB3B07BA2202EBD61` (`EVENT_ID`),
+  KEY `FKB3B07BA2BE7B1899` (`DEVICE_ID`),
+  CONSTRAINT `FKB3B07BA2BE7B1899` FOREIGN KEY (`DEVICE_ID`) REFERENCES `devices` (`ID`),
+  CONSTRAINT `FKB3B07BA2202EBD61` FOREIGN KEY (`EVENT_ID`) REFERENCES `events` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events_devices_link`
+--
+
+LOCK TABLES `events_devices_link` WRITE;
+/*!40000 ALTER TABLE `events_devices_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events_devices_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `events_users_link`
+--
+
+DROP TABLE IF EXISTS `events_users_link`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `events_users_link` (
+  `EVENT_ID` varchar(255) NOT NULL,
+  `USER_ID` varchar(255) NOT NULL,
+  PRIMARY KEY (`EVENT_ID`,`USER_ID`),
+  KEY `FK43F8C2D7202EBD61` (`EVENT_ID`),
+  KEY `FK43F8C2D7473F93B9` (`USER_ID`),
+  CONSTRAINT `FK43F8C2D7473F93B9` FOREIGN KEY (`USER_ID`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK43F8C2D7202EBD61` FOREIGN KEY (`EVENT_ID`) REFERENCES `events` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events_users_link`
+--
+
+LOCK TABLES `events_users_link` WRITE;
+/*!40000 ALTER TABLE `events_users_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events_users_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `message_recipents`
+--
+
+DROP TABLE IF EXISTS `message_recipents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `message_recipents` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `ARCHIVED_BY_RECIPENT` tinyint(1) NOT NULL,
+  `DELETED_BY_RECIPENT` tinyint(1) NOT NULL,
+  `READ_DATE` datetime DEFAULT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `RECIPENT` varchar(255) NOT NULL,
+  `MESSAGE` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  KEY `FKBDDAE4A747C43B35` (`MESSAGE`),
+  KEY `FKBDDAE4A7A1A84EB8` (`CREATED_BY`),
+  KEY `FKBDDAE4A7F3FA3337` (`MODIFIED_BY`),
+  KEY `FKBDDAE4A7200BDD7E` (`RECIPENT`),
+  CONSTRAINT `FKBDDAE4A7200BDD7E` FOREIGN KEY (`RECIPENT`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FKBDDAE4A747C43B35` FOREIGN KEY (`MESSAGE`) REFERENCES `messages` (`ID`),
+  CONSTRAINT `FKBDDAE4A7A1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FKBDDAE4A7F3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `message_recipents`
+--
+
+LOCK TABLES `message_recipents` WRITE;
+/*!40000 ALTER TABLE `message_recipents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message_recipents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `messages` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `ARCHIVED_BY_SENDER` tinyint(1) NOT NULL,
+  `CONTENT` longtext NOT NULL,
+  `DATE_SENT` datetime NOT NULL,
+  `DELETED_BY_SENDER` tinyint(1) NOT NULL,
+  `SUBJECT` varchar(250) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `SENDER` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  KEY `FK131AF14CA1A84EB8` (`CREATED_BY`),
+  KEY `FK131AF14C1A04BFDF` (`SENDER`),
+  KEY `FK131AF14CF3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK131AF14CF3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK131AF14C1A04BFDF` FOREIGN KEY (`SENDER`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK131AF14CA1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `messages`
+--
+
+LOCK TABLES `messages` WRITE;
+/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `privileges`
+--
+
+DROP TABLE IF EXISTS `privileges`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `privileges` (
+  `ROLE_ID` varchar(255) NOT NULL,
+  `PRIVILEGE` varchar(255) NOT NULL,
+  PRIMARY KEY (`ROLE_ID`,`PRIVILEGE`),
+  KEY `FKBA4DCBE29B9F6399` (`ROLE_ID`),
+  CONSTRAINT `FKBA4DCBE29B9F6399` FOREIGN KEY (`ROLE_ID`) REFERENCES `roles` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `privileges`
+--
+
+LOCK TABLES `privileges` WRITE;
+/*!40000 ALTER TABLE `privileges` DISABLE KEYS */;
+INSERT INTO `privileges` VALUES ('1','MANAGE_ACCESS_HISTORY'),('1','MANAGE_DEVICES'),('1','MANAGE_EVENTS'),('1','MANAGE_MESSAGES'),('1','MANAGE_PROFILE'),('1','MANAGE_ROLES'),('1','MANAGE_USERS'),('2','CLEAN_UP_MESSAGES'),('2','LOOK_UP_DEVICE_EVENTS'),('2','MANAGE_PROFILE'),('2','MARK_DELETE_MESSAGES'),('2','MARK_DELETE_MY_EVENTS'),('2','POST_EVENTS_TO_WAITING_ROOM'),('2','SEND_MESSAGES'),('2','SIGN_UP_FOR_EVENT'),('2','UPDATE_MY_EVENTS'),('2','UPDATE_OUTGOING_MESSAGES'),('2','VIEW_DEVICES'),('2','VIEW_EVENTS'),('2','VIEW_MESSAGES'),('2','VIEW_PROFILE'),('3','SEND_MESSAGES'),('3','VIEW_DEVICES'),('3','VIEW_EVENTS'),('3','VIEW_MESSAGES'),('3','VIEW_PROFILE');
+/*!40000 ALTER TABLE `privileges` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roles` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  UNIQUE KEY `NAME` (`NAME`),
+  KEY `FK4A8969DA1A84EB8` (`CREATED_BY`),
+  KEY `FK4A8969DF3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK4A8969DF3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK4A8969DA1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES ('1','2012-12-09 12:00:00','2012-12-09 12:00:00',2,'Administrator',NULL,NULL),('2','2012-12-09 13:00:00','2012-12-09 13:00:00',1,'User','1','1'),('3','2012-12-09 15:00:00','2012-12-09 16:00:00',1,'Viewer','1','1');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `ID` varchar(255) NOT NULL,
+  `CREATION_DATE` datetime DEFAULT NULL,
+  `MODIFICATION_DATE` datetime DEFAULT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `COMMENT` longtext,
+  `DELETED` tinyint(1) NOT NULL,
+  `EMAIL` varchar(255) NOT NULL,
+  `LOCKED` tinyint(1) NOT NULL,
+  `PASSWORD` varchar(255) NOT NULL,
+  `USERNAME` varchar(32) NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `MODIFIED_BY` varchar(255) DEFAULT NULL,
+  `ADDRESS` varchar(255) DEFAULT NULL,
+  `ROLE` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  UNIQUE KEY `EMAIL` (`EMAIL`),
+  UNIQUE KEY `USERNAME` (`USERNAME`),
+  UNIQUE KEY `ADDRESS` (`ADDRESS`),
+  KEY `FK4D495E8A1A84EB8` (`CREATED_BY`),
+  KEY `FK4D495E8EFF68599` (`ADDRESS`),
+  KEY `FK4D495E849C34E8B` (`ROLE`),
+  KEY `FK4D495E8F3FA3337` (`MODIFIED_BY`),
+  CONSTRAINT `FK4D495E8F3FA3337` FOREIGN KEY (`MODIFIED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK4D495E849C34E8B` FOREIGN KEY (`ROLE`) REFERENCES `roles` (`ID`),
+  CONSTRAINT `FK4D495E8A1A84EB8` FOREIGN KEY (`CREATED_BY`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK4D495E8EFF68599` FOREIGN KEY (`ADDRESS`) REFERENCES `address_data` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('1','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'G³ówny administrator',0,'superadmin@admin.pl',0,'123','admin',NULL,NULL,'1','1'),('2','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'Jeden z u¿ytkowników',0,'user1@user.pl',0,'123','user1','1','1','2','2'),('3','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'Zablokowany u¿ytkownik',0,'user2@user.pl',1,'123','user2','1','1','3','2'),('4','2012-12-09 12:00:00','2012-12-09 12:00:00',2,'Usuniêty u¿ytkownik',1,'user3@user.pl',0,'123','user3','1','1','4','2'),('5','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'Wizytator',0,'viewer1@viewer.pl',0,'123','viewer1','1','1','5','3');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2012-12-09 23:27:28

@@ -169,6 +169,7 @@
 									<directory>${project.basedir}/tools/scripts</directory>
 									<targetPath>${project.basedir}/target/temp/${project.build.finalName}_${project.version}/tools</targetPath>
 									<includes>
+										<include>db*</include>
 										<include>runonce*</include>
 										<include>prepare*</include>
 										<include>maintenance*</include>

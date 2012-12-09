@@ -42,7 +42,7 @@ public class DevicesServiceImpl implements DevicesService {
 	}
 
 	@Override
-	public boolean deleteDevice(Long id, boolean markDeleted) throws ServiceException {
+	public boolean deleteDevice(String id, boolean markDeleted) throws ServiceException {
 		DeviceEntity device = devicesDao.getById(id);
 		if (device == null) {
 			throw new ServiceException("You can't delete device that does not exist!",
@@ -71,7 +71,7 @@ public class DevicesServiceImpl implements DevicesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public DeviceEntity getDeviceById(Long id) throws ServiceException {
+	public DeviceEntity getDeviceById(String id) throws ServiceException {
 		DeviceEntity device = devicesDao.getById(id);
 		if (device == null) {
 			throw new ServiceException("Device with this ID does not exist!", "exceptions.serviceExceptions.devices.notExistId");

@@ -65,7 +65,7 @@ public class UsersDaoImpl extends AbstractGenericDao<UserEntity> implements User
 	}
 
 	@Override
-	public List<UserEntity> getUsersWithRole(Long roleId) {
+	public List<UserEntity> getUsersWithRole(String roleId) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
 		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
@@ -74,7 +74,7 @@ public class UsersDaoImpl extends AbstractGenericDao<UserEntity> implements User
 	}
 
 	@Override
-	public boolean hasUsersWithRole(Long roleId) {
+	public boolean hasUsersWithRole(String roleId) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
 		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);

@@ -23,13 +23,13 @@ public interface DevicesService {
 
 	boolean createDevice(DeviceEntity device) throws ServiceException;
 
-	boolean deleteDevice(Long id, boolean markDeleted) throws ServiceException;
+	boolean deleteDevice(String id, boolean markDeleted) throws ServiceException;
 
 	List<DeviceEntity> getAllDevices();
 
 	List<DeviceEntity> getAllDevices(Boolean deleted);
 
-	DeviceEntity getDeviceById(Long id) throws ServiceException;
+	DeviceEntity getDeviceById(String id) throws ServiceException;
 
 	DeviceEntity getDeviceByName(String name) throws ServiceException;
 

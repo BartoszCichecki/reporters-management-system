@@ -40,7 +40,7 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 	private DevicesDao devicesDao;
 
 	@Override
-	public List<EventEntity> getAllByUser(Long userId, Boolean archived, Boolean deleted, Date from, Date till) {
+	public List<EventEntity> getAllByUser(String userId, Boolean archived, Boolean deleted, Date from, Date till) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<EventEntity> criteriaQuery = criteriaBuilder.createQuery(EventEntity.class);
 		Root<EventEntity> root = criteriaQuery.from(EventEntity.class);
@@ -64,7 +64,7 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 	}
 
 	@Override
-	public List<EventEntity> getDevicesEvents(Long deviceId, Boolean archived, Boolean deleted, Date from, Date till) {
+	public List<EventEntity> getDevicesEvents(String deviceId, Boolean archived, Boolean deleted, Date from, Date till) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<EventEntity> criteriaQuery = criteriaBuilder.createQuery(EventEntity.class);
 		Root<EventEntity> root = criteriaQuery.from(EventEntity.class);

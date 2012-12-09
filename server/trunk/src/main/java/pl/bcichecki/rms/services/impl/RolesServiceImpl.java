@@ -46,7 +46,7 @@ public class RolesServiceImpl implements RolesService {
 	}
 
 	@Override
-	public boolean deleteRole(Long id) throws ServiceException {
+	public boolean deleteRole(String id) throws ServiceException {
 		RoleEntity role = rolesDao.getById(id);
 		if (role == null) {
 			throw new ServiceException("You can't delete role that does not exist!",
@@ -68,7 +68,7 @@ public class RolesServiceImpl implements RolesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public RoleEntity getRoleById(Long id) throws ServiceException {
+	public RoleEntity getRoleById(String id) throws ServiceException {
 		RoleEntity role = rolesDao.getById(id);
 		if (role == null) {
 			throw new ServiceException("Role with this name does not exist!", "exceptions.serviceExceptions.roles.notExistName");
@@ -88,7 +88,7 @@ public class RolesServiceImpl implements RolesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<RoleEntity> getUsersRoles(Long id) throws ServiceException {
+	public List<RoleEntity> getUsersRoles(String id) throws ServiceException {
 		if (usersDao.getById(id) == null) {
 			throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
 		}
@@ -97,7 +97,7 @@ public class RolesServiceImpl implements RolesService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<RoleEntity> getUsersRoles(String username) throws ServiceException {
+	public List<RoleEntity> getUsersRolesByUsername(String username) throws ServiceException {
 		if (usersDao.getByUsername(username) == null) {
 			throw new ServiceException("User with this name does not exist!", "exceptions.serviceExceptions.users.notExistName");
 		}

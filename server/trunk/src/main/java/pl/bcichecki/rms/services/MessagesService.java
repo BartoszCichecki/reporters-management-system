@@ -22,17 +22,19 @@ import pl.bcichecki.rms.model.impl.MessageEntity;
  */
 public interface MessagesService {
 
+	boolean archiveMessage(String id) throws ServiceException;
+
 	boolean createMessage(MessageEntity message) throws ServiceException;
 
-	boolean deleteArchivedInboxMessage(Long id) throws ServiceException;
+	boolean deleteArchivedInboxMessage(String id) throws ServiceException;
 
-	boolean deleteArchivedOutboxMessage(Long id) throws ServiceException;
+	boolean deleteArchivedOutboxMessage(String id) throws ServiceException;
 
-	boolean deleteInboxMessage(Long id) throws ServiceException;
+	boolean deleteInboxMessage(String id) throws ServiceException;
 
-	boolean deleteMessage(Long id) throws ServiceException;
+	boolean deleteMessage(String id) throws ServiceException;
 
-	boolean deleteOutboxMessage(Long id) throws ServiceException;
+	boolean deleteOutboxMessage(String id) throws ServiceException;
 
 	List<MessageEntity> getAllArchivedInboxMessages();
 
@@ -44,17 +46,17 @@ public interface MessagesService {
 
 	List<MessageEntity> getAllOutboxMessages();
 
-	MessageEntity getArchivedInboxMessage(Long id);
+	MessageEntity getArchivedInboxMessage(String id);
 
-	MessageEntity getArchivedOutboxMessage(Long id) throws ServiceException;
+	MessageEntity getArchivedOutboxMessage(String id) throws ServiceException;
 
-	MessageEntity getInboxMessage(Long id) throws ServiceException;
+	MessageEntity getInboxMessage(String id) throws ServiceException;
 
-	MessageEntity getMessage(Long id) throws ServiceException;
+	MessageEntity getMessage(String id) throws ServiceException;
 
-	MessageEntity getOutboxMessage(Long id) throws ServiceException;
+	MessageEntity getOutboxMessage(String id) throws ServiceException;
 
-	boolean markMessageRead(Long id, boolean isRead) throws ServiceException;
+	boolean markMessageRead(String id, boolean isRead) throws ServiceException;
 
 	boolean sendMessage(MessageEntity message) throws ServiceException;
 
