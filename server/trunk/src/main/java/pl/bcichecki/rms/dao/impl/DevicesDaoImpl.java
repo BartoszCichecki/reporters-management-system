@@ -11,6 +11,8 @@
 
 package pl.bcichecki.rms.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -26,11 +28,23 @@ import pl.bcichecki.rms.model.impl.DeviceEntity_;
 public class DevicesDaoImpl extends AbstractGenericDao<DeviceEntity> implements DevicesDao {
 
 	@Override
-	public DeviceEntity getByName(String name) {
+	public List<DeviceEntity> getAll(Boolean deleted) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<DeviceEntity> criteriaQuery = criteriaBuilder.createQuery(DeviceEntity.class);
 		Root<DeviceEntity> root = criteriaQuery.from(DeviceEntity.class);
-		Predicate predicate = criteriaBuilder.equal(root.get(DeviceEntity_.name), name);
+		Predicate predicate = criteriaBuilder.equal(root.get(DeviceEntity_.deleted), deleted);
+		criteriaQuery.where(predicate);
+		return getAllByCriteria(criteriaQuery);
+	}
+
+	@Override
+	public DeviceEntity getByName(String name, boolean deleted) {
+		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
+		CriteriaQuery<DeviceEntity> criteriaQuery = criteriaBuilder.createQuery(DeviceEntity.class);
+		Root<DeviceEntity> root = criteriaQuery.from(DeviceEntity.class);
+		Predicate predicate1 = criteriaBuilder.equal(root.get(DeviceEntity_.name), name);
+		Predicate predicate2 = criteriaBuilder.equal(root.get(DeviceEntity_.deleted), deleted);
+		Predicate predicate = criteriaBuilder.and(predicate1, predicate2);
 		criteriaQuery.where(predicate);
 		return getByCriteria(criteriaQuery);
 	}

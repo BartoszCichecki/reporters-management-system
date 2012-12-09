@@ -37,14 +37,18 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 	@Column(name = "DESCRIPTION", nullable = true, unique = false, length = 1000)
 	protected String description;
 
+	@Column(name = "DELETED", nullable = false, unique = false)
+	protected boolean deleted;
+
 	public DeviceEntity() {
 		super();
 	}
 
-	public DeviceEntity(String name, String description) {
+	public DeviceEntity(String name, String description, boolean deleted) {
 		super();
 		this.name = name;
 		this.description = description;
+		this.deleted = deleted;
 	}
 
 	@Override
@@ -59,6 +63,9 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 			return false;
 		}
 		DeviceEntity other = (DeviceEntity) obj;
+		if (deleted != other.deleted) {
+			return false;
+		}
 		if (description == null) {
 			if (other.description != null) {
 				return false;
@@ -88,15 +95,25 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + (description == null ? 0 : description.hashCode());
 		result = prime * result + (name == null ? 0 : name.hashCode());
 		return result;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
 	}
 
 	@Override
 	public void merge(DeviceEntity device) {
 		setName(StringUtils.defaultString(device.getName()));
 		setDescription(StringUtils.defaultIfBlank(device.getDescription(), null));
+		setDeleted(device.isDeleted());
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setDescription(String description) {
@@ -109,9 +126,9 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 
 	@Override
 	public String toString() {
-		return "Device [name=" + name + ", description=" + description + ", id=" + id + ", creationUser=" + creationUser
-		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-		        + ", version=" + version + "]";
+		return "DeviceEntity [name=" + name + ", description=" + description + ", deleted=" + deleted + ", id=" + id + ", creationUser="
+		        + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

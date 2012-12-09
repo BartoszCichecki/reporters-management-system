@@ -23,9 +23,11 @@ public interface DevicesService {
 
 	boolean createDevice(DeviceEntity device) throws ServiceException;
 
-	boolean deleteDevice(Long id) throws ServiceException;
+	boolean deleteDevice(Long id, boolean markDeleted) throws ServiceException;
 
 	List<DeviceEntity> getAllDevices();
+
+	List<DeviceEntity> getAllDevices(Boolean deleted);
 
 	DeviceEntity getDeviceById(Long id) throws ServiceException;
 

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonParseException;
@@ -61,15 +62,25 @@ public class DevicesRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
-		devicesService.deleteDevice(id);
+	void deleteDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "markDeleted",
+	        required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
+		devicesService.deleteDevice(id, markDeleted);
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllDevices(HttpServletRequest request, HttpServletResponse response) {
-		String json = getGson().toJson(devicesService.getAllDevices());
+		String json = getGson().toJson(devicesService.getAllDevices(false));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
+	@RequestMapping(value = "/trash/all", method = RequestMethod.GET)
+	@ResponseBody
+	String getAllTrashedDevices(HttpServletRequest request, HttpServletResponse response) {
+		String json = getGson().toJson(devicesService.getAllDevices(true));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

@@ -78,29 +78,30 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 	}
 
 	@Override
-	public boolean deleteUser(Long id, boolean forceDelete) throws ServiceException {
+	public boolean deleteUser(Long id, boolean markDeleted) throws ServiceException {
 		UserEntity user = usersDao.getById(id);
 		if (user == null) {
 			throw new ServiceException("You can't delete user that does not exist!",
 			        "exceptions.serviceExceptions.users.cantDeleteNotExisting");
 		}
-		if (forceDelete) {
-			usersDao.delete(user);
-		} else {
+		if (markDeleted) {
 			user.setDeleted(true);
 			usersDao.update(user);
+		} else {
+			usersDao.delete(user);
 		}
 		return true;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<UserEntity> getAllUsers(boolean isDeleted) {
-		if (isDeleted) {
-			return usersDao.getAll();
-		} else {
-			return usersDao.getAllUndeleted();
-		}
+	public List<UserEntity> getAllActiveUsers() {
+		return usersDao.getAll(false, false);
+	}
+
+	@Override
+	public List<UserEntity> getAllUsers() {
+		return usersDao.getAll();
 	}
 
 	@Override

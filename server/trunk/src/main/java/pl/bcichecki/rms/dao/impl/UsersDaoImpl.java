@@ -11,6 +11,7 @@
 
 package pl.bcichecki.rms.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -28,12 +29,18 @@ import pl.bcichecki.rms.model.impl.UserEntity_;
 public class UsersDaoImpl extends AbstractGenericDao<UserEntity> implements UsersDao {
 
 	@Override
-	public List<UserEntity> getAllUndeleted() {
+	public List<UserEntity> getAll(Boolean deleted, Boolean locked) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
 		Root<UserEntity> root = criteriaQuery.from(UserEntity.class);
-		Predicate predicate = criteriaBuilder.equal(root.get(UserEntity_.deleted), false);
-		criteriaQuery.where(predicate);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (deleted != null) {
+			predicates.add(criteriaBuilder.equal(root.get(UserEntity_.deleted), deleted));
+		}
+		if (locked != null) {
+			predicates.add(criteriaBuilder.equal(root.get(UserEntity_.locked), locked));
+		}
+		criteriaQuery.where(criteriaBuilder.and((Predicate[]) predicates.toArray()));
 		return getAllByCriteria(criteriaQuery);
 	}
 

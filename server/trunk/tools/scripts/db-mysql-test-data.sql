@@ -7,6 +7,8 @@
 ## Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
 ## Date:      26-09-2012
 
+USE `rms`;
+
 ## DELETES
 DELETE FROM `rms`.`message_recipents`;
 DELETE FROM `rms`.`messages`;

@@ -76,24 +76,26 @@ public class EventsRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_MY_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_MY_EVENTS + "','" + PrivilegeUtils.Values.DELETE_EVENTS + "','"
+	        + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {
-		eventsService.deleteEvent(id);
+	void deleteEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "markDeleted",
+	        required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
+		eventsService.deleteEvent(id, markDeleted);
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/archived/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
-	        value = "from", required = false) Date from, @RequestParam(value = "till", required = false) Date till)
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllEvents(true, from, till));
+		String json = getGson().toJson(eventsService.getAllEvents(true, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -102,14 +104,46 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	@ResponseBody
 	String getAllEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "from",
-	        required = false) Date from, @RequestParam(value = "till", required = false) Date till) throws BadRequestException,
+	        required = false) Long from, @RequestParam(value = "till", required = false) Long till) throws BadRequestException,
 	        ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllEvents(false, from, till));
+		String json = getGson().toJson(eventsService.getAllEvents(false, false, new Date(from), new Date(till)));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/archive/trash/all", method = RequestMethod.GET)
+	@ResponseBody
+	String getAllTrashedArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
+		}
+		RestUtils.decorateResponseHeaderForJson(response);
+		String json = getGson().toJson(eventsService.getAllEvents(true, true, new Date(from), new Date(till)));
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/trash/all", method = RequestMethod.GET)
+	@ResponseBody
+	String getAllTrashedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
+	        throws BadRequestException, ServiceException {
+		if (from == null || till == null) {
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
+		}
+		RestUtils.decorateResponseHeaderForJson(response);
+		String json = getGson().toJson(eventsService.getAllEvents(false, true, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -118,14 +152,14 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = { "/archived", "/archived/my" }, method = RequestMethod.GET)
 	@ResponseBody
 	String getCurrentUserArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
-	        value = "from", required = false) Date from, @RequestParam(value = "till", required = false) Date till)
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllCurrentUserEvents(true, from, till));
+		String json = getGson().toJson(eventsService.getAllCurrentUserEvents(true, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -134,14 +168,14 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
 	@ResponseBody
 	String getCurrentUserEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(
-	        value = "from", required = false) Date from, @RequestParam(value = "till", required = false) Date till)
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllCurrentUserEvents(false, from, till));
+		String json = getGson().toJson(eventsService.getAllCurrentUserEvents(false, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -150,13 +184,13 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/archived/devices/{deviceId}", method = RequestMethod.GET)
 	@ResponseBody
 	String getDevicesArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long deviceId, @RequestParam(
-	        value = "from", required = false) Date from, @RequestParam(value = "till", required = false) Date till)
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
-		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, true, from, till));
+		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, true, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -165,13 +199,13 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/devices/{deviceId}", method = RequestMethod.GET)
 	@ResponseBody
 	String getDevicesEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long deviceId, @RequestParam(
-	        value = "from", required = false) Date from, @RequestParam(value = "till", required = false) Date till)
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
-		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, false, from, till));
+		String json = getGson().toJson(eventsService.getDevicesEvents(deviceId, false, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -190,14 +224,14 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/archived/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
 	String getUsersArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId, @RequestParam(
-	        value = "from", required = false) Date from, @RequestParam(value = "till", required = false) Date till)
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllUserEvents(userId, true, from, till));
+		String json = getGson().toJson(eventsService.getAllUserEvents(userId, true, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -206,14 +240,14 @@ public class EventsRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
 	@ResponseBody
 	String getUsersEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long userId, @RequestParam(
-	        value = "from", required = false) Date from, @RequestParam(value = "till", required = false) Date till)
+	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
-			throw new BadRequestException("You must provide from date and till date!",
-			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
+			throw new BadRequestException("You must provide from and till timestamp!",
+			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
 		}
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(eventsService.getAllUserEvents(userId, false, from, till));
+		String json = getGson().toJson(eventsService.getAllUserEvents(userId, false, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

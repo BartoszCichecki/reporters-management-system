@@ -23,9 +23,11 @@ public interface UsersService {
 
 	boolean createUser(UserEntity user) throws ServiceException;
 
-	boolean deleteUser(Long id, boolean forceDelete) throws ServiceException;
+	boolean deleteUser(Long id, boolean markDeleted) throws ServiceException;
 
-	List<UserEntity> getAllUsers(boolean isDeleted);
+	List<UserEntity> getAllActiveUsers();
+
+	List<UserEntity> getAllUsers();
 
 	UserEntity getUserById(Long id) throws ServiceException;
 

@@ -66,7 +66,7 @@ public class RolesRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/all" }, method = RequestMethod.GET)
 	@ResponseBody
 	String getAllRoles(HttpServletRequest request, HttpServletResponse response) {
 		RestUtils.decorateResponseHeaderForJson(response);
@@ -76,7 +76,7 @@ public class RolesRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
-	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/my" }, method = RequestMethod.GET)
 	@ResponseBody
 	String getCurrentUsersRoles(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();

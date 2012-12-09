@@ -61,25 +61,33 @@ public class UsersRestWS extends AbstractRestWS {
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "forceDelete",
-	        required = false, defaultValue = "false") boolean forceDelete) throws ServiceException {
-		usersService.deleteUser(id, forceDelete);
+	void deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id, @RequestParam(value = "markDeleted",
+	        required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
+		usersService.deleteUser(id, markDeleted);
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "','"
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + "','" + PrivilegeUtils.Values.SEND_MESSAGES + "','"
 	        + PrivilegeUtils.Values.MANAGE_USERS + "')")
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/all/active", method = RequestMethod.GET)
 	@ResponseBody
-	String getAllUsers(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "deleted", required = false,
-	        defaultValue = "false") boolean isDeleted) {
+	String getAllActiveUsers(HttpServletRequest request, HttpServletResponse response) {
 		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(usersService.getAllUsers(isDeleted));
+		String json = getGson().toJson(usersService.getAllActiveUsers());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + ',' + PrivilegeUtils.Values.SEND_MESSAGES + "','"
-	        + PrivilegeUtils.Values.MANAGE_USERS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@ResponseBody
+	String getAllUsers(HttpServletRequest request, HttpServletResponse response) {
+		RestUtils.decorateResponseHeaderForJson(response);
+		String json = getGson().toJson(usersService.getAllUsers());
+		RestUtils.decorateResponseHeaderWithMD5(response, json);
+		return json;
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_USERS + "','" + PrivilegeUtils.Values.MANAGE_USERS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable Long id) throws ServiceException {

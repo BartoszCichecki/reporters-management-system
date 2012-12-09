@@ -39,7 +39,7 @@ public class PrivilegesRestWS extends AbstractRestWS {
 	protected PrivilegesService privilegesService;
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/all" }, method = RequestMethod.GET)
 	public @ResponseBody
 	String getAllPrivileges(HttpServletRequest request, HttpServletResponse response) {
 		RestUtils.decorateResponseHeaderForJson(response);
@@ -49,7 +49,7 @@ public class PrivilegesRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
-	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/my", method = RequestMethod.GET)
 	public @ResponseBody
 	String getMyPrivileges(HttpServletRequest request, HttpServletResponse response) {
 		RestUtils.decorateResponseHeaderForJson(response);

@@ -35,9 +35,15 @@ public class PrivilegeUtils {
 
 		public static final String DELETE_DEVICES = "DELETE_DEVICES";
 
+		public static final String MARK_DELETE_DEVICES = "MARK_DELETE_DEVICES";
+
 		public static final String DELETE_MESSAGES = "DELETE_MESSAGES";
 
+		public static final String MARK_DELETE_MESSAGES = "MARK_DELETE_MESSAGES";
+
 		public static final String DELETE_MY_EVENTS = "DELETE_MY_EVENTS";
+
+		public static final String MARK_DELETE_MY_EVENTS = "MARK_DELETE_MY_EVENTS";
 
 		public static final String DELETE_ROLES = "DELETE_ROLES";
 
@@ -94,6 +100,8 @@ public class PrivilegeUtils {
 		public static final String VIEW_ROLES = "VIEW_ROLES";
 
 		public static final String VIEW_USERS = "VIEW_USERS";
+
+		public static final String DELETE_EVENTS = "DELETE_EVENTS";
 
 	}
 

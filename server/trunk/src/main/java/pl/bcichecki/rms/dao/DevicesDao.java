@@ -11,6 +11,8 @@
 
 package pl.bcichecki.rms.dao;
 
+import java.util.List;
+
 import pl.bcichecki.rms.model.impl.DeviceEntity;
 
 /**
@@ -18,6 +20,8 @@ import pl.bcichecki.rms.model.impl.DeviceEntity;
  */
 public interface DevicesDao extends GenericDao<DeviceEntity> {
 
-	DeviceEntity getByName(String name);
+	List<DeviceEntity> getAll(Boolean deleted);
+
+	DeviceEntity getByName(String name, boolean deleted);
 
 }

@@ -77,17 +77,20 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 	protected Set<DeviceEntity> devices;
 
 	@Column(name = "LOCKED", nullable = false, unique = false)
-	protected Boolean locked;
+	protected boolean locked;
 
 	@Column(name = "ARCHIVED", nullable = false, unique = false)
-	protected Boolean archived;
+	protected boolean archived;
+
+	@Column(name = "DELETED", nullable = false, unique = false)
+	protected boolean deleted;
 
 	public EventEntity() {
 		super();
 	}
 
 	public EventEntity(String title, EventType type, String description, Date startDate, Date endDate, AddressDataEntity address,
-	        Set<UserEntity> participants, Set<DeviceEntity> devices, Boolean locked, Boolean archived) {
+	        Set<UserEntity> participants, Set<DeviceEntity> devices, boolean locked, boolean archived, boolean deleted) {
 		super();
 		this.title = title;
 		this.type = type;
@@ -99,6 +102,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		this.devices = devices;
 		this.locked = locked;
 		this.archived = archived;
+		this.deleted = deleted;
 	}
 
 	@Override
@@ -120,11 +124,10 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		} else if (!address.equals(other.address)) {
 			return false;
 		}
-		if (archived == null) {
-			if (other.archived != null) {
-				return false;
-			}
-		} else if (!archived.equals(other.archived)) {
+		if (archived != other.archived) {
+			return false;
+		}
+		if (deleted != other.deleted) {
 			return false;
 		}
 		if (description == null) {
@@ -148,11 +151,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		} else if (!endDate.equals(other.endDate)) {
 			return false;
 		}
-		if (locked == null) {
-			if (other.locked != null) {
-				return false;
-			}
-		} else if (!locked.equals(other.locked)) {
+		if (locked != other.locked) {
 			return false;
 		}
 		if (participants == null) {
@@ -219,11 +218,12 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (address == null ? 0 : address.hashCode());
-		result = prime * result + (archived == null ? 0 : archived.hashCode());
+		result = prime * result + (archived ? 1231 : 1237);
+		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + (description == null ? 0 : description.hashCode());
 		result = prime * result + (devices == null ? 0 : devices.hashCode());
 		result = prime * result + (endDate == null ? 0 : endDate.hashCode());
-		result = prime * result + (locked == null ? 0 : locked.hashCode());
+		result = prime * result + (locked ? 1231 : 1237);
 		result = prime * result + (participants == null ? 0 : participants.hashCode());
 		result = prime * result + (startDate == null ? 0 : startDate.hashCode());
 		result = prime * result + (title == null ? 0 : title.hashCode());
@@ -231,11 +231,15 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		return result;
 	}
 
-	public Boolean isArchived() {
+	public boolean isArchived() {
 		return archived;
 	}
 
-	public Boolean isLocked() {
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public boolean isLocked() {
 		return locked;
 	}
 
@@ -251,6 +255,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		setDevices(event.getDevices());
 		setLocked(event.isLocked());
 		setArchived(event.isArchived());
+		setDeleted(event.isDeleted());
 
 	}
 
@@ -258,8 +263,12 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		this.address = address;
 	}
 
-	public void setArchived(Boolean archived) {
+	public void setArchived(boolean archived) {
 		this.archived = archived;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setDescription(String description) {
@@ -274,7 +283,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		this.endDate = endDate;
 	}
 
-	public void setLocked(Boolean locked) {
+	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
 
@@ -298,9 +307,9 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 	public String toString() {
 		return "EventEntity [title=" + title + ", type=" + type + ", description=" + description + ", startDate=" + startDate
 		        + ", endDate=" + endDate + ", address=" + address + ", participants=" + participants + ", devices=" + devices + ", locked="
-		        + locked + ", archived=" + archived + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser="
-		        + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
-		        + "]";
+		        + locked + ", archived=" + archived + ", deleted=" + deleted + ", id=" + id + ", creationUser=" + creationUser
+		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+		        + ", version=" + version + "]";
 	}
 
 }

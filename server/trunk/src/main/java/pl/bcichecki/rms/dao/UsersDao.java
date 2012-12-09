@@ -20,7 +20,7 @@ import pl.bcichecki.rms.model.impl.UserEntity;
  */
 public interface UsersDao extends GenericDao<UserEntity> {
 
-	List<UserEntity> getAllUndeleted();
+	List<UserEntity> getAll(Boolean deleted, Boolean locked);
 
 	UserEntity getByEmail(String email);
 

@@ -57,42 +57,48 @@ public class EventsServiceImpl implements EventsService {
 	}
 
 	@Override
-	public boolean deleteEvent(Long id) throws ServiceException {
+	public boolean deleteEvent(Long id, Boolean markDeleted) throws ServiceException {
 		EventEntity event = eventsDao.getById(id);
 		if (event == null) {
 			throw new ServiceException("You can't delete event that does not exist!",
 			        "exceptions.serviceExceptions.events.cantDeleteNotExisting");
 		}
-		eventsDao.delete(event);
+		if (markDeleted) {
+			event.setDeleted(true);
+			eventsDao.update(event);
+		} else {
+			eventsDao.delete(event);
+		}
 		return true;
 	}
 
 	@Override
-	public List<EventEntity> getAllCurrentUserEvents(boolean archived, Date from, Date till) {
+	public List<EventEntity> getAllCurrentUserEvents(Boolean archived, Boolean deleted, Date from, Date till) {
 		Long currentUserId = SecurityUtils.getCurrentUserId();
-		return getAllUserEvents(currentUserId, archived, from, till);
+		return getAllUserEvents(currentUserId, archived, deleted, from, till);
 	}
 
 	@Override
-	public List<EventEntity> getAllEvents(boolean archived, Date from, Date till) {
-		return getAllUserEvents(null, archived, from, till);
+	public List<EventEntity> getAllEvents(Boolean archived, Boolean deleted, Date from, Date till) {
+		return getAllUserEvents(null, archived, deleted, from, till);
 	}
 
 	@Override
-	public List<EventEntity> getAllUserEvents(Long userId, boolean archived, Date from, Date till) {
-		return eventsDao.getAllByUser(userId, archived, from, till);
+	public List<EventEntity> getAllUserEvents(Long userId, Boolean archived, Boolean deleted, Date from, Date till) {
+		return eventsDao.getAllByUser(userId, archived, deleted, from, till);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<EventEntity> getDevicesEvents(Long deviceId, boolean archived, Date eventsFrom, Date eventsTill) throws ServiceException {
+	public List<EventEntity> getDevicesEvents(Long deviceId, Boolean archived, Boolean deleted, Date eventsFrom, Date eventsTill)
+	        throws ServiceException {
 		if (eventsFrom != null && eventsTill != null && eventsFrom.after(eventsTill)) {
 			throw new ServiceException("Date from must be before till!", "exceptions.serviceExceptions.general.fromAfterTill");
 		}
 		if (devicesDao.getById(deviceId) == null) {
 			throw new ServiceException("Device with this ID does not exist!", "exceptions.serviceExceptions.devices.notExistId");
 		}
-		return eventsDao.getDevicesEvents(deviceId, archived, eventsFrom, eventsTill);
+		return eventsDao.getDevicesEvents(deviceId, archived, deleted, eventsFrom, eventsTill);
 	}
 
 	@Override

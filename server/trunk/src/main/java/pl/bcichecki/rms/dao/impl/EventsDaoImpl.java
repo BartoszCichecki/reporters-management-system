@@ -40,7 +40,7 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 	private DevicesDao devicesDao;
 
 	@Override
-	public List<EventEntity> getAllByUser(Long userId, boolean archived, Date from, Date till) {
+	public List<EventEntity> getAllByUser(Long userId, Boolean archived, Boolean deleted, Date from, Date till) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<EventEntity> criteriaQuery = criteriaBuilder.createQuery(EventEntity.class);
 		Root<EventEntity> root = criteriaQuery.from(EventEntity.class);
@@ -48,7 +48,12 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 		List<Predicate> predicates = new ArrayList<>();
 		predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(EventEntity_.startDate), from));
 		predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(EventEntity_.endDate), till));
-		predicates.add(criteriaBuilder.equal(root.get(EventEntity_.archived), archived));
+		if (archived != null) {
+			predicates.add(criteriaBuilder.equal(root.get(EventEntity_.archived), archived));
+		}
+		if (deleted != null) {
+			predicates.add(criteriaBuilder.equal(root.get(EventEntity_.deleted), deleted));
+		}
 		if (userId != null) {
 			predicates.add(criteriaBuilder.or(criteriaBuilder.isMember(usersDao.getById(userId), root.get(EventEntity_.participants)),
 			        criteriaBuilder.equal(root.get(EventEntity_.creationUser), userId)));
@@ -59,7 +64,7 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 	}
 
 	@Override
-	public List<EventEntity> getDevicesEvents(Long deviceId, boolean archived, Date from, Date till) {
+	public List<EventEntity> getDevicesEvents(Long deviceId, Boolean archived, Boolean deleted, Date from, Date till) {
 		CriteriaBuilder criteriaBuilder = getCriteriaBuilder();
 		CriteriaQuery<EventEntity> criteriaQuery = criteriaBuilder.createQuery(EventEntity.class);
 		Root<EventEntity> root = criteriaQuery.from(EventEntity.class);
@@ -67,7 +72,12 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 		List<Predicate> predicates = new ArrayList<>();
 		predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(EventEntity_.startDate), from));
 		predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(EventEntity_.endDate), till));
-		predicates.add(criteriaBuilder.equal(root.get(EventEntity_.archived), archived));
+		if (archived != null) {
+			predicates.add(criteriaBuilder.equal(root.get(EventEntity_.archived), archived));
+		}
+		if (deleted != null) {
+			predicates.add(criteriaBuilder.equal(root.get(EventEntity_.deleted), deleted));
+		}
 		if (deviceId != null) {
 			predicates.add(criteriaBuilder.isMember(devicesDao.getById(deviceId), root.get(EventEntity_.devices)));
 		}
