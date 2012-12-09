@@ -10,7 +10,7 @@
 	<!-- Configuration -->
 	<mvc:annotation-driven />
 	<context:annotation-config />
-	<context:component-scan base-package="pl.bcichecki.rms" />
+	<context:component-scan base-package="pl.bcichecki.rms.ws.rest" />
 	<!-- Properties -->
 	<bean id="properties" class="pl.bcichecki.rms.utils.PropertiesUtils">
 		<property name="location" value="rms-server.properties" />
