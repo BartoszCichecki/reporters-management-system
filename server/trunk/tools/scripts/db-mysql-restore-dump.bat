@@ -14,7 +14,6 @@ SET DB_ADDRESS=127.0.0.1
 SET DB_PORT=3306
 SET DB_ROOT=root
 SET DB_ROOT_PASSWD=root
-SET DUMP_FILE=dump.sql
 
 ECHO ${project.name}
 ECHO Database dump
@@ -28,23 +27,15 @@ ECHO If you modified connection parameters in rms-server.properties and want thi
 ECHO Connection parameters:
 ECHO  - Database:  %DB_ADDRESS%:%DB_PORT%
 ECHO  - As user:   %DB_ROOT%
-ECHO  - Dump file: %DUMP_FILE%
 ECHO:
 
-SET /P ANS=Are you sure want to continue (Y/N)? 
-if /i {%ANS%}=={y} (goto :dump_yes)
-if /i {%ANS%}=={yes} (goto :dump_yes)
-goto :dump_no
+SET /P DUMP_FILE=Enter name of file you want to restore: 
+goto :dump_restore
 
-:dump_yes
-ECHO Database dump in progress. Please wait...
+:dump_restore
+ECHO Database dump restore in progress. Please wait...
 mysql rms -u %DB_ROOT% -p"%DB_ROOT_PASSWD%" -h %DB_ADDRESS% -P %DB_PORT% < %DUMP_FILE%
 ECHO Success.
-ECHO:
-goto :exit
-
-:dump_no
-ECHO Aborting...
 ECHO:
 goto :exit
 

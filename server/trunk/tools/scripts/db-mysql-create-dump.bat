@@ -14,7 +14,7 @@ SET DB_ADDRESS=127.0.0.1
 SET DB_PORT=3306
 SET DB_ROOT=root
 SET DB_ROOT_PASSWD=root
-SET DUMP_FILE=dump.sql
+SET DUMP_FILE=new_dump.sql
 
 ECHO ${project.name}
 ECHO Database dump
