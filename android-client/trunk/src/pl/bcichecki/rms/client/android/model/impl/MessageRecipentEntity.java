@@ -1,0 +1,140 @@
+/**
+ * Project:   rms-client-android
+ * File:      MessageRecipentEntity.java
+ * License: 
+ *            This file is licensed under GNU General Public License version 3
+ *            http://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
+ * Date:      12-12-2012
+ */
+
+package pl.bcichecki.rms.client.android.model.impl;
+
+import java.util.Date;
+
+import pl.bcichecki.rms.client.android.model.AbstractEntity;
+import pl.bcichecki.rms.client.android.model.Mergeable;
+
+/**
+ * @author Bartosz Cichecki
+ */
+public class MessageRecipentEntity extends AbstractEntity implements Mergeable<MessageRecipentEntity> {
+
+	private static final long serialVersionUID = 8831025727208405070L;
+
+	protected UserEntity recipent;
+
+	protected Date readDate;
+
+	protected boolean archivedByRecipent;
+
+	protected boolean deletedByRecipent;
+
+	public MessageRecipentEntity() {
+		super();
+	}
+
+	public MessageRecipentEntity(UserEntity recipent, Date readDate, boolean archivedByRecipent, boolean deletedByRecipent) {
+		super();
+		this.recipent = recipent;
+		this.readDate = readDate;
+		this.archivedByRecipent = archivedByRecipent;
+		this.deletedByRecipent = deletedByRecipent;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		MessageRecipentEntity other = (MessageRecipentEntity) obj;
+		if (archivedByRecipent != other.archivedByRecipent) {
+			return false;
+		}
+		if (deletedByRecipent != other.deletedByRecipent) {
+			return false;
+		}
+		if (readDate == null) {
+			if (other.readDate != null) {
+				return false;
+			}
+		} else if (!readDate.equals(other.readDate)) {
+			return false;
+		}
+		if (recipent == null) {
+			if (other.recipent != null) {
+				return false;
+			}
+		} else if (!recipent.equals(other.recipent)) {
+			return false;
+		}
+		return true;
+	}
+
+	public Date getReadDate() {
+		return readDate;
+	}
+
+	public UserEntity getRecipent() {
+		return recipent;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (archivedByRecipent ? 1231 : 1237);
+		result = prime * result + (deletedByRecipent ? 1231 : 1237);
+		result = prime * result + (readDate == null ? 0 : readDate.hashCode());
+		result = prime * result + (recipent == null ? 0 : recipent.hashCode());
+		return result;
+	}
+
+	public boolean isArchivedByRecipent() {
+		return archivedByRecipent;
+	}
+
+	public boolean isDeletedByRecipent() {
+		return deletedByRecipent;
+	}
+
+	@Override
+	public void merge(MessageRecipentEntity messageRecipent) {
+		setRecipent(messageRecipent.getRecipent());
+		setReadDate(messageRecipent.getReadDate());
+		setArchivedByRecipent(messageRecipent.isArchivedByRecipent());
+		setDeletedByRecipent(messageRecipent.isDeletedByRecipent());
+	}
+
+	public void setArchivedByRecipent(boolean archivedByRecipent) {
+		this.archivedByRecipent = archivedByRecipent;
+	}
+
+	public void setDeletedByRecipent(boolean deletedByRecipent) {
+		this.deletedByRecipent = deletedByRecipent;
+	}
+
+	public void setReadDate(Date readDate) {
+		this.readDate = readDate;
+	}
+
+	public void setRecipent(UserEntity recipent) {
+		this.recipent = recipent;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageRecipentEntity [recipent=" + recipent + ", readDate=" + readDate + ", archivedByRecipent=" + archivedByRecipent
+		        + ", deletedByRecipent=" + deletedByRecipent + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser="
+		        + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
+		        + "]";
+	}
+
+}
