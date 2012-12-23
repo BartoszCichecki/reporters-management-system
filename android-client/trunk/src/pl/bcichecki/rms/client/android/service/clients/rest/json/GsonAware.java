@@ -1,27 +1,24 @@
 /**
  * Project:   rms-client-android
- * File:      SecurityUtils.java
+ * File:      GsonAware.java
  * License: 
  *            This file is licensed under GNU General Public License version 3
  *            http://www.gnu.org/licenses/gpl-3.0.txt
  *
  * Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
- * Date:      12-12-2012
+ * Date:      23-12-2012
  */
 
-package pl.bcichecki.rms.client.android.utils;
+package pl.bcichecki.rms.client.android.service.clients.rest.json;
 
-import pl.bcichecki.rms.client.android.model.impl.User;
+import com.google.gson.Gson;
 
 /**
  * @author Bartosz Cichecki
  * 
  */
-public class SecurityUtils {
+public interface GsonAware {
 
-	public static User getCurrentUser() {
-		// TODO getCurrentUser
-		return null;
-	}
+	Gson getGson();
 
 }

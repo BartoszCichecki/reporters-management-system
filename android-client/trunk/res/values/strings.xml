@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Reporters Management System Client</string>
+    <string name="app_name">RMS Client</string>
 
 </resources>
