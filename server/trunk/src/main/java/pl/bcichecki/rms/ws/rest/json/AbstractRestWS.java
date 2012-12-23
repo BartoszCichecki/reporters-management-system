@@ -29,6 +29,7 @@ import com.google.gson.GsonBuilder;
 import pl.bcichecki.rms.exceptions.AbstractWithExceptionCodeException;
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
+import pl.bcichecki.rms.model.impl.ExceptionResponseMessage;
 import pl.bcichecki.rms.utils.ResourceBundleUtils;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
@@ -51,42 +52,62 @@ public abstract class AbstractRestWS {
 		return gson;
 	}
 
-	private String getMessage(Exception ex, Locale locale) {
-		if (ex instanceof AbstractWithExceptionCodeException && ((AbstractWithExceptionCodeException) ex).getExceptionCode() != null
+	protected String getMessage(Exception ex, Locale locale) {
+		ExceptionResponseMessage message = new ExceptionResponseMessage();
+		message.setExceptionClass(ex.getClass());
+		message.setExceptionMessage(ex.getMessage());
+		if (ex instanceof AbstractWithExceptionCodeException
 		        && !StringUtils.isBlank(((AbstractWithExceptionCodeException) ex).getExceptionCode())) {
-			return ResourceBundleUtils.getValue(((AbstractWithExceptionCodeException) ex).getExceptionCode(), locale);
+			message.setCode(((AbstractWithExceptionCodeException) ex).getExceptionCode());
+			message.setMessage(ResourceBundleUtils.getValue(((AbstractWithExceptionCodeException) ex).getExceptionCode(), locale));
 		}
-		return ex.getMessage();
+		return getGson().toJson(message);
+	}
+
+	protected String getMessage(Exception ex, String customCode, Locale locale) {
+		return getMessage(ex, customCode, ResourceBundleUtils.getValue(customCode, locale), locale);
+	}
+
+	protected String getMessage(Exception ex, String customCode, String customMessage, Locale locale) {
+		ExceptionResponseMessage message = new ExceptionResponseMessage();
+		message.setExceptionClass(ex.getClass());
+		message.setExceptionMessage(ex.getMessage());
+		message.setCode(customCode);
+		message.setMessage(customMessage);
+		return getGson().toJson(message);
 	}
 
 	@ExceptionHandler({ BadRequestException.class, MissingServletRequestParameterException.class })
 	@ResponseBody
 	String handleBadRequestExceptions(Exception ex, HttpServletRequest request, HttpServletResponse response) {
 		log.info(ex.getMessage(), ex);
-
-		RestUtils.decorateResponseHeaderForText(response);
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		return getMessage(ex, request.getLocale());
+		String responseBody = getMessage(ex, request.getLocale());
+		RestUtils.decorateResponseHeaderWithMD5(response, responseBody);
+		RestUtils.decorateResponseHeaderForJson(response);
+		return responseBody;
 	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	String handleOtherExceptions(Exception ex, HttpServletRequest request, HttpServletResponse response) {
 		log.error("Internal server error!", ex);
-
-		RestUtils.decorateResponseHeaderForText(response);
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		return "Internal server error!";
+		String responseBody = getMessage(ex, "exceptions.internalServerError", request.getLocale());
+		RestUtils.decorateResponseHeaderWithMD5(response, responseBody);
+		RestUtils.decorateResponseHeaderForJson(response);
+		return responseBody;
 	}
 
 	@ExceptionHandler(ServiceException.class)
 	@ResponseBody
 	String handleServiceExceptions(Exception ex, HttpServletRequest request, HttpServletResponse response) {
 		log.info(ex.getMessage(), ex);
-
-		RestUtils.decorateResponseHeaderForText(response);
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		return getMessage(ex, request.getLocale());
+		String responseBody = getMessage(ex, request.getLocale());
+		RestUtils.decorateResponseHeaderWithMD5(response, responseBody);
+		RestUtils.decorateResponseHeaderForJson(response);
+		return responseBody;
 	}
 
 }

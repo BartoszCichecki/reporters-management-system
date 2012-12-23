@@ -54,7 +54,7 @@ public class ProfileRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(value = { "", "/my" }, method = RequestMethod.POST)
 	public void updateProfile(HttpServletRequest request, HttpServletResponse response) throws BadRequestException, ServiceException {
 		String requestBody = RestUtils.getRequestBody(request);
 		if (StringUtils.isBlank(requestBody)) {
