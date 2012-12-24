@@ -9,7 +9,7 @@
  * Date:      23-12-2012
  */
 
-package pl.bcichecki.rms.client.android.service.https.ssl;
+package pl.bcichecki.rms.client.android.services.clients.restful.https.ssl;
 
 import java.io.IOException;
 import java.net.Socket;

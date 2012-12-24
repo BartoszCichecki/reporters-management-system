@@ -14,8 +14,8 @@ package pl.bcichecki.rms.client.android.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.User;
-import pl.bcichecki.rms.client.android.utils.SecurityUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -109,7 +109,7 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 
 	@Override
 	public User getCurrentUser() {
-		return SecurityUtils.getCurrentUser();
+		return UserProfileHolder.getUserProfile();
 	}
 
 	public String getId() {

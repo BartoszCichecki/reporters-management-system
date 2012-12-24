@@ -9,7 +9,7 @@
  * Date:      23-12-2012
  */
 
-package pl.bcichecki.rms.client.android.service.https.ssl;
+package pl.bcichecki.rms.client.android.services.clients.restful.https.ssl;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -20,7 +20,7 @@ import javax.net.ssl.X509TrustManager;
  * @author Bartosz Cichecki
  * 
  */
-public class SimpleX509TrustManager implements X509TrustManager {
+class SimpleX509TrustManager implements X509TrustManager {
 
 	@Override
 	public void checkClientTrusted(X509Certificate[] paramArrayOfX509Certificate, String paramString) throws CertificateException {

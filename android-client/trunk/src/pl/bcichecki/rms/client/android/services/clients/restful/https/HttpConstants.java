@@ -9,7 +9,7 @@
  * Date:      23-12-2012
  */
 
-package pl.bcichecki.rms.client.android.service;
+package pl.bcichecki.rms.client.android.services.clients.restful.https;
 
 /**
  * @author Bartosz Cichecki
@@ -17,7 +17,20 @@ package pl.bcichecki.rms.client.android.service;
  */
 public class HttpConstants {
 
+	public static final String CHARSET_UTF8 = "UTF-8";
+
+	public static final String COLON = ":";
+
+	public static final String CONTENT_MD5 = "Content-MD5";
+
+	public static final String CONTENT_TYPE = "Content-Type";
+
 	public static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
-	public static final String CHARSET_UTF8 = "UTF-8";
+	public static final String CONTENT_TYPE_TEXT_PLAIN = "text/plain";
+
+	public static final String PATH_SEPARATOR = "/";
+
+	public static final String PROTOCOL_HTTPS = "https://";
+
 }

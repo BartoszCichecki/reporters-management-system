@@ -37,16 +37,16 @@ public class UserProfileHolder {
 		return userProfile;
 	}
 
-	public static void setUserProfile(User userProfile) {
-		UserProfileHolder.userProfile = userProfile;
-	}
-
-	public void setPasswordHash(String passwordHash) {
+	public static void setPasswordHash(String passwordHash) {
 		UserProfileHolder.passwordHash = passwordHash;
 	}
 
-	public void setUsername(String username) {
+	public static void setUsername(String username) {
 		UserProfileHolder.username = username;
+	}
+
+	public static void setUserProfile(User userProfile) {
+		UserProfileHolder.userProfile = userProfile;
 	}
 
 }

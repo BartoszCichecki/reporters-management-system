@@ -9,18 +9,16 @@
  * Date:      23-12-2012
  */
 
-package pl.bcichecki.rms.client.android.service.https.authentication;
+package pl.bcichecki.rms.client.android.services.clients.restful.https;
 
 /**
  * @author Bartosz Cichecki
  * 
  */
-public interface Authenticable {
+interface Authenticable {
 
 	void authenticate();
 
 	boolean isAuthenticated();
-
-	void setAuthenticated(boolean isAuthenticated);
 
 }
