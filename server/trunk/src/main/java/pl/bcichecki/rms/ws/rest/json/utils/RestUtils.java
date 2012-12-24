@@ -13,6 +13,7 @@ package pl.bcichecki.rms.ws.rest.json.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +48,11 @@ public class RestUtils {
 		if (headerMd5 == null) {
 			return true;
 		}
-		return headerMd5.equals(SecurityUtils.hashMD5(requestBody));
+		try {
+			return headerMd5.equals(SecurityUtils.hashMD5Base64(requestBody));
+		} catch (UnsupportedEncodingException ex) {
+			throw new IllegalStateException("This system is unable to hash message body properly.", ex);
+		}
 	}
 
 	public static void decorateResponseHeaderForJson(HttpServletResponse response) {
@@ -62,7 +67,11 @@ public class RestUtils {
 
 	public static void decorateResponseHeaderWithMD5(HttpServletResponse response, String responseBody) {
 		if (hashResponseBody) {
-			response.setHeader(CONTENT_MD5, SecurityUtils.hashMD5(responseBody));
+			try {
+				response.setHeader(CONTENT_MD5, SecurityUtils.hashMD5Base64(responseBody));
+			} catch (UnsupportedEncodingException ex) {
+				throw new IllegalStateException("This system is unable to hash message body properly.", ex);
+			}
 		}
 	}
 

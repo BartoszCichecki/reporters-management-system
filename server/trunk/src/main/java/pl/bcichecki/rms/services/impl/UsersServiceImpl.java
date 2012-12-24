@@ -11,6 +11,7 @@
 
 package pl.bcichecki.rms.services.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -153,7 +154,11 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 			throw new ServiceException("User with this username does not exist!", "exceptions.serviceExceptions.users.notExistUsername");
 		}
 		String newPassword = SecurityUtils.getRandomPassword();
-		user.setPassword(SecurityUtils.hashSHA512(newPassword, username));
+		try {
+			user.setPassword(SecurityUtils.hashSHA512Base64(newPassword));
+		} catch (UnsupportedEncodingException ex) {
+			throw new IllegalStateException("This system is unable to hash passwords properly.", ex);
+		}
 		usersDao.update(user);
 		return newPassword;
 	}

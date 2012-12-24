@@ -23,6 +23,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.ExclusionStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -30,7 +31,9 @@ import pl.bcichecki.rms.exceptions.AbstractWithExceptionCodeException;
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.ExceptionResponseMessage;
+import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.utils.ResourceBundleUtils;
+import pl.bcichecki.rms.ws.rest.json.gson.exclusionStrategies.PasswordExclusionStrategy;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -45,6 +48,13 @@ public abstract class AbstractRestWS {
 	public AbstractRestWS() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.setPrettyPrinting();
+		try {
+			ExclusionStrategy passwordExclusionStrategy = new PasswordExclusionStrategy(UserEntity.class,
+			        UserEntity.class.getDeclaredField("password"));
+			gsonBuilder.setExclusionStrategies(passwordExclusionStrategy);
+		} catch (NoSuchFieldException | SecurityException e) {
+			throw new RuntimeException(e);
+		}
 		gson = gsonBuilder.create();
 	}
 

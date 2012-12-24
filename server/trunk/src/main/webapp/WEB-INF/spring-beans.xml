@@ -8,9 +8,7 @@
        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<!-- Configuration -->
-	<mvc:annotation-driven />
 	<context:annotation-config />
-	<context:component-scan base-package="pl.bcichecki.rms.ws.rest" />
 	<!-- Properties -->
 	<bean id="properties" class="pl.bcichecki.rms.utils.PropertiesUtils">
 		<property name="location" value="rms-server.properties" />

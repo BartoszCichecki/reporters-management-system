@@ -11,6 +11,7 @@
 
 package pl.bcichecki.rms.services.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,9 +38,9 @@ public class EmergencyAdminServiceImpl implements EmergencyAdminService, Initial
 	}
 
 	@Override
-	public void afterPropertiesSet() {
+	public void afterPropertiesSet() throws UnsupportedEncodingException {
 		emergencyAdmin.setRole(new RoleEntity("Master Admin", getEmergencyAdminPrivilages()));
-		emergencyAdmin.setPassword(SecurityUtils.hashSHA512(emergencyAdmin.getPassword(), emergencyAdmin.getUsername()));
+		emergencyAdmin.setPassword(SecurityUtils.hashSHA512Base64(emergencyAdmin.getPassword()));
 	}
 
 	@Override

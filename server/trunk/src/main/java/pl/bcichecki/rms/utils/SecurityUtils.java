@@ -11,8 +11,10 @@
 
 package pl.bcichecki.rms.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.Authentication;
@@ -26,6 +28,8 @@ import pl.bcichecki.rms.services.UsersService;
  * @author Bartosz Cichecki
  */
 public class SecurityUtils {
+
+	private static final String CHARSET_UTF8 = "UTF-8";
 
 	private static UsersService usersService;
 
@@ -73,12 +77,18 @@ public class SecurityUtils {
 		return UUID.randomUUID().toString();
 	}
 
-	public static String hashMD5(String stringToHash) {
-		return DigestUtils.md5Hex(stringToHash);
+	public static String hashMD5Base64(String stringToHash) throws UnsupportedEncodingException {
+		byte[] bytes = stringToHash.getBytes(CHARSET_UTF8);
+		byte[] sha512bytes = DigestUtils.md5(bytes);
+		byte[] base64bytes = Base64.encodeBase64(sha512bytes);
+		return new String(base64bytes, CHARSET_UTF8);
 	}
 
-	public static String hashSHA512(String stringToHash, String salt) {
-		return DigestUtils.sha512Hex(stringToHash + ":" + salt);
+	public static String hashSHA512Base64(String stringToHash) throws UnsupportedEncodingException {
+		byte[] bytes = stringToHash.getBytes(CHARSET_UTF8);
+		byte[] sha512bytes = DigestUtils.sha512(bytes);
+		byte[] base64bytes = Base64.encodeBase64(sha512bytes);
+		return new String(base64bytes, CHARSET_UTF8);
 	}
 
 	public static void setUsersService(UsersService usersService) {

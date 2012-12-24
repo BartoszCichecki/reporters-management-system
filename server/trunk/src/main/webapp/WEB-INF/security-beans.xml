@@ -12,13 +12,6 @@
 		authentication-manager-ref="authenticationManager" use-expressions="true">
 		<sec:custom-filter position="BASIC_AUTH_FILTER" ref="basicAuthenticationFilter" />
 		<sec:custom-filter after="BASIC_AUTH_FILTER" ref="digestAuthenticationFilter" />
-		<!-- <sec:intercept-url pattern="/rest/accessHistory/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url 
-			pattern="/rest/devices/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url pattern="/rest/events/*" 
-			access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url pattern="/rest/messages/*" access="isAuthenticated()" 
-			requires-channel="https" /> <sec:intercept-url pattern="/rest/privileges/*" access="isAuthenticated()" requires-channel="https" 
-			/> <sec:intercept-url pattern="/rest/profile/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url 
-			pattern="/rest/roles/*" access="isAuthenticated()" requires-channel="https" /> <sec:intercept-url pattern="/rest/users/*" 
-			access="isAuthenticated()" requires-channel="https" /> -->
 		<sec:intercept-url pattern="/rest/*" access="isAuthenticated()" requires-channel="https" />
 		<sec:intercept-url pattern="/rest/forgotPassword/*" method="GET" access="isAnonymous()"
 			requires-channel="https" />
