@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in"><b>Sign in</b></string>
+    <string name="forgot_password">Recover lost password</string>
+    <string name="signing_in">Signing in&#8230;</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="register">Register</string>
+    <string name="remember_user">Remember me</string>
+    <string name="enter_your_credentials">Enter your credentials:</string>
+
+</resources>

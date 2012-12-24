@@ -21,12 +21,12 @@ import org.apache.http.entity.StringEntity;
 
 import android.content.Context;
 
+import com.google.inject.Inject;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.AbstractRestClient;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
-import pl.bcichecki.rms.client.android.services.clients.restful.https.SimpleAsyncHttpsClient;
 import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestUtils;
 
 /**
@@ -38,8 +38,9 @@ public class ProfileRestClient extends AbstractRestClient {
 
 	private static final String RESOURCE_PATH_PROFILE = "profile";
 
-	public ProfileRestClient(Context context, SimpleAsyncHttpsClient simpleAsyncHttpsClient) {
-		super(context, simpleAsyncHttpsClient);
+	@Inject
+	public ProfileRestClient(Context context) {
+		super(context);
 	}
 
 	public void getProfile(AsyncHttpResponseHandler handler) {

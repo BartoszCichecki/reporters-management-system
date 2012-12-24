@@ -32,6 +32,8 @@ import pl.bcichecki.rms.client.android.services.clients.restful.https.ssl.Simple
  */
 public class SimpleAsyncHttpsClient extends AsyncHttpClient implements HttpBasicAuthenticatable {
 
+	private static final int CONNECTION_TIMEOUT = 5 * 1000;
+
 	private String username;
 
 	private String password;
@@ -51,6 +53,7 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient implements HttpBasic
 			keyStore.load(null, null);
 			SSLSocketFactory sslSocketFactory = new SimpleSSLSocketFactory(keyStore);
 			setSSLSocketFactory(sslSocketFactory);
+			setTimeout(CONNECTION_TIMEOUT);
 		} catch (KeyStoreException e) {
 			throw new IllegalStateException(e);
 		} catch (NoSuchAlgorithmException e) {

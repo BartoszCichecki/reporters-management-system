@@ -17,6 +17,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.inject.Inject;
 
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesHolder;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
@@ -28,6 +29,7 @@ import pl.bcichecki.rms.client.android.services.clients.restful.https.SimpleAsyn
  */
 public abstract class AbstractRestClient implements GsonAware {
 
+	@Inject
 	private SimpleAsyncHttpsClient simpleAsyncHttpsClient;
 
 	private Context context;
@@ -40,9 +42,8 @@ public abstract class AbstractRestClient implements GsonAware {
 		gson = gsonBuilder.create();
 	}
 
-	public AbstractRestClient(Context context, SimpleAsyncHttpsClient simpleAsyncHttpsClient) {
+	public AbstractRestClient(Context context) {
 		this.context = context;
-		this.simpleAsyncHttpsClient = simpleAsyncHttpsClient;
 	}
 
 	protected String getAbsoluteAddress(String... resourceSuffixes) {
