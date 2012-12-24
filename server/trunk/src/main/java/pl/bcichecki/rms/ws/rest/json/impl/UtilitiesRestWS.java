@@ -41,7 +41,7 @@ public class UtilitiesRestWS extends AbstractRestWS {
 	@Autowired
 	private NotificationService notificationService;
 
-	@RequestMapping(value = "/forgotPassword/{username}", method = RequestMethod.GET)
+	@RequestMapping(value = "/forgotPassword/{username}", method = RequestMethod.POST)
 	void forgotPassword(HttpServletRequest request, HttpServletResponse response, @PathVariable String username) throws ServiceException {
 		String newPassword = usersService.recreatePassword(username);
 		notificationService.notifyUserAboutPasswordChange(username, newPassword, request.getLocale());
