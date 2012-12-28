@@ -19,14 +19,14 @@ import pl.bcichecki.rms.client.android.model.impl.User;
  */
 public class UserProfileHolder {
 
-	private static String username;
-
-	private static String passwordHash;
-
 	private static User userProfile;
 
-	public static String getPasswordHash() {
-		return passwordHash;
+	private static String username;
+
+	private static String password;
+
+	public static String getPassword() {
+		return password;
 	}
 
 	public static String getUsername() {
@@ -37,8 +37,8 @@ public class UserProfileHolder {
 		return userProfile;
 	}
 
-	public static void setPasswordHash(String passwordHash) {
-		UserProfileHolder.passwordHash = passwordHash;
+	public static void setPassword(String password) {
+		UserProfileHolder.password = password;
 	}
 
 	public static void setUsername(String username) {

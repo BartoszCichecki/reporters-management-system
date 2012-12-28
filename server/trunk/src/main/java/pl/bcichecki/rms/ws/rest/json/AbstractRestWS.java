@@ -68,8 +68,8 @@ public abstract class AbstractRestWS {
 		message.setExceptionMessage(ex.getMessage());
 		if (ex instanceof AbstractWithExceptionCodeException
 		        && !StringUtils.isBlank(((AbstractWithExceptionCodeException) ex).getExceptionCode())) {
-			message.setCode(((AbstractWithExceptionCodeException) ex).getExceptionCode());
-			message.setMessage(ResourceBundleUtils.getValue(((AbstractWithExceptionCodeException) ex).getExceptionCode(), locale));
+			message.setCustomCode(((AbstractWithExceptionCodeException) ex).getExceptionCode());
+			message.setCustomMessage(ResourceBundleUtils.getValue(((AbstractWithExceptionCodeException) ex).getExceptionCode(), locale));
 		}
 		return getGson().toJson(message);
 	}
@@ -82,8 +82,8 @@ public abstract class AbstractRestWS {
 		ExceptionResponseMessage message = new ExceptionResponseMessage();
 		message.setExceptionClass(ex.getClass());
 		message.setExceptionMessage(ex.getMessage());
-		message.setCode(customCode);
-		message.setMessage(customMessage);
+		message.setCustomCode(customCode);
+		message.setCustomMessage(customMessage);
 		return getGson().toJson(message);
 	}
 

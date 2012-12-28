@@ -21,7 +21,6 @@ import org.apache.http.entity.StringEntity;
 
 import android.content.Context;
 
-import com.google.inject.Inject;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.model.impl.User;
@@ -38,13 +37,21 @@ public class UtilitiesRestClient extends AbstractRestClient {
 
 	private static final String RESOURCE_PATH_REGISTER = "register";
 
-	@Inject
 	public UtilitiesRestClient(Context context) {
 		super(context);
 	}
 
+	public UtilitiesRestClient(Context context, String username, String password) {
+		super(context, username, password);
+	}
+
+	public UtilitiesRestClient(Context context, String username, String password, String realm, String host, int port,
+	        String webServiceContextPath) {
+		super(context, username, password, realm, host, port, webServiceContextPath);
+	}
+
 	public void forgotPassword(String username, AsyncHttpResponseHandler handler) {
-		getSimpleAsyncHttpsClient().post(getContext(), getAbsoluteAddress(RESOURCE_PATH_FORGOT_PASSWORD, username), null, handler);
+		post(getContext(), getAbsoluteAddress(RESOURCE_PATH_FORGOT_PASSWORD, username), null, handler);
 	}
 
 	public void registerUser(User user, AsyncHttpResponseHandler handler) throws UnsupportedEncodingException {
@@ -54,7 +61,7 @@ public class UtilitiesRestClient extends AbstractRestClient {
 		List<Header> headers = new ArrayList<Header>();
 		RestUtils.decorareHeaderWithMD5(headers, userAsJson);
 
-		getSimpleAsyncHttpsClient().put(getContext(), getAbsoluteAddress(RESOURCE_PATH_REGISTER), (Header[]) headers.toArray(),
-		        userAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
+		put(getContext(), getAbsoluteAddress(RESOURCE_PATH_REGISTER), (Header[]) headers.toArray(), userAsHttpEntity,
+		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
 	}
 }

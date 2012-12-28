@@ -20,20 +20,20 @@ public class ExceptionResponseMessage {
 
 	private String exceptionMessage;
 
-	private String message;
+	private String customMessage;
 
-	private String code;
+	private String customCode;
 
 	public ExceptionResponseMessage() {
 		super();
 	}
 
-	public ExceptionResponseMessage(Class<?> exceptionClass, String exceptionMessage, String message, String code) {
+	public ExceptionResponseMessage(Class<?> exceptionClass, String exceptionMessage, String customMessage, String code) {
 		super();
 		this.exceptionClass = exceptionClass;
 		this.exceptionMessage = exceptionMessage;
-		this.message = message;
-		this.code = code;
+		this.customMessage = customMessage;
+		this.customCode = code;
 	}
 
 	@Override
@@ -48,11 +48,11 @@ public class ExceptionResponseMessage {
 			return false;
 		}
 		ExceptionResponseMessage other = (ExceptionResponseMessage) obj;
-		if (code == null) {
-			if (other.code != null) {
+		if (customCode == null) {
+			if (other.customCode != null) {
 				return false;
 			}
-		} else if (!code.equals(other.code)) {
+		} else if (!customCode.equals(other.customCode)) {
 			return false;
 		}
 		if (exceptionClass == null) {
@@ -69,18 +69,22 @@ public class ExceptionResponseMessage {
 		} else if (!exceptionMessage.equals(other.exceptionMessage)) {
 			return false;
 		}
-		if (message == null) {
-			if (other.message != null) {
+		if (customMessage == null) {
+			if (other.customMessage != null) {
 				return false;
 			}
-		} else if (!message.equals(other.message)) {
+		} else if (!customMessage.equals(other.customMessage)) {
 			return false;
 		}
 		return true;
 	}
 
-	public String getCode() {
-		return code;
+	public String getCustomCode() {
+		return customCode;
+	}
+
+	public String getCustomMessage() {
+		return customMessage;
 	}
 
 	public Class<?> getExceptionClass() {
@@ -91,23 +95,23 @@ public class ExceptionResponseMessage {
 		return exceptionMessage;
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (code == null ? 0 : code.hashCode());
+		result = prime * result + (customCode == null ? 0 : customCode.hashCode());
 		result = prime * result + exceptionClass.toString().hashCode();
 		result = prime * result + (exceptionMessage == null ? 0 : exceptionMessage.hashCode());
-		result = prime * result + (message == null ? 0 : message.hashCode());
+		result = prime * result + (customMessage == null ? 0 : customMessage.hashCode());
 		return result;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setCustomCode(String code) {
+		this.customCode = code;
+	}
+
+	public void setCustomMessage(String localizedMessage) {
+		customMessage = localizedMessage;
 	}
 
 	public void setExceptionClass(Class<?> exceptionClazz) {
@@ -118,14 +122,10 @@ public class ExceptionResponseMessage {
 		this.exceptionMessage = exceptionMessage;
 	}
 
-	public void setMessage(String localizedMessage) {
-		message = localizedMessage;
-	}
-
 	@Override
 	public String toString() {
-		return "ExceptionResponseMessage [exceptionClass=" + exceptionClass + ", exceptionMessage=" + exceptionMessage + ", message="
-		        + message + ", code=" + code + "]";
+		return "ExceptionResponseMessage [exceptionClass=" + exceptionClass + ", exceptionMessage=" + exceptionMessage + ", customMessage="
+		        + customMessage + ", customCode=" + customCode + "]";
 	}
 
 }

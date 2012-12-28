@@ -17,9 +17,8 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.inject.Inject;
 
-import pl.bcichecki.rms.client.android.holders.SharedPreferencesHolder;
+import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.SimpleAsyncHttpsClient;
 
@@ -27,12 +26,9 @@ import pl.bcichecki.rms.client.android.services.clients.restful.https.SimpleAsyn
  * @author Bartosz Cichecki
  * 
  */
-public abstract class AbstractRestClient implements GsonAware {
+public abstract class AbstractRestClient extends SimpleAsyncHttpsClient implements GsonAware {
 
-	@Inject
-	private SimpleAsyncHttpsClient simpleAsyncHttpsClient;
-
-	private Context context;
+	protected String webServiceContextPath;
 
 	private static Gson gson;
 
@@ -42,14 +38,30 @@ public abstract class AbstractRestClient implements GsonAware {
 		gson = gsonBuilder.create();
 	}
 
+	private Context context;
+
 	public AbstractRestClient(Context context) {
+		this(context, SharedPreferencesWrapper.getUsername(), SharedPreferencesWrapper.getPasswordHash(), SharedPreferencesWrapper
+		        .getServerRealm(), SharedPreferencesWrapper.getServerAddress(), SharedPreferencesWrapper.getServerPort(),
+		        SharedPreferencesWrapper.getWebserviceContextPath());
+	}
+
+	public AbstractRestClient(Context context, String username, String password) {
+		this(context, username, password, SharedPreferencesWrapper.getServerRealm(), SharedPreferencesWrapper.getServerAddress(),
+		        SharedPreferencesWrapper.getServerPort(), SharedPreferencesWrapper.getWebserviceContextPath());
+	}
+
+	public AbstractRestClient(Context context, String username, String password, String realm, String host, int port,
+	        String webServiceContextPath) {
+		super(username, password, realm, host, port);
 		this.context = context;
+		this.webServiceContextPath = webServiceContextPath;
 	}
 
 	protected String getAbsoluteAddress(String... resourceSuffixes) {
 		StringBuilder absoluteAddress = new StringBuilder();
-		absoluteAddress.append(HttpConstants.PROTOCOL_HTTPS).append(getServerAddress()).append(HttpConstants.COLON).append(getServerPort())
-		        .append(getWebserviceContextPath());
+		absoluteAddress.append(HttpConstants.PROTOCOL_HTTPS).append(host).append(HttpConstants.COLON).append(port)
+		        .append(webServiceContextPath);
 		for (String resourceSuffix : resourceSuffixes) {
 			if (!resourceSuffix.startsWith(HttpConstants.PATH_SEPARATOR)) {
 				absoluteAddress.append(HttpConstants.PATH_SEPARATOR);
@@ -69,25 +81,6 @@ public abstract class AbstractRestClient implements GsonAware {
 	@Override
 	public Gson getGson() {
 		return gson;
-	}
-
-	protected String getServerAddress() {
-		return SharedPreferencesHolder.getSharedPreferences().getString(SharedPreferencesHolder.Keys.SERVER_ADDRESS,
-		        SharedPreferencesHolder.Defaults.SERVER_ADDRESS);
-	}
-
-	protected int getServerPort() {
-		return SharedPreferencesHolder.getSharedPreferences().getInt(SharedPreferencesHolder.Keys.SERVER_PORT,
-		        SharedPreferencesHolder.Defaults.SERVER_PORT);
-	}
-
-	public SimpleAsyncHttpsClient getSimpleAsyncHttpsClient() {
-		return simpleAsyncHttpsClient;
-	}
-
-	protected String getWebserviceContextPath() {
-		return SharedPreferencesHolder.getSharedPreferences().getString(SharedPreferencesHolder.Keys.SERVER_WEBSERVICE_CONTEXT_PATH,
-		        SharedPreferencesHolder.Defaults.SERVER_WEBSERVICE_CONTEXT_PATH);
 	}
 
 }

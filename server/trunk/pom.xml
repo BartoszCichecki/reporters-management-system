@@ -1,13 +1,5 @@
-<!--
-	Project: rms-server
-	File: pom.xml
-	License:
-	This file is licensed under GNU General Public License version 3
-	http://www.gnu.org/licenses/gpl-3.0.txt
-
-	Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
-	Date: 07-08-2012
--->
+<!-- Project: rms-server File: pom.xml License: This file is licensed under GNU General Public License version 3 http://www.gnu.org/licenses/gpl-3.0.txt 
+	Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ] Date: 07-08-2012 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>

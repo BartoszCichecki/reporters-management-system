@@ -15,8 +15,6 @@
 	</bean>
 	<!-- JPA configuration -->
 	<import resource="jpa-beans.xml" />
-	<!-- Security configuration -->
-	<import resource="security-beans.xml" />
 	<!-- Application context -->
 	<bean id="applicationContextHolder" class="pl.bcichecki.rms.holders.ApplicationContextHolder" />
 	<!-- DAO beans -->

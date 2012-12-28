@@ -11,13 +11,12 @@
 
 package pl.bcichecki.rms.client.android.services.clients.restful.utils;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
-import pl.bcichecki.rms.client.android.holders.SharedPreferencesHolder;
+import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
 import pl.bcichecki.rms.client.android.utils.SecurityUtils;
 
@@ -32,13 +31,9 @@ public class RestUtils {
 	}
 
 	public static void decorareHeaderWithMD5(List<Header> headers, String content) {
-		if (SharedPreferencesHolder.getSharedPreferences().getBoolean(SharedPreferencesHolder.Keys.VALIDATION_OUTGOING_MD5,
-		        SharedPreferencesHolder.Defaults.VALIDATION_OUTGOING_MD5)) {
-			try {
-				headers.add(new BasicHeader(HttpConstants.CONTENT_MD5, SecurityUtils.hashMD5Base64(content)));
-			} catch (UnsupportedEncodingException ex) {
-				throw new IllegalStateException("This system is unable to generate MD5 chesksum properly!", ex);
-			}
+		if (SharedPreferencesWrapper.getSharedPreferences().getBoolean(SharedPreferencesWrapper.Keys.SERVER_OUTGOING_MD5,
+		        SharedPreferencesWrapper.Defaults.SERVER_OUTGOING_MD5)) {
+			headers.add(new BasicHeader(HttpConstants.CONTENT_MD5, SecurityUtils.hashMD5Base64(content)));
 		}
 	}
 }

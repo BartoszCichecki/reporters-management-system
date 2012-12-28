@@ -21,7 +21,6 @@ import org.apache.http.entity.StringEntity;
 
 import android.content.Context;
 
-import com.google.inject.Inject;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.model.impl.User;
@@ -38,13 +37,21 @@ public class ProfileRestClient extends AbstractRestClient {
 
 	private static final String RESOURCE_PATH_PROFILE = "profile";
 
-	@Inject
 	public ProfileRestClient(Context context) {
 		super(context);
 	}
 
+	public ProfileRestClient(Context context, String username, String password) {
+		super(context, username, password);
+	}
+
+	public ProfileRestClient(Context context, String username, String password, String realm, String host, int port,
+	        String webServiceContextPath) {
+		super(context, username, password, realm, host, port, webServiceContextPath);
+	}
+
 	public void getProfile(AsyncHttpResponseHandler handler) {
-		getSimpleAsyncHttpsClient().get(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY), handler);
+		get(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY), handler);
 	}
 
 	public void updateProfile(User profile, AsyncHttpResponseHandler handler) throws UnsupportedEncodingException {
@@ -54,8 +61,8 @@ public class ProfileRestClient extends AbstractRestClient {
 		List<Header> headers = new ArrayList<Header>();
 		RestUtils.decorareHeaderWithMD5(headers, profileAsJson);
 
-		getSimpleAsyncHttpsClient().post(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY),
-		        (Header[]) headers.toArray(), profileAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
+		post(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY), (Header[]) headers.toArray(), profileAsHttpEntity,
+		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
 	}
 
 }

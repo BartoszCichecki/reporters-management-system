@@ -1,12 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_forgot_password"
+        android:id="@+id/activity_login_menu_forgot_password"
         android:showAsAction="never"
-        android:title="@string/forgot_password"/>
-   	<item
-        android:id="@+id/menu_register"
+        android:title="@string/activity_login_menu_forgot_password"/>
+    <item
+        android:id="@+id/activity_login_menu_register"
         android:showAsAction="never"
-        android:title="@string/register"/>
+        android:title="@string/activity_login_menu_register"/>
+    <item
+        android:id="@+id/activity_login_menu_settings"
+        android:showAsAction="never"
+        android:title="@string/activity_login_menu_settings"/>
+    <item
+        android:id="@+id/activity_login_menu_about"
+        android:showAsAction="never"
+        android:title="@string/activity_login_menu_about"/>
 
 </menu>

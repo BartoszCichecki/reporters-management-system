@@ -22,6 +22,7 @@ import java.security.cert.CertificateException;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
+import com.google.inject.Singleton;
 import com.loopj.android.http.AsyncHttpClient;
 
 import pl.bcichecki.rms.client.android.services.clients.restful.https.ssl.SimpleSSLSocketFactory;
@@ -30,30 +31,35 @@ import pl.bcichecki.rms.client.android.services.clients.restful.https.ssl.Simple
  * @author Bartosz Cichecki
  * 
  */
-public class SimpleAsyncHttpsClient extends AsyncHttpClient implements HttpBasicAuthenticatable {
+@Singleton
+public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 
-	private static final int CONNECTION_TIMEOUT = 5 * 1000;
+	protected int connectionTimeout = 5 * 1000;
 
-	private String username;
+	protected String username;
 
-	private String password;
+	protected String password;
 
-	private String realm;
+	protected String realm;
 
-	private String host;
+	protected String host;
 
-	private int port;
+	protected int port;
 
-	private boolean authenticated;
-
-	SimpleAsyncHttpsClient() {
+	public SimpleAsyncHttpsClient(String username, String password, String realm, String host, int port) {
 		super();
+		this.username = username;
+		this.password = password;
+		this.realm = realm;
+		this.host = host;
+		this.port = port;
+
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			keyStore.load(null, null);
 			SSLSocketFactory sslSocketFactory = new SimpleSSLSocketFactory(keyStore);
 			setSSLSocketFactory(sslSocketFactory);
-			setTimeout(CONNECTION_TIMEOUT);
+			setTimeout(connectionTimeout);
 		} catch (KeyStoreException e) {
 			throw new IllegalStateException(e);
 		} catch (NoSuchAlgorithmException e) {
@@ -67,80 +73,85 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient implements HttpBasic
 		} catch (UnrecoverableKeyException e) {
 			throw new IllegalStateException(e);
 		}
+
+		setBasicAuth(username, password, new AuthScope(host, port, realm));
 	}
 
-	@Override
-	public void authenticate() {
-		setBasicAuth(getUsername(), getPassword(), new AuthScope(getHost(), getPort(), getRealm()));
+	public int getConnectionTimeout() {
+		return connectionTimeout;
 	}
 
-	@Override
 	public String getHost() {
 		return host;
 	}
 
-	@Override
 	public String getPassword() {
 		return password;
 	}
 
-	@Override
 	public int getPort() {
 		return port;
 	}
 
-	@Override
 	public String getRealm() {
 		return realm;
 	}
 
-	@Override
 	public String getUsername() {
 		return username;
 	}
 
-	@Override
-	public boolean isAuthenticated() {
-		return authenticated;
-	}
+	public void reconfigure(String username, String password, String host, int port, String realm) {
+		setUsername(username);
+		setPassword(password);
+		setHost(host);
+		setPort(port);
+		setRealm(realm);
 
-	public void setAuthenticated(boolean authenticated) {
-		this.authenticated = authenticated;
-	}
-
-	@Override
-	public void setBasicAuth(String user, String pass) {
-		super.setBasicAuth(user, pass);
-		setAuthenticated(true);
+		setBasicAuth(username, password, new AuthScope(host, port, realm));
 	}
 
 	@Override
-	public void setBasicAuth(String user, String pass, AuthScope scope) {
-		super.setBasicAuth(user, pass, scope);
-		setAuthenticated(true);
+	public void setBasicAuth(String username, String password) {
+		this.username = username;
+		this.password = password;
+		super.setBasicAuth(username, password);
 	}
 
 	@Override
+	public void setBasicAuth(String username, String password, AuthScope scope) {
+		this.username = username;
+		this.password = password;
+		host = scope.getHost();
+		port = scope.getPort();
+		realm = scope.getRealm();
+		super.setBasicAuth(username, password, scope);
+	}
+
+	public void setBasicAuth(String username, String password, String host, int port, String realm) {
+		setBasicAuth(username, password, new AuthScope(host, port, realm));
+	}
+
+	public void setConnectionTimeout(int cONNECTION_TIMEOUT) {
+		connectionTimeout = cONNECTION_TIMEOUT;
+	}
+
 	public void setHost(String host) {
 		this.host = host;
 	}
 
-	@Override
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	@Override
 	public void setPort(int port) {
 		this.port = port;
 	}
 
-	@Override
 	public void setRealm(String realm) {
 		this.realm = realm;
 	}
 
-	@Override
 	public void setUsername(String username) {
 		this.username = username;
 	}

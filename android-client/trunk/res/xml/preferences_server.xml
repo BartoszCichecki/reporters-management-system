@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:defaultValue="127.0.0.1"
+        android:dialogMessage="@string/activity_settings_server_address_dialog_message"
+        android:dialogTitle="@string/activity_settings_server_address_dialog_title"
+        android:key="server.address"
+        android:maxLines="1"
+        android:summary="@string/activity_settings_server_address_summary"
+        android:title="@string/activity_settings_server_address_title" />
+    <EditTextPreference
+        android:defaultValue="443"
+        android:dialogMessage="@string/activity_settings_server_port_dialog_message"
+        android:dialogTitle="@string/activity_settings_server_port_dialog_title"
+        android:inputType="number"
+        android:key="server.port"
+        android:maxLines="1"
+        android:summary="@string/activity_settings_server_port_summary"
+        android:title="@string/activity_settings_server_port_title" />
+    <EditTextPreference
+        android:defaultValue="rms"
+        android:dialogMessage="@string/activity_settings_server_realm_dialog_message"
+        android:dialogTitle="@string/activity_settings_server_realm_dialog_title"
+        android:key="server.realm"
+        android:maxLines="1"
+        android:summary="@string/activity_settings_server_realm_summary"
+        android:title="@string/activity_settings_server_realm_title" />
+    <EditTextPreference
+        android:defaultValue="/rest"
+        android:dialogMessage="@string/activity_settings_server_ws_context_path_dialog_message"
+        android:dialogTitle="@string/activity_settings_server_ws_context_path_dialog_title"
+        android:key="server.ws_context_path"
+        android:maxLines="1"
+        android:summary="@string/activity_settings_server_ws_context_path_summary"
+        android:title="@string/activity_settings_server_ws_context_path_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:enabled="false"
+        android:key="server.incoming_md5"
+        android:summary="@string/activity_settings_server_incoming_md5_summary"
+        android:title="@string/activity_settings_server_incoming_md5_title" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:enabled="false"
+        android:key="server.outgoing_md5"
+        android:summary="@string/activity_settings_server_outgoing_md5_summary"
+        android:title="@string/activity_settings_server_outgoing_md5_title" />
+
+</PreferenceScreen>

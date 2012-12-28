@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <header
+        android:fragment="pl.bcichecki.rms.client.android.activities.SettingsActivity$UserAccountPreferencesFragment"
+        android:title="@string/activity_settings_header_user_account" />
+    <header
+        android:fragment="pl.bcichecki.rms.client.android.activities.SettingsActivity$ServerPreferencesFragment"
+        android:title="@string/activity_settings_header_server" />
+
+</preference-headers>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">RMS Client</string>
+    <string name="general_app_name">RMS Client</string>
+    <string name="general_unknown_error_message_title">Unknown error</string>
+    <string name="general_unknown_error_message_content">An unknown error occurred. Cause:<br />%s</string>
 
 </resources>

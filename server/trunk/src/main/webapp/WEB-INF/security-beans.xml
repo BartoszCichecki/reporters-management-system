@@ -9,13 +9,13 @@
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<sec:global-method-security pre-post-annotations="enabled" authentication-manager-ref="authenticationManager" />
 	<sec:http entry-point-ref="digestAuthenticationEntryPoint" create-session="stateless"
-		authentication-manager-ref="authenticationManager" use-expressions="true">
+		authentication-manager-ref="authenticationManager" use-expressions="true" request-matcher="regex">
 		<sec:custom-filter position="BASIC_AUTH_FILTER" ref="basicAuthenticationFilter" />
 		<sec:custom-filter after="BASIC_AUTH_FILTER" ref="digestAuthenticationFilter" />
-		<sec:intercept-url pattern="/rest/*" access="isAuthenticated()" requires-channel="https" />
-		<sec:intercept-url pattern="/rest/forgotPassword/*" method="GET" access="isAnonymous()"
+		<sec:intercept-url pattern="/rest/forgotPassword/.*" method="GET" access="permitAll"
 			requires-channel="https" />
-		<sec:intercept-url pattern="/rest/register" method="PUT" access="isAnonymous()" requires-channel="https" />
+		<sec:intercept-url pattern="/rest/register" method="PUT" access="permitAll" requires-channel="https" />
+		<sec:intercept-url pattern="/rest/.*" access="isAuthenticated()" requires-channel="https" />
 	</sec:http>
 	<!-- Authentication manager -->
 	<bean id="authenticationManager" name="org.springframework.security.authentication.AuthenticationManager" class="org.springframework.security.authentication.ProviderManager">

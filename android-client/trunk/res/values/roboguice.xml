@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-	<string-array name="roboguice_modules">
-	</string-array>
+
+    <string-array name="roboguice_modules"></string-array>
+
 </resources>
