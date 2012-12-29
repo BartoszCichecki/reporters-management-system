@@ -65,7 +65,8 @@
                 android:hint="@string/activity_login_username"
                 android:inputType="text"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:imeOptions="actionNext" />
 
             <EditText
                 android:id="@+id/activity_login_password_edit_text"
@@ -74,7 +75,8 @@
                 android:hint="@string/activity_login_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:imeOptions="actionDone" />
 
             <CheckBox
                 android:id="@+id/activity_login_remember_user_check_box"

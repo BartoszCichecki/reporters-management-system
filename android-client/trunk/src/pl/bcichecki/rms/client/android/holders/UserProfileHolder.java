@@ -25,6 +25,12 @@ public class UserProfileHolder {
 
 	private static String password;
 
+	public static void clear() {
+		username = null;
+		password = null;
+		userProfile = null;
+	}
+
 	public static String getPassword() {
 		return password;
 	}

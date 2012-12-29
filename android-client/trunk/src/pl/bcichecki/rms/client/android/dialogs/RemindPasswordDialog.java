@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -85,6 +86,8 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 		final EditText usernameEditText = new EditText(getActivity());
 		usernameEditText.setHint(enterUsernameHintText);
 		usernameEditText.setMaxLines(1);
+		usernameEditText.setSingleLine();
+		usernameEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 		usernameEditText.setOnClickListener(new View.OnClickListener() {
 
 			@Override

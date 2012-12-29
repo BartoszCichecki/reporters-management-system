@@ -21,6 +21,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -92,6 +93,8 @@ public class RegisterDialog extends RoboDialogFragment {
 		final EditText usernameEditText = new EditText(getActivity());
 		usernameEditText.setHint(enterUsernameHintText);
 		usernameEditText.setMaxLines(1);
+		usernameEditText.setSingleLine();
+		usernameEditText.setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		usernameEditText.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -104,7 +107,9 @@ public class RegisterDialog extends RoboDialogFragment {
 		final EditText passwordEditText = new EditText(getActivity());
 		passwordEditText.setHint(enterPasswordHintText);
 		passwordEditText.setMaxLines(1);
+		passwordEditText.setSingleLine();
 		passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		passwordEditText.setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		passwordEditText.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -117,6 +122,8 @@ public class RegisterDialog extends RoboDialogFragment {
 		final EditText emailEditText = new EditText(getActivity());
 		emailEditText.setHint(enterEmailHintText);
 		emailEditText.setMaxLines(1);
+		emailEditText.setSingleLine();
+		emailEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 		emailEditText.setOnClickListener(new View.OnClickListener() {
 
 			@Override
