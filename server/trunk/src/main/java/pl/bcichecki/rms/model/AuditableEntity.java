@@ -11,29 +11,29 @@
 
 package pl.bcichecki.rms.model;
 
-import java.util.Date;
-
 /**
  * @author Bartosz Cichecki
  */
-public interface AuditableEntity<T> {
+public interface AuditableEntity<T, Y, Z> {
 
-	Date getCreationDate();
+	Z getCreationDate();
 
-	T getCreationUser();
+	Y getCreationUserId();
 
 	T getCurrentUser();
 
-	Date getModificationDate();
+	Y getCurrentUserId();
 
-	T getModificationUser();
+	Z getModificationDate();
 
-	void setCreationDate(Date creationDate);
+	Y getModificationUserId();
 
-	void setCreationUser(T creationUser);
+	void setCreationDate(Z creationDate);
 
-	void setModificationDate(Date modificationDate);
+	void setCreationUserId(Y creationUserId);
 
-	void setModificationUser(T modificationUser);
+	void setModificationDate(Z modificationDate);
+
+	void setModificationUserId(Y modificationUserId);
 
 }

@@ -34,6 +34,7 @@ import pl.bcichecki.rms.model.impl.MessageEntity;
 import pl.bcichecki.rms.services.MessagesService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -69,7 +70,7 @@ public class MessagesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't create \"nothing\".", "exceptions.badRequestExceptions.cantCreateNothing");
 		}
 		try {
-			messagesService.createMessage(getGson().fromJson(requestBody, MessageEntity.class));
+			messagesService.createMessage(GsonHolder.getGson().fromJson(requestBody, MessageEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}
@@ -106,8 +107,8 @@ public class MessagesRestWS extends AbstractRestWS {
 	@ResponseBody
 	String deleteMessageReadBefore(HttpServletRequest request, HttpServletResponse response, @PathVariable Long timestamp, @RequestParam(
 	        value = "deletedOnly", required = false, defaultValue = "true") boolean deletedOnly) throws ServiceException {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(messagesService.shredMessagesReadBefore(new Date(timestamp), deletedOnly));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(
+		        messagesService.shredMessagesReadBefore(new Date(timestamp), deletedOnly));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -119,98 +120,93 @@ public class MessagesRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/archived/inbox/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/archived/inbox/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllArchivedInboxMessages(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(messagesService.getAllArchivedInboxMessages());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getAllArchivedInboxMessages());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/archived/outbox/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/archived/outbox/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllArchivedOutboxMessages(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(messagesService.getAllArchivedOutboxMessages());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getAllArchivedOutboxMessages());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/inbox/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/inbox/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllInboxMessages(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(messagesService.getAllInboxMessages());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getAllInboxMessages());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllMessages(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(messagesService.getAllMessages());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getAllMessages());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/outbox/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/outbox/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllOutboxMessages(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(messagesService.getAllOutboxMessages());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getAllOutboxMessages());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/archived/inbox/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/archived/inbox/{id}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getArchivedInboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable String id)
 	        throws ServiceException {
-		String json = getGson().toJson(messagesService.getArchivedInboxMessage(id));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getArchivedInboxMessage(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/archived/outbox/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/archived/outbox/{id}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getArchivedOutboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable String id)
 	        throws ServiceException {
-		String json = getGson().toJson(messagesService.getArchivedOutboxMessage(id));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getArchivedOutboxMessage(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/inbox/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/inbox/{id}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getInboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
-		String json = getGson().toJson(messagesService.getInboxMessage(id));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getInboxMessage(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
-		String json = getGson().toJson(messagesService.getMessage(id));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getMessage(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/outbox/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/outbox/{id}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getOutboxMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
-		String json = getGson().toJson(messagesService.getOutboxMessage(id));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(messagesService.getOutboxMessage(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -238,7 +234,7 @@ public class MessagesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't create \"nothing\".", "exceptions.badRequestExceptions.cantCreateNothing");
 		}
 		try {
-			messagesService.sendMessage(getGson().fromJson(requestBody, MessageEntity.class));
+			messagesService.sendMessage(GsonHolder.getGson().fromJson(requestBody, MessageEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}
@@ -252,7 +248,7 @@ public class MessagesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
 		}
 		try {
-			messagesService.updateMessage(getGson().fromJson(requestBody, MessageEntity.class));
+			messagesService.updateMessage(GsonHolder.getGson().fromJson(requestBody, MessageEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}
@@ -266,7 +262,7 @@ public class MessagesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
 		}
 		try {
-			messagesService.updateOutboxMessage(getGson().fromJson(requestBody, MessageEntity.class));
+			messagesService.updateOutboxMessage(GsonHolder.getGson().fromJson(requestBody, MessageEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}

@@ -13,8 +13,6 @@
 	<bean id="properties" class="pl.bcichecki.rms.utils.PropertiesUtils">
 		<property name="location" value="rms-server.properties" />
 	</bean>
-	<!-- JPA configuration -->
-	<import resource="jpa-beans.xml" />
 	<!-- Application context -->
 	<bean id="applicationContextHolder" class="pl.bcichecki.rms.holders.ApplicationContextHolder" />
 	<!-- DAO beans -->
@@ -65,6 +63,5 @@
 		<property name="port" value="${email.port}" />
 		<property name="authenticate" value="${email.authenticate}" />
 		<property name="ssl" value="${email.ssl}" />
-		<property name="tls" value="${email.tls}" />
 	</bean>
 </beans>

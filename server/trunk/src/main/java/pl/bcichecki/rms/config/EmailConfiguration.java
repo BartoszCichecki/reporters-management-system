@@ -11,8 +11,8 @@
 
 package pl.bcichecki.rms.config;
 
-import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
 
 /**
  * @author Bartosz Cichecki
@@ -29,32 +29,28 @@ public class EmailConfiguration {
 
 	private int port;
 
-	private boolean authenticate;
+	private Boolean authenticate;
 
-	private boolean ssl;
+	private Boolean ssl;
 
-	private boolean tls;
+	public Boolean getAuthenticate() {
+		return authenticate;
+	}
 
-	public Email getConfiguredEmail() throws EmailException {
-		Email email = new Email() {
-
-			@Override
-			public Email setMsg(String msg) throws EmailException {
-				throw new EmailException("You must define email type.");
-			}
-		};
+	public SimpleEmail getConfiguredEmail() throws EmailException {
+		SimpleEmail email = new SimpleEmail();
 
 		email.setFrom(fromAddress, from);
 		email.setHostName(host);
 		email.setSmtpPort(port);
+
 		if (ssl) {
 			email.setSSL(ssl);
 			email.setSslSmtpPort(String.valueOf(port));
 		}
-		email.setTLS(tls);
 
 		if (authenticate) {
-			email.setAuthentication(from, password);
+			email.setAuthentication(fromAddress, password);
 		}
 
 		return email;
@@ -80,19 +76,11 @@ public class EmailConfiguration {
 		return port;
 	}
 
-	public boolean isAuthenticate() {
-		return authenticate;
-	}
-
-	public boolean isSsl() {
+	public Boolean getSsl() {
 		return ssl;
 	}
 
-	public boolean isTls() {
-		return tls;
-	}
-
-	public void setAuthenticate(boolean authenticate) {
+	public void setAuthenticate(Boolean authenticate) {
 		this.authenticate = authenticate;
 	}
 
@@ -116,11 +104,8 @@ public class EmailConfiguration {
 		this.port = port;
 	}
 
-	public void setSsl(boolean ssl) {
+	public void setSsl(Boolean ssl) {
 		this.ssl = ssl;
 	}
 
-	public void setTls(boolean tls) {
-		this.tls = tls;
-	}
 }

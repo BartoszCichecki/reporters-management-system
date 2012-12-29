@@ -31,6 +31,7 @@ import pl.bcichecki.rms.services.UsersService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.utils.SecurityUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -44,11 +45,10 @@ public class ProfileRestWS extends AbstractRestWS {
 	private UsersService usersService;
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
-	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	public @ResponseBody
 	String getProfile(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(SecurityUtils.getCurrentUser());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(SecurityUtils.getCurrentUser());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -65,7 +65,7 @@ public class ProfileRestWS extends AbstractRestWS {
 			if (currentUser == null) {
 				throw new IllegalStateException("Not authenticated?");
 			}
-			usersService.updateUserWithRestrictions(getGson().fromJson(requestBody, UserEntity.class), currentUser);
+			usersService.updateUserWithRestrictions(GsonHolder.getGson().fromJson(requestBody, UserEntity.class), currentUser);
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}

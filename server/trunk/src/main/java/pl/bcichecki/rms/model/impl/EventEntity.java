@@ -308,8 +308,8 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 		return "EventEntity [title=" + title + ", type=" + type + ", description=" + description + ", startDate=" + startDate
 		        + ", endDate=" + endDate + ", address=" + address + ", participants=" + participants + ", devices=" + devices + ", locked="
 		        + locked + ", archived=" + archived + ", deleted=" + deleted + ", id=" + id + ", creationUser=" + creationUser
-		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-		        + ", version=" + version + "]";
+		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

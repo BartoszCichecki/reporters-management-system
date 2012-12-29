@@ -26,15 +26,11 @@ import pl.bcichecki.rms.utils.SecurityUtils;
  */
 public class RestUtils {
 
+	private static final String CONTENT_TYPE = "content-type";
+
 	private static final String CONTENT_MD5 = "Content-MD5";
 
-	private static final String ENCODING_UTF8 = "UTF-8";
-
-	private static final String CONTENT_TYPE = "Content-Type";
-
-	private static final String CONTENT_APPLICATION_JSON = "application/json";
-
-	private static final String CONTENT_TEXT_PLAIN = "text/plain";
+	public static final String CONTENT_APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
 
 	private static boolean hashResponseBody;
 
@@ -55,14 +51,8 @@ public class RestUtils {
 		}
 	}
 
-	public static void decorateResponseHeaderForJson(HttpServletResponse response) {
-		response.setCharacterEncoding(ENCODING_UTF8);
-		response.setHeader(CONTENT_TYPE, CONTENT_APPLICATION_JSON);
-	}
-
-	public static void decorateResponseHeaderForText(HttpServletResponse response) {
-		response.setCharacterEncoding(ENCODING_UTF8);
-		response.setHeader(CONTENT_TYPE, CONTENT_TEXT_PLAIN);
+	public static void decorateResponseHeaderForJsonContentType(HttpServletResponse response) {
+		response.setHeader(CONTENT_TYPE, CONTENT_APPLICATION_JSON_UTF8);
 	}
 
 	public static void decorateResponseHeaderWithMD5(HttpServletResponse response, String responseBody) {

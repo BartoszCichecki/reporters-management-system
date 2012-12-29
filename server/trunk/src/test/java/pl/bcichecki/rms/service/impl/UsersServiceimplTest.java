@@ -37,7 +37,7 @@ import pl.bcichecki.rms.services.UsersService;
  * @author Bartosz Cichecki
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring-beans.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring-beans.xml", "file:src/main/webapp/WEB-INF/jpa-beans.xml" })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class UsersServiceimplTest {
@@ -72,5 +72,32 @@ public class UsersServiceimplTest {
 		user.setAddress(address);
 
 		usersService.createUser(user);
+	}
+
+	@Test
+	public void testRegisterUser() throws ServiceException {
+
+		List<AddressDataContactEntity> list = new ArrayList<AddressDataContactEntity>();
+
+		AddressDataEntity address = new AddressDataEntity();
+		address.setContacts(list);
+
+		UserEntity user = new UserEntity();
+		user.setUsername("Tester");
+		user.setPassword("123");
+		user.setEmail("email@email.com");
+		user.setAddress(new AddressDataEntity());
+
+		usersService.createUser(user);
+	}
+
+	@Test
+	public void testRegisterUser2() throws ServiceException {
+		UserEntity user = new UserEntity();
+		user.setUsername("Tester");
+		user.setPassword("123");
+		user.setEmail("email@email.com");
+		user.setAddress(new AddressDataEntity());
+		usersService.registerUser(user);
 	}
 }

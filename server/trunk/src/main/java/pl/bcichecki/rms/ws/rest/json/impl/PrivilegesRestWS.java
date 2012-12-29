@@ -26,6 +26,7 @@ import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.services.PrivilegesService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -39,32 +40,29 @@ public class PrivilegesRestWS extends AbstractRestWS {
 	protected PrivilegesService privilegesService;
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
-	@RequestMapping(value = { "", "/all" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/all" }, method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	public @ResponseBody
 	String getAllPrivileges(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(privilegesService.getAllPrivileges());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(privilegesService.getAllPrivileges());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
-	@RequestMapping(value = "/my", method = RequestMethod.GET)
+	@RequestMapping(value = "/my", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	public @ResponseBody
 	String getMyPrivileges(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(privilegesService.getAuthenticatedUsersPrivileges());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(privilegesService.getAuthenticatedUsersPrivileges());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
-	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	public @ResponseBody
 	String getUsersPrivileges(HttpServletRequest request, HttpServletResponse response, @PathVariable String userId)
 	        throws ServiceException {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(privilegesService.getUsersPrivileges(userId));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(privilegesService.getUsersPrivileges(userId));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

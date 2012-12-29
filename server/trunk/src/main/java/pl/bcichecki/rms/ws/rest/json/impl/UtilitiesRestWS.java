@@ -29,6 +29,7 @@ import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.services.NotificationService;
 import pl.bcichecki.rms.services.UsersService;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -56,7 +57,7 @@ public class UtilitiesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't register \"nothing\".", "exceptions.badRequestExceptions.cantRegisterNothing");
 		}
 		try {
-			UserEntity user = getGson().fromJson(requestBody, UserEntity.class);
+			UserEntity user = GsonHolder.getGson().fromJson(requestBody, UserEntity.class);
 			usersService.registerUser(user);
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);

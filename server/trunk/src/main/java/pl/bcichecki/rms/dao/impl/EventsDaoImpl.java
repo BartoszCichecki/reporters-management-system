@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pl.bcichecki.rms.dao.DevicesDao;
 import pl.bcichecki.rms.dao.EventsDao;
 import pl.bcichecki.rms.dao.UsersDao;
+import pl.bcichecki.rms.model.AbstractEntity_;
 import pl.bcichecki.rms.model.impl.EventEntity;
 import pl.bcichecki.rms.model.impl.EventEntity_;
 
@@ -56,7 +57,7 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 		}
 		if (userId != null) {
 			predicates.add(criteriaBuilder.or(criteriaBuilder.isMember(usersDao.getById(userId), root.get(EventEntity_.participants)),
-			        criteriaBuilder.equal(root.get(EventEntity_.creationUser), userId)));
+			        criteriaBuilder.equal(root.get(AbstractEntity_.creationUser), userId)));
 		}
 
 		criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));

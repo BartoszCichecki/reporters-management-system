@@ -37,7 +37,7 @@ public class PasswordExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipField(FieldAttributes f) {
-		return f.getDeclaredClass().equals(clazz) && f.getName().equals(field.getName());
+		return f.getDeclaringClass().equals(clazz) && f.getName().equals(field.getName());
 	}
 
 }

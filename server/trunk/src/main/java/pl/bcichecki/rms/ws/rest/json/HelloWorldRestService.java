@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import pl.bcichecki.rms.utils.PrivilegeUtils;
+import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -39,7 +40,7 @@ public class HelloWorldRestService {
 	private static Logger log = LoggerFactory.getLogger(HelloWorldRestService.class);
 
 	@PreAuthorize("hasRole('SOME_FAKE_PROFILE')")
-	@RequestMapping(value = "/denied", method = RequestMethod.GET)
+	@RequestMapping(value = "/denied", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	public @ResponseBody
 	String denied() throws Exception {
 		throw new Exception("hurray!");
@@ -53,7 +54,7 @@ public class HelloWorldRestService {
 		return ex.getMessage();
 	}
 
-	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	@RequestMapping(value = "/hello", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
 	public @ResponseBody
 	String sayHello() {
@@ -61,7 +62,7 @@ public class HelloWorldRestService {
 		return "hello";
 	}
 
-	@RequestMapping(value = "/err", method = RequestMethod.GET)
+	@RequestMapping(value = "/err", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	public @ResponseBody
 	String sendError() throws Exception {
 		throw new Exception("hurray!");

@@ -30,6 +30,7 @@ import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.services.AccessHistoryService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -79,7 +80,7 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAccessHistory(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
@@ -88,13 +89,13 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 			throw new BadRequestException("You must provide from date and till date!",
 			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
 		}
-		String json = getGson().toJson(accessHistoryService.getAll(from, till));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(accessHistoryService.getAll(from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
-	@RequestMapping(value = "/ip/{ip}", method = RequestMethod.GET)
+	@RequestMapping(value = "/ip/{ip}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAccessHistoryByIp(HttpServletRequest request, HttpServletResponse response, @PathVariable String ip, @RequestParam(
 	        value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
@@ -103,13 +104,13 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 			throw new BadRequestException("You must provide from date and till date!",
 			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
 		}
-		String json = getGson().toJson(accessHistoryService.getAllByIp(ip, from, till));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(accessHistoryService.getAllByIp(ip, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ACCESS_HISTORY + "','" + PrivilegeUtils.Values.MANAGE_ACCESS_HISTORY + "')")
-	@RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
+	@RequestMapping(value = "/username/{username}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAccessHistoryByUsername(HttpServletRequest request, HttpServletResponse response, @PathVariable String username,
 	        @RequestParam(value = "from", required = true) Date from, @RequestParam(value = "till", required = true) Date till)
@@ -118,7 +119,8 @@ public class AccessHistoryRestWS extends AbstractRestWS {
 			throw new BadRequestException("You must provide from date and till date!",
 			        "exceptions.badRequestExceptions.fromAndTillDateMissing");
 		}
-		String json = getGson().toJson(accessHistoryService.getAllByUsername(username, from, till));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(
+		        accessHistoryService.getAllByUsername(username, from, till));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}

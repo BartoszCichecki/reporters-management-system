@@ -16,11 +16,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.bcichecki.rms.dao.RolesDao;
 import pl.bcichecki.rms.dao.UsersDao;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
-import pl.bcichecki.rms.model.impl.ContactType;
+import pl.bcichecki.rms.model.impl.CustomUser;
 import pl.bcichecki.rms.model.impl.PrivilegeType;
 import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.services.EmergencyAdminService;
@@ -59,8 +57,8 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 				authorities.add(new SimpleGrantedAuthority(privilege.toString()));
 			}
 		}
-		return new User(user.getUsername(), user.getPassword(), !user.isDeleted(), !user.isLocked(), !user.isLocked(), !user.isLocked(),
-		        authorities);
+		return new CustomUser(user, user.getId(), user.getUsername(), user.getPassword(), !user.isDeleted(), !user.isLocked(),
+		        !user.isLocked(), !user.isLocked(), authorities);
 	}
 
 	@Override
@@ -173,8 +171,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 			throw new ServiceException("User with such email already exist! Users must have unique emails.",
 			        "exceptions.serviceExceptions.users.duplicateEmail");
 		}
-		if (user.getAddress() == null || user.getAddress().getContacts() == null
-		        || CollectionUtils.isEmpty(user.getAddress().getContacts(ContactType.EMAIL))) {
+		if (user.getAddress() == null || user.getEmail() == null) {
 			throw new ServiceException("You must provide address data while creating account. At least email one address is required.",
 			        "exceptions.serviceExceptions.users.registration.missingAddressData");
 		}

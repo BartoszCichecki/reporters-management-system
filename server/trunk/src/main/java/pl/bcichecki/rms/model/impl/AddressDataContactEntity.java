@@ -109,8 +109,8 @@ public class AddressDataContactEntity extends AbstractEntity implements Mergeabl
 	@Override
 	public String toString() {
 		return "AddressDataContactEntity [type=" + type + ", value=" + value + ", id=" + id + ", creationUser=" + creationUser
-		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-		        + ", version=" + version + "]";
+		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

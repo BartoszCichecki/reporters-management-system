@@ -43,8 +43,8 @@ public class User extends AbstractPOJO implements Mergeable<User> {
 		super();
 	}
 
-	public User(String username, String password, String email, Role role, AddressData address, boolean locked,
-	        String comment, boolean deleted) {
+	public User(String username, String password, String email, Role role, AddressData address, boolean locked, String comment,
+	        boolean deleted) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -212,10 +212,10 @@ public class User extends AbstractPOJO implements Mergeable<User> {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + ", address="
-		        + address + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + ", id=" + id + ", creationUser="
-		        + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
-		        + modificationDate + ", version=" + version + "]";
+		return "User [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + ", address=" + address
+		        + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + ", id=" + id + ", creationUser=" + creationUser
+		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+		        + ", version=" + version + "]";
 	}
 
 }

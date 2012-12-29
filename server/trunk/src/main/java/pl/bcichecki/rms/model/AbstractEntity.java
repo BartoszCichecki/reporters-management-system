@@ -17,8 +17,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -36,7 +34,7 @@ import pl.bcichecki.rms.utils.SecurityUtils;
  * @author Bartosz Cichecki
  */
 @MappedSuperclass
-public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Serializable, VersionableEntity<Long> {
+public abstract class AbstractEntity implements AuditableEntity<UserEntity, String, Date>, Serializable, VersionableEntity<Long> {
 
 	@Transient
 	private static final long serialVersionUID = -4067696286632039806L;
@@ -47,13 +45,11 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	@Column(name = "ID", nullable = false, unique = true)
 	protected String id;
 
-	@ManyToOne
-	@JoinColumn(name = "CREATED_BY", nullable = true, unique = false)
-	protected UserEntity creationUser;
+	@Column(name = "CREATED_BY_ID", nullable = true, unique = false)
+	protected String creationUser;
 
-	@ManyToOne
-	@JoinColumn(name = "MODIFIED_BY", nullable = true, unique = false)
-	protected UserEntity modificationUser;
+	@Column(name = "MODIFIED_BY_ID", nullable = true, unique = false)
+	protected String modificationUserId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATION_DATE", nullable = true, unique = false)
@@ -111,11 +107,11 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 		} else if (!modificationDate.equals(other.modificationDate)) {
 			return false;
 		}
-		if (modificationUser == null) {
-			if (other.modificationUser != null) {
+		if (modificationUserId == null) {
+			if (other.modificationUserId != null) {
 				return false;
 			}
-		} else if (!modificationUser.equals(other.modificationUser)) {
+		} else if (!modificationUserId.equals(other.modificationUserId)) {
 			return false;
 		}
 		if (version == null) {
@@ -134,13 +130,18 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	}
 
 	@Override
-	public UserEntity getCreationUser() {
+	public String getCreationUserId() {
 		return creationUser;
 	}
 
 	@Override
 	public UserEntity getCurrentUser() {
 		return SecurityUtils.getCurrentUser();
+	}
+
+	@Override
+	public String getCurrentUserId() {
+		return SecurityUtils.getCurrentUserId();
 	}
 
 	public String getId() {
@@ -153,8 +154,8 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	}
 
 	@Override
-	public UserEntity getModificationUser() {
-		return modificationUser;
+	public String getModificationUserId() {
+		return modificationUserId;
 	}
 
 	@Override
@@ -170,7 +171,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 		result = prime * result + (creationUser == null ? 0 : creationUser.hashCode());
 		result = prime * result + (id == null ? 0 : id.hashCode());
 		result = prime * result + (modificationDate == null ? 0 : modificationDate.hashCode());
-		result = prime * result + (modificationUser == null ? 0 : modificationUser.hashCode());
+		result = prime * result + (modificationUserId == null ? 0 : modificationUserId.hashCode());
 		result = prime * result + (version == null ? 0 : version.hashCode());
 		return result;
 	}
@@ -178,14 +179,14 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	@PrePersist
 	public void prePersist() {
 		setCreationDate(new Date());
-		setCreationUser(getCurrentUser());
+		setCreationUserId(getCurrentUserId());
 		preUpdate();
 	}
 
 	@PreUpdate
 	public void preUpdate() {
 		setModificationDate(new Date());
-		setModificationUser(getCurrentUser());
+		setModificationUserId(getCurrentUserId());
 	}
 
 	@Override
@@ -194,7 +195,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	}
 
 	@Override
-	public void setCreationUser(UserEntity creationUser) {
+	public void setCreationUserId(String creationUser) {
 		this.creationUser = creationUser;
 	}
 
@@ -208,8 +209,8 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity>, Ser
 	}
 
 	@Override
-	public void setModificationUser(UserEntity modificationUser) {
-		this.modificationUser = modificationUser;
+	public void setModificationUserId(String modificationUser) {
+		modificationUserId = modificationUser;
 	}
 
 	@Override

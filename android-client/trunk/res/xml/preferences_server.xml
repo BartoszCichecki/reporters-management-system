@@ -42,8 +42,6 @@
         android:summary="@string/activity_settings_server_incoming_md5_summary"
         android:title="@string/activity_settings_server_incoming_md5_title" />
     <CheckBoxPreference
-        android:defaultValue="false"
-        android:enabled="false"
         android:key="server.outgoing_md5"
         android:summary="@string/activity_settings_server_outgoing_md5_summary"
         android:title="@string/activity_settings_server_outgoing_md5_title" />

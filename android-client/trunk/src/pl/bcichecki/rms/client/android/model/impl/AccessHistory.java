@@ -137,10 +137,9 @@ public class AccessHistory extends AbstractPOJO implements Mergeable<AccessHisto
 
 	@Override
 	public String toString() {
-		return "AccessHistory [username=" + username + ", accessDate=" + accessDate + ", authenticationStatus="
-		        + authenticationStatus + ", ip=" + ip + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser="
-		        + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
-		        + "]";
+		return "AccessHistory [username=" + username + ", accessDate=" + accessDate + ", authenticationStatus=" + authenticationStatus
+		        + ", ip=" + ip + ", id=" + id + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser
+		        + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version + "]";
 	}
 
 }

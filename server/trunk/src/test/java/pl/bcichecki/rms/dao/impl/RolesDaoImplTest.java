@@ -34,7 +34,7 @@ import pl.bcichecki.rms.model.impl.RoleEntity_;
  * @author Bartosz Cichecki
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring-beans.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring-beans.xml", "file:src/main/webapp/WEB-INF/jpa-beans.xml" })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class RolesDaoImplTest {

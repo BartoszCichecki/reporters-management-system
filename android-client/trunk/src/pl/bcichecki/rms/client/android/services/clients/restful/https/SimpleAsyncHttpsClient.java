@@ -46,20 +46,13 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 
 	protected int port;
 
-	public SimpleAsyncHttpsClient(String username, String password, String realm, String host, int port) {
+	private SimpleAsyncHttpsClient() {
 		super();
-		this.username = username;
-		this.password = password;
-		this.realm = realm;
-		this.host = host;
-		this.port = port;
-
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			keyStore.load(null, null);
 			SSLSocketFactory sslSocketFactory = new SimpleSSLSocketFactory(keyStore);
 			setSSLSocketFactory(sslSocketFactory);
-			setTimeout(connectionTimeout);
 		} catch (KeyStoreException e) {
 			throw new IllegalStateException(e);
 		} catch (NoSuchAlgorithmException e) {
@@ -73,7 +66,22 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 		} catch (UnrecoverableKeyException e) {
 			throw new IllegalStateException(e);
 		}
+		setTimeout(connectionTimeout);
+	}
 
+	public SimpleAsyncHttpsClient(String host, int port) {
+		this();
+		this.host = host;
+		this.port = port;
+	}
+
+	public SimpleAsyncHttpsClient(String username, String password, String realm, String host, int port) {
+		this();
+		this.username = username;
+		this.password = password;
+		this.realm = realm;
+		this.host = host;
+		this.port = port;
 		setBasicAuth(username, password, new AuthScope(host, port, realm));
 	}
 
@@ -107,14 +115,13 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 		setHost(host);
 		setPort(port);
 		setRealm(realm);
-
 		setBasicAuth(username, password, new AuthScope(host, port, realm));
 	}
 
 	@Override
 	public void setBasicAuth(String username, String password) {
-		this.username = username;
-		this.password = password;
+		setUsername(username);
+		setPassword(password);
 		super.setBasicAuth(username, password);
 	}
 

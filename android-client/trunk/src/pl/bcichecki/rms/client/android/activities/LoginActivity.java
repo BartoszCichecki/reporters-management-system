@@ -32,6 +32,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -39,6 +40,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import pl.bcichecki.rms.client.android.R;
+import pl.bcichecki.rms.client.android.dialogs.AboutDialog;
+import pl.bcichecki.rms.client.android.dialogs.RegisterDialog;
+import pl.bcichecki.rms.client.android.dialogs.RemindPasswordDialog;
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.User;
@@ -46,7 +50,7 @@ import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpRe
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.ProfileRestClient;
 import pl.bcichecki.rms.client.android.utils.SecurityUtils;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
@@ -54,7 +58,7 @@ import roboguice.inject.InjectView;
  * @author Bartosz Cichecki
  * 
  */
-public class LoginActivity extends RoboActivity {
+public class LoginActivity extends RoboFragmentActivity {
 
 	private static final String TAG = "LoginActivity";
 
@@ -124,6 +128,8 @@ public class LoginActivity extends RoboActivity {
 
 	private Boolean isPasswordHashed = false;
 
+	private ProfileRestClient profileRestClient;
+
 	private boolean checkInternetConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -166,6 +172,18 @@ public class LoginActivity extends RoboActivity {
 	}
 
 	@Override
+	public void onBackPressed() {
+		if (loginProgressView.getVisibility() == View.GONE || profileRestClient == null) {
+			super.onBackPressed();
+		}
+		if (loginProgressView.getVisibility() == View.VISIBLE && profileRestClient != null) {
+			Log.d(TAG, "Cancelling all requests.");
+			showProgress(false);
+			profileRestClient.cancelRequests(CONTEXT, true);
+		}
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -184,26 +202,31 @@ public class LoginActivity extends RoboActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == FORGOT_PASSWORD_MENU_ITEM) {
-			Log.v(TAG, "FORGOT_PASSWORD_MENU_ITEM");
-			// TODO forgotPasswordMenuItem
+			Log.v(TAG, "Showing Remind Password Dialog...");
+
+			RemindPasswordDialog remindPasswordDialog = new RemindPasswordDialog();
+			remindPasswordDialog.show(getSupportFragmentManager(), TAG);
 			return true;
 		}
 		if (item.getItemId() == REGISTER_MENU_ITEM) {
-			Log.v(TAG, "REGISTER_MENU_ITEM");
-			// TODO registerMenuItem
+			Log.v(TAG, "Showing Register Dialog...");
+
+			RegisterDialog registerDialog = new RegisterDialog();
+			registerDialog.show(getSupportFragmentManager(), TAG);
 			return true;
 		}
 		if (item.getItemId() == SETTINGS_MENU_ITEM) {
-			Log.d(TAG, "Moving to settings activity...");
+			Log.d(TAG, "Moving to Settings Activity...");
 
 			Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
 			startActivity(settingsActivityIntent);
-
 			return true;
 		}
 		if (item.getItemId() == ABOUT_MENU_ITEM) {
-			Log.v(TAG, "ABOUT_MENU_ITEM");
-			// TODO aboutMenuItem
+			Log.v(TAG, "Showing about dialog...");
+
+			AboutDialog aboutDialog = new AboutDialog();
+			aboutDialog.show(getSupportFragmentManager(), TAG);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -213,11 +236,20 @@ public class LoginActivity extends RoboActivity {
 	protected void onResume() {
 		super.onResume();
 
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
 		recoverCredentials();
 
 		rememberUserCheckBox.setChecked(rememberUser);
 
 		usernameEditText.setText(username);
+		usernameEditText.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				usernameEditText.setError(null);
+			}
+		});
 
 		if (isPasswordHashed) {
 			Log.d(TAG, "Password is hashed setting field to a fake one.");
@@ -227,6 +259,7 @@ public class LoginActivity extends RoboActivity {
 
 			@Override
 			public void onClick(View v) {
+				usernameEditText.setError(null);
 				if (isPasswordHashed) {
 					Log.d(TAG, "Clearing password field, because it was filled with fake pass.");
 					passwordEditText.setText(StringUtils.EMPTY);
@@ -256,17 +289,16 @@ public class LoginActivity extends RoboActivity {
 
 	protected void performLogin() {
 		Log.d(TAG, "Performing login...");
-
-		ProfileRestClient profileRestClient = new ProfileRestClient(CONTEXT, username, password);
-		profileRestClient.getProfile(new GsonHttpResponseHandler<User>(profileRestClient.getGson(), false) {
+		profileRestClient = new ProfileRestClient(CONTEXT, username, password, SharedPreferencesWrapper.getServerRealm(),
+		        SharedPreferencesWrapper.getServerAddress(), SharedPreferencesWrapper.getServerPort(),
+		        SharedPreferencesWrapper.getWebserviceContextPath());
+		profileRestClient.getProfile(new GsonHttpResponseHandler<User>(false) {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
 				Log.d(TAG, "Getting profile failed! [error=" + error + ", content=" + content + "]");
-
 				AlertDialog.Builder errorDialog = new AlertDialog.Builder(CONTEXT);
 				errorDialog.setIcon(android.R.drawable.ic_dialog_alert);
-
 				if (error instanceof HttpResponseException) {
 					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
 						errorDialog.setTitle(unsuccessfulLoginMessageTitleText);
@@ -279,7 +311,6 @@ public class LoginActivity extends RoboActivity {
 					errorDialog.setTitle(unknownErrorMessageTitleText);
 					errorDialog.setMessage(String.format(unknownErrorMessageConentText, error));
 				}
-
 				errorDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
 					@Override
@@ -307,13 +338,10 @@ public class LoginActivity extends RoboActivity {
 			@Override
 			public void onSuccess(int statusCode, String content) {
 				Log.d(TAG, "Success [statusCode=" + statusCode + ", content=" + content + "]");
-
 				UserProfileHolder.setUserProfile(null);
 				UserProfileHolder.setUsername(username);
 				UserProfileHolder.setPassword(password);
-
 				Toast.makeText(CONTEXT, loginSuccessfulText, Toast.LENGTH_SHORT).show();
-
 				Intent mainActivityIntent = new Intent(CONTEXT, MainActivity.class);
 				startActivity(mainActivityIntent);
 			}
@@ -321,18 +349,14 @@ public class LoginActivity extends RoboActivity {
 			@Override
 			public void onSuccess(int statusCode, User jsonObject) {
 				Log.d(TAG, "Success [statusCode=" + statusCode + ", jsonObject=" + jsonObject.toString() + "]");
-
 				UserProfileHolder.setUserProfile(jsonObject);
 				UserProfileHolder.setUsername(username);
 				UserProfileHolder.setPassword(password);
-
 				Toast.makeText(CONTEXT, loginSuccessfulText, Toast.LENGTH_SHORT).show();
-
 				Intent mainActivityIntent = new Intent(CONTEXT, MainActivity.class);
 				startActivity(mainActivityIntent);
 			}
 		});
-
 	}
 
 	private void recoverCredentials() {

@@ -11,12 +11,14 @@
 
 package pl.bcichecki.rms.model.impl;
 
+import java.util.Locale;
+
 /**
  * @author Bartosz Cichecki
  */
 public class ExceptionResponseMessage {
 
-	private Class<?> exceptionClass;
+	private String exceptionClassName;
 
 	private String exceptionMessage;
 
@@ -24,16 +26,20 @@ public class ExceptionResponseMessage {
 
 	private String customCode;
 
+	private Locale customMessageLocale;
+
 	public ExceptionResponseMessage() {
 		super();
 	}
 
-	public ExceptionResponseMessage(Class<?> exceptionClass, String exceptionMessage, String customMessage, String code) {
+	public ExceptionResponseMessage(String exceptionClassName, String exceptionMessage, String customMessage, Locale customMessageLocale,
+	        String customCode) {
 		super();
-		this.exceptionClass = exceptionClass;
+		this.exceptionClassName = exceptionClassName;
 		this.exceptionMessage = exceptionMessage;
 		this.customMessage = customMessage;
-		this.customCode = code;
+		this.customMessageLocale = customMessageLocale;
+		this.customCode = customCode;
 	}
 
 	@Override
@@ -55,11 +61,25 @@ public class ExceptionResponseMessage {
 		} else if (!customCode.equals(other.customCode)) {
 			return false;
 		}
-		if (exceptionClass == null) {
-			if (other.exceptionClass != null) {
+		if (customMessage == null) {
+			if (other.customMessage != null) {
 				return false;
 			}
-		} else if (!exceptionClass.equals(other.exceptionClass)) {
+		} else if (!customMessage.equals(other.customMessage)) {
+			return false;
+		}
+		if (customMessageLocale == null) {
+			if (other.customMessageLocale != null) {
+				return false;
+			}
+		} else if (!customMessageLocale.equals(other.customMessageLocale)) {
+			return false;
+		}
+		if (exceptionClassName == null) {
+			if (other.exceptionClassName != null) {
+				return false;
+			}
+		} else if (!exceptionClassName.equals(other.exceptionClassName)) {
 			return false;
 		}
 		if (exceptionMessage == null) {
@@ -67,13 +87,6 @@ public class ExceptionResponseMessage {
 				return false;
 			}
 		} else if (!exceptionMessage.equals(other.exceptionMessage)) {
-			return false;
-		}
-		if (customMessage == null) {
-			if (other.customMessage != null) {
-				return false;
-			}
-		} else if (!customMessage.equals(other.customMessage)) {
 			return false;
 		}
 		return true;
@@ -87,8 +100,12 @@ public class ExceptionResponseMessage {
 		return customMessage;
 	}
 
-	public Class<?> getExceptionClass() {
-		return exceptionClass;
+	public Locale getCustomMessageLocale() {
+		return customMessageLocale;
+	}
+
+	public String getExceptionClassName() {
+		return exceptionClassName;
 	}
 
 	public String getExceptionMessage() {
@@ -100,22 +117,27 @@ public class ExceptionResponseMessage {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (customCode == null ? 0 : customCode.hashCode());
-		result = prime * result + exceptionClass.toString().hashCode();
-		result = prime * result + (exceptionMessage == null ? 0 : exceptionMessage.hashCode());
 		result = prime * result + (customMessage == null ? 0 : customMessage.hashCode());
+		result = prime * result + (customMessageLocale == null ? 0 : customMessageLocale.hashCode());
+		result = prime * result + (exceptionClassName == null ? 0 : exceptionClassName.hashCode());
+		result = prime * result + (exceptionMessage == null ? 0 : exceptionMessage.hashCode());
 		return result;
 	}
 
-	public void setCustomCode(String code) {
-		this.customCode = code;
+	public void setCustomCode(String customCode) {
+		this.customCode = customCode;
 	}
 
-	public void setCustomMessage(String localizedMessage) {
-		customMessage = localizedMessage;
+	public void setCustomMessage(String customMessage) {
+		this.customMessage = customMessage;
 	}
 
-	public void setExceptionClass(Class<?> exceptionClazz) {
-		exceptionClass = exceptionClazz;
+	public void setCustomMessageLocale(Locale customMessageLocale) {
+		this.customMessageLocale = customMessageLocale;
+	}
+
+	public void setExceptionClassName(String exceptionClassName) {
+		this.exceptionClassName = exceptionClassName;
 	}
 
 	public void setExceptionMessage(String exceptionMessage) {
@@ -124,8 +146,8 @@ public class ExceptionResponseMessage {
 
 	@Override
 	public String toString() {
-		return "ExceptionResponseMessage [exceptionClass=" + exceptionClass + ", exceptionMessage=" + exceptionMessage + ", customMessage="
-		        + customMessage + ", customCode=" + customCode + "]";
+		return "ExceptionResponseMessage [exceptionClassName=" + exceptionClassName + ", exceptionMessage=" + exceptionMessage
+		        + ", customMessage=" + customMessage + ", customCode=" + customCode + ", customMessageLocale=" + customMessageLocale + "]";
 	}
 
 }

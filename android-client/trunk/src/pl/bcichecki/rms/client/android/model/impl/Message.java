@@ -43,8 +43,8 @@ public class Message extends AbstractPOJO {
 		super();
 	}
 
-	public Message(User sender, Set<MessageRecipent> recipents, String subject, String content, Date date,
-	        boolean archivedBySender, boolean deletedBySender) {
+	public Message(User sender, Set<MessageRecipent> recipents, String subject, String content, Date date, boolean archivedBySender,
+	        boolean deletedBySender) {
 		super();
 		this.sender = sender;
 		this.recipents = recipents;

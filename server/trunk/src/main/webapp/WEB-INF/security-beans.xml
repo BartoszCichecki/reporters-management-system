@@ -12,7 +12,7 @@
 		authentication-manager-ref="authenticationManager" use-expressions="true" request-matcher="regex">
 		<sec:custom-filter position="BASIC_AUTH_FILTER" ref="basicAuthenticationFilter" />
 		<sec:custom-filter after="BASIC_AUTH_FILTER" ref="digestAuthenticationFilter" />
-		<sec:intercept-url pattern="/rest/forgotPassword/.*" method="GET" access="permitAll"
+		<sec:intercept-url pattern="/rest/forgotPassword/.*" method="POST" access="permitAll"
 			requires-channel="https" />
 		<sec:intercept-url pattern="/rest/register" method="PUT" access="permitAll" requires-channel="https" />
 		<sec:intercept-url pattern="/rest/.*" access="isAuthenticated()" requires-channel="https" />
@@ -57,9 +57,7 @@
 		<property name="key" value="${session.nonceKey}" />
 	</bean>
 	<!-- SecurityUtils -->
-	<bean id="securityUtils" class="pl.bcichecki.rms.utils.SecurityUtils">
-		<property name="usersService" ref="usersService" />
-	</bean>
+	<bean id="securityUtils" class="pl.bcichecki.rms.utils.SecurityUtils" />
 	<!-- Event publisher -->
 	<bean id="authenticationEventPublisher" class="org.springframework.security.authentication.DefaultAuthenticationEventPublisher" />
 	<!-- Event listeners -->

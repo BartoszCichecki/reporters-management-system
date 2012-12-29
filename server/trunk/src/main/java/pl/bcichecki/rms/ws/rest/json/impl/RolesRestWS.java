@@ -32,6 +32,7 @@ import pl.bcichecki.rms.model.impl.RoleEntity;
 import pl.bcichecki.rms.services.RolesService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -52,7 +53,7 @@ public class RolesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't create \"nothing\".", "exceptions.badRequestExceptions.cantCreateNothing");
 		}
 		try {
-			RoleEntity roleEntity = getGson().fromJson(requestBody, RoleEntity.class);
+			RoleEntity roleEntity = GsonHolder.getGson().fromJson(requestBody, RoleEntity.class);
 			rolesService.createRole(roleEntity);
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
@@ -66,39 +67,38 @@ public class RolesRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
-	@RequestMapping(value = { "", "/all" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/all" }, method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllRoles(HttpServletRequest request, HttpServletResponse response) {
-		RestUtils.decorateResponseHeaderForJson(response);
-		String json = getGson().toJson(rolesService.getAllRoles());
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(rolesService.getAllRoles());
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_PROFILE + "','" + PrivilegeUtils.Values.MANAGE_PROFILE + "')")
-	@RequestMapping(value = { "/my" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/my" }, method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getCurrentUsersRoles(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		String json = getGson().toJson(rolesService.getUsersRolesByUsername(username));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(rolesService.getUsersRolesByUsername(username));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getRole(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
-		String json = getGson().toJson(rolesService.getRoleById(id));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(rolesService.getRoleById(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.LOOK_UP_USER_ROLES + "','" + PrivilegeUtils.Values.MANAGE_ROLES + "')")
-	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/{userId}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getUsersRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable String userId) throws ServiceException {
-		String json = getGson().toJson(rolesService.getUsersRoles(userId));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(rolesService.getUsersRoles(userId));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -111,7 +111,7 @@ public class RolesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
 		}
 		try {
-			rolesService.updateRole(getGson().fromJson(requestBody, RoleEntity.class));
+			rolesService.updateRole(GsonHolder.getGson().fromJson(requestBody, RoleEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}

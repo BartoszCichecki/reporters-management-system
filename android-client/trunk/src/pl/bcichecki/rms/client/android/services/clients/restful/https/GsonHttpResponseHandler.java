@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import pl.bcichecki.rms.client.android.services.clients.restful.GsonHolder;
+
 /**
  * @author Bartosz Cichecki
  * 
@@ -32,11 +34,11 @@ public class GsonHttpResponseHandler<T> extends AsyncHttpResponseHandler {
 	private boolean strictMode;
 
 	@SuppressWarnings("unchecked")
-	public GsonHttpResponseHandler(Gson gson, boolean strictMode) {
+	public GsonHttpResponseHandler(boolean strictMode) {
 		super();
-		this.gson = gson;
 		this.strictMode = strictMode;
-		clazz = (Class<T>) ((java.lang.reflect.ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		this.gson = GsonHolder.getGson();
+		this.clazz = (Class<T>) ((java.lang.reflect.ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
 	@Override

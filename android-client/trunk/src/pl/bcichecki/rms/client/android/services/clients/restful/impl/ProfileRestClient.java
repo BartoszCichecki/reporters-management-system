@@ -25,6 +25,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.AbstractRestClient;
+import pl.bcichecki.rms.client.android.services.clients.restful.GsonHolder;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
 import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestUtils;
 
@@ -37,12 +38,8 @@ public class ProfileRestClient extends AbstractRestClient {
 
 	private static final String RESOURCE_PATH_PROFILE = "profile";
 
-	public ProfileRestClient(Context context) {
-		super(context);
-	}
-
-	public ProfileRestClient(Context context, String username, String password) {
-		super(context, username, password);
+	public ProfileRestClient(Context context, String host, int port, String webServiceContextPath) {
+		super(context, host, port, webServiceContextPath);
 	}
 
 	public ProfileRestClient(Context context, String username, String password, String realm, String host, int port,
@@ -55,13 +52,13 @@ public class ProfileRestClient extends AbstractRestClient {
 	}
 
 	public void updateProfile(User profile, AsyncHttpResponseHandler handler) throws UnsupportedEncodingException {
-		String profileAsJson = getGson().toJson(profile);
+		String profileAsJson = GsonHolder.getGson().toJson(profile);
 		HttpEntity profileAsHttpEntity = new StringEntity(profileAsJson, HttpConstants.CHARSET_UTF8);
 
 		List<Header> headers = new ArrayList<Header>();
 		RestUtils.decorareHeaderWithMD5(headers, profileAsJson);
 
-		post(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY), (Header[]) headers.toArray(), profileAsHttpEntity,
+		post(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY), getHeadersAsArray(headers), profileAsHttpEntity,
 		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
 	}
 

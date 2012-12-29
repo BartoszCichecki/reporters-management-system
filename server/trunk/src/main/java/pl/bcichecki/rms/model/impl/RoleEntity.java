@@ -123,8 +123,8 @@ public class RoleEntity extends AbstractEntity implements Mergeable<RoleEntity> 
 	@Override
 	public String toString() {
 		return "Role [name=" + name + ", privileges=" + privileges + ", id=" + id + ", creationUser=" + creationUser
-		        + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-		        + ", version=" + version + "]";
+		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

@@ -23,17 +23,12 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import pl.bcichecki.rms.exceptions.AbstractWithExceptionCodeException;
 import pl.bcichecki.rms.exceptions.impl.BadRequestException;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.ExceptionResponseMessage;
-import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.utils.ResourceBundleUtils;
-import pl.bcichecki.rms.ws.rest.json.gson.exclusionStrategies.PasswordExclusionStrategy;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -43,35 +38,17 @@ public abstract class AbstractRestWS {
 
 	private static final Logger log = LoggerFactory.getLogger(AbstractRestWS.class);
 
-	private final Gson gson;
-
-	public AbstractRestWS() {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setPrettyPrinting();
-		try {
-			ExclusionStrategy passwordExclusionStrategy = new PasswordExclusionStrategy(UserEntity.class,
-			        UserEntity.class.getDeclaredField("password"));
-			gsonBuilder.setExclusionStrategies(passwordExclusionStrategy);
-		} catch (NoSuchFieldException | SecurityException e) {
-			throw new RuntimeException(e);
-		}
-		gson = gsonBuilder.create();
-	}
-
-	protected final Gson getGson() {
-		return gson;
-	}
-
 	protected String getMessage(Exception ex, Locale locale) {
 		ExceptionResponseMessage message = new ExceptionResponseMessage();
-		message.setExceptionClass(ex.getClass());
+		message.setExceptionClassName(ex.getClass().getSimpleName());
 		message.setExceptionMessage(ex.getMessage());
 		if (ex instanceof AbstractWithExceptionCodeException
 		        && !StringUtils.isBlank(((AbstractWithExceptionCodeException) ex).getExceptionCode())) {
 			message.setCustomCode(((AbstractWithExceptionCodeException) ex).getExceptionCode());
 			message.setCustomMessage(ResourceBundleUtils.getValue(((AbstractWithExceptionCodeException) ex).getExceptionCode(), locale));
+			message.setCustomMessageLocale(locale);
 		}
-		return getGson().toJson(message);
+		return GsonHolder.getGson().toJson(message);
 	}
 
 	protected String getMessage(Exception ex, String customCode, Locale locale) {
@@ -80,11 +57,12 @@ public abstract class AbstractRestWS {
 
 	protected String getMessage(Exception ex, String customCode, String customMessage, Locale locale) {
 		ExceptionResponseMessage message = new ExceptionResponseMessage();
-		message.setExceptionClass(ex.getClass());
+		message.setExceptionClassName(ex.getClass().getSimpleName());
 		message.setExceptionMessage(ex.getMessage());
 		message.setCustomCode(customCode);
 		message.setCustomMessage(customMessage);
-		return getGson().toJson(message);
+		message.setCustomMessageLocale(locale);
+		return GsonHolder.getGson().toJson(message);
 	}
 
 	@ExceptionHandler({ BadRequestException.class, MissingServletRequestParameterException.class })
@@ -94,7 +72,7 @@ public abstract class AbstractRestWS {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		String responseBody = getMessage(ex, request.getLocale());
 		RestUtils.decorateResponseHeaderWithMD5(response, responseBody);
-		RestUtils.decorateResponseHeaderForJson(response);
+		RestUtils.decorateResponseHeaderForJsonContentType(response);
 		return responseBody;
 	}
 
@@ -105,7 +83,7 @@ public abstract class AbstractRestWS {
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		String responseBody = getMessage(ex, "exceptions.internalServerError", request.getLocale());
 		RestUtils.decorateResponseHeaderWithMD5(response, responseBody);
-		RestUtils.decorateResponseHeaderForJson(response);
+		RestUtils.decorateResponseHeaderForJsonContentType(response);
 		return responseBody;
 	}
 
@@ -116,7 +94,7 @@ public abstract class AbstractRestWS {
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		String responseBody = getMessage(ex, request.getLocale());
 		RestUtils.decorateResponseHeaderWithMD5(response, responseBody);
-		RestUtils.decorateResponseHeaderForJson(response);
+		RestUtils.decorateResponseHeaderForJsonContentType(response);
 		return responseBody;
 	}
 

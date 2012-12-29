@@ -53,8 +53,8 @@ public class SecurityUtils {
 	public static String hashSHA512Base64(String stringToHash) {
 		try {
 			byte[] bytes = stringToHash.getBytes(CHARSET_UTF8);
-			byte[] sha512bytes = DigestUtils.sha512(bytes);
-			byte[] base64bytes = Base64.encodeBase64(sha512bytes);
+			byte[] md5bytes = DigestUtils.sha512(bytes);
+			byte[] base64bytes = Base64.encodeBase64(md5bytes);
 			return new String(base64bytes, CHARSET_UTF8);
 		} catch (UnsupportedEncodingException e) {
 			Log.e(TAG, "This system does not support required hashing algorithms.", e);

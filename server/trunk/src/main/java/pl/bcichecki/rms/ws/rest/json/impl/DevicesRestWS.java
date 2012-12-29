@@ -34,6 +34,7 @@ import pl.bcichecki.rms.model.impl.DeviceEntity;
 import pl.bcichecki.rms.services.DevicesService;
 import pl.bcichecki.rms.utils.PrivilegeUtils;
 import pl.bcichecki.rms.ws.rest.json.AbstractRestWS;
+import pl.bcichecki.rms.ws.rest.json.gson.GsonHolder;
 import pl.bcichecki.rms.ws.rest.json.utils.RestUtils;
 
 /**
@@ -54,7 +55,7 @@ public class DevicesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't create \"nothing\".", "exceptions.badRequestExceptions.cantCreateNothing");
 		}
 		try {
-			devicesService.createDevice(getGson().fromJson(requestBody, DeviceEntity.class));
+			devicesService.createDevice(GsonHolder.getGson().fromJson(requestBody, DeviceEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}
@@ -68,28 +69,28 @@ public class DevicesRestWS extends AbstractRestWS {
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllDevices(HttpServletRequest request, HttpServletResponse response) {
-		String json = getGson().toJson(devicesService.getAllDevices(false));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(devicesService.getAllDevices(false));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
-	@RequestMapping(value = "/trash/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/trash/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getAllTrashedDevices(HttpServletRequest request, HttpServletResponse response) {
-		String json = getGson().toJson(devicesService.getAllDevices(true));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(devicesService.getAllDevices(true));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_DEVICES + "','" + PrivilegeUtils.Values.MANAGE_DEVICES + "')")
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
 	String getDevice(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
-		String json = getGson().toJson(devicesService.getDeviceById(id));
+		String json = GsonHolder.getGson(GsonHolder.RESTRICTED).toJson(devicesService.getDeviceById(id));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
 	}
@@ -102,7 +103,7 @@ public class DevicesRestWS extends AbstractRestWS {
 			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
 		}
 		try {
-			devicesService.updateDevice(getGson().fromJson(requestBody, DeviceEntity.class));
+			devicesService.updateDevice(GsonHolder.getGson().fromJson(requestBody, DeviceEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}

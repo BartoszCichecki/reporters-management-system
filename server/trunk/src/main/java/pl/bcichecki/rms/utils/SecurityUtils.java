@@ -20,9 +20,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import pl.bcichecki.rms.exceptions.impl.ServiceException;
+import pl.bcichecki.rms.model.impl.CustomUser;
 import pl.bcichecki.rms.model.impl.UserEntity;
-import pl.bcichecki.rms.services.UsersService;
 
 /**
  * @author Bartosz Cichecki
@@ -31,31 +30,27 @@ public class SecurityUtils {
 
 	private static final String CHARSET_UTF8 = "UTF-8";
 
-	private static UsersService usersService;
-
 	public static UserEntity getCurrentUser() {
-		try {
-			String username = SecurityUtils.getCurrentUserUsername();
-			if (username == null) {
-				return null;
-			}
-			return usersService.getUserByUsername(username);
-		} catch (ServiceException e) {
+		if (SecurityContextHolder.getContext() == null || SecurityContextHolder.getContext().getAuthentication() == null
+		        || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
 			return null;
 		}
+		if (!(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CustomUser)) {
+			return null;
+		}
+		CustomUser authenticatedUser = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return authenticatedUser.getUserEntity() == null ? null : authenticatedUser.getUserEntity();
 	}
 
 	public static String getCurrentUserId() {
-		try {
-			String username = SecurityUtils.getCurrentUserUsername();
-			if (username == null) {
-				return null;
-			}
-			UserEntity user = usersService.getUserByUsername(username);
-			return user.getId();
-		} catch (ServiceException e) {
+		if (SecurityContextHolder.getContext() == null || SecurityContextHolder.getContext().getAuthentication() == null
+		        || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
 			return null;
 		}
+		if (!(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CustomUser)) {
+			return null;
+		}
+		return ((CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 	}
 
 	public static String getCurrentUserUsername() {
@@ -79,8 +74,8 @@ public class SecurityUtils {
 
 	public static String hashMD5Base64(String stringToHash) throws UnsupportedEncodingException {
 		byte[] bytes = stringToHash.getBytes(CHARSET_UTF8);
-		byte[] sha512bytes = DigestUtils.md5(bytes);
-		byte[] base64bytes = Base64.encodeBase64(sha512bytes);
+		byte[] md5bytes = DigestUtils.md5(bytes);
+		byte[] base64bytes = Base64.encodeBase64(md5bytes);
 		return new String(base64bytes, CHARSET_UTF8);
 	}
 
@@ -91,7 +86,4 @@ public class SecurityUtils {
 		return new String(base64bytes, CHARSET_UTF8);
 	}
 
-	public static void setUsersService(UsersService usersService) {
-		SecurityUtils.usersService = usersService;
-	}
 }

@@ -11,14 +11,13 @@
 
 package pl.bcichecki.rms.client.android.services.clients.restful;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.SimpleAsyncHttpsClient;
 
@@ -26,29 +25,16 @@ import pl.bcichecki.rms.client.android.services.clients.restful.https.SimpleAsyn
  * @author Bartosz Cichecki
  * 
  */
-public abstract class AbstractRestClient extends SimpleAsyncHttpsClient implements GsonAware {
+public abstract class AbstractRestClient extends SimpleAsyncHttpsClient {
 
 	protected String webServiceContextPath;
 
-	private static Gson gson;
-
-	static {
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setPrettyPrinting();
-		gson = gsonBuilder.create();
-	}
-
 	private Context context;
 
-	public AbstractRestClient(Context context) {
-		this(context, SharedPreferencesWrapper.getUsername(), SharedPreferencesWrapper.getPasswordHash(), SharedPreferencesWrapper
-		        .getServerRealm(), SharedPreferencesWrapper.getServerAddress(), SharedPreferencesWrapper.getServerPort(),
-		        SharedPreferencesWrapper.getWebserviceContextPath());
-	}
-
-	public AbstractRestClient(Context context, String username, String password) {
-		this(context, username, password, SharedPreferencesWrapper.getServerRealm(), SharedPreferencesWrapper.getServerAddress(),
-		        SharedPreferencesWrapper.getServerPort(), SharedPreferencesWrapper.getWebserviceContextPath());
+	public AbstractRestClient(Context context, String host, int port, String webServiceContextPath) {
+		super(host, port);
+		this.context = context;
+		this.webServiceContextPath = webServiceContextPath;
 	}
 
 	public AbstractRestClient(Context context, String username, String password, String realm, String host, int port,
@@ -78,9 +64,8 @@ public abstract class AbstractRestClient extends SimpleAsyncHttpsClient implemen
 		return context;
 	}
 
-	@Override
-	public Gson getGson() {
-		return gson;
+	protected Header[] getHeadersAsArray(List<Header> headers) {
+		return headers.toArray(new Header[headers.size()]);
 	}
 
 }

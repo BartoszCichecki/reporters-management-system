@@ -30,6 +30,7 @@
 		<param-value>
 			/WEB-INF/spring-beans.xml
 			/WEB-INF/security-beans.xml
+			/WEB-INF/jpa-beans.xml
 		</param-value>
 	</context-param>
 	<listener>

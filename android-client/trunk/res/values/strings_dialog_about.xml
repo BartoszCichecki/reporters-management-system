@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_about_title">About</string>
+    <string name="dialog_about_app_name_main">Reporters Management System</string>
+    <string name="dialog_about_app_name_summary">Client for Android</string>
+    <string name="dialog_about_authors_title">Authors:</string>
+    <string name="dialog_about_authors_content">Bartosz Cichecki</string>
+    <string name="dialog_about_tul">Technical University of Łódź 2012</string>
+    <string name="dialog_about_license_title">License:</string>
+    <string name="dialog_about_license_summary">"This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses ."</string>
+
+</resources>

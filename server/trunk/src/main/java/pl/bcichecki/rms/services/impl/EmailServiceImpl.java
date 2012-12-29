@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
@@ -48,13 +51,19 @@ public class EmailServiceImpl implements NotificationService, EmailService {
 
 	@Override
 	public boolean sendEmail(String title, String content, List<String> recipents) throws ServiceException {
+
 		SimpleEmail email;
 		try {
-			email = (SimpleEmail) emailConfiguration.getConfiguredEmail();
-			email.setTo(recipents);
+			List<InternetAddress> recipentAddresses = new ArrayList<InternetAddress>();
+			for (String address : recipents) {
+				recipentAddresses.add(new InternetAddress(address));
+			}
+
+			email = emailConfiguration.getConfiguredEmail();
+			email.setTo(recipentAddresses);
 			email.setSubject(title);
 			email.setMsg(content);
-		} catch (EmailException ex) {
+		} catch (EmailException | AddressException ex) {
 			throw new ServiceException("Could not configure email.", "exceptions.serviceExceptions.email.configError", ex);
 		}
 		try {
