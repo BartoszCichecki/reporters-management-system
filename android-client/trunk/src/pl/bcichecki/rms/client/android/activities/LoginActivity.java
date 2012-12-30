@@ -72,11 +72,11 @@ public class LoginActivity extends RoboFragmentActivity {
 
 	private static final int FORGOT_PASSWORD_MENU_ITEM = R.id.activity_login_menu_forgot_password;
 
-	private static final int REGISTER_MENU_ITEM = R.id.activity_login_menu_register;
+	private static final int REGISTER_MENU_ITEM_ID = R.id.activity_login_menu_register;
 
-	private static final int SETTINGS_MENU_ITEM = R.id.activity_login_menu_settings;
+	private static final int SETTINGS_MENU_ITEM_ID = R.id.activity_login_menu_settings;
 
-	private static final int ABOUT_MENU_ITEM = R.id.activity_login_menu_about;
+	private static final int ABOUT_MENU_ITEM_ID = R.id.activity_login_menu_about;
 
 	@InjectResource(R.string.activity_login_check_your_internet_connection)
 	private String checkYourInternetConnectionText;
@@ -208,21 +208,21 @@ public class LoginActivity extends RoboFragmentActivity {
 			remindPasswordDialog.show(getSupportFragmentManager(), TAG);
 			return true;
 		}
-		if (item.getItemId() == REGISTER_MENU_ITEM) {
+		if (item.getItemId() == REGISTER_MENU_ITEM_ID) {
 			Log.v(TAG, "Showing Register Dialog...");
 
 			RegisterDialog registerDialog = new RegisterDialog();
 			registerDialog.show(getSupportFragmentManager(), TAG);
 			return true;
 		}
-		if (item.getItemId() == SETTINGS_MENU_ITEM) {
+		if (item.getItemId() == SETTINGS_MENU_ITEM_ID) {
 			Log.d(TAG, "Moving to Settings Activity...");
 
 			Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
 			startActivity(settingsActivityIntent);
 			return true;
 		}
-		if (item.getItemId() == ABOUT_MENU_ITEM) {
+		if (item.getItemId() == ABOUT_MENU_ITEM_ID) {
 			Log.v(TAG, "Showing about dialog...");
 
 			AboutDialog aboutDialog = new AboutDialog();

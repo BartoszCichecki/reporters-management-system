@@ -85,6 +85,8 @@ public class SettingsActivity extends PreferenceActivity {
 
 	private static final String TAG = "SettingsActivity";
 
+	private static final int ANDROID_HOME_ID = android.R.id.home;
+
 	private static boolean isSimplePreferences(Context context) {
 		return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || !isXLargeTablet(context);
 	}
@@ -125,10 +127,9 @@ public class SettingsActivity extends PreferenceActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				goBack();
-				return true;
+		if (item.getItemId() == ANDROID_HOME_ID) {
+			goBack();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

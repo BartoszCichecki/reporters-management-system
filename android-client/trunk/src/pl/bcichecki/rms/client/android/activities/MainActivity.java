@@ -1,55 +1,50 @@
+/**
+ * Project:   rms-client-android
+ * File:      MainActivity.java
+ * License: 
+ *            This file is licensed under GNU General Public License version 3
+ *            http://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
+ * Date:      30-12-2012
+ */
 
 package pl.bcichecki.rms.client.android.activities;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
+import android.app.ActionBar.Tab;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import pl.bcichecki.rms.client.android.R;
+import pl.bcichecki.rms.client.android.dialogs.AboutDialog;
+import pl.bcichecki.rms.client.android.fragments.DummySectionFragment;
+import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
+import pl.bcichecki.rms.client.android.listeners.ActivityAwareDialogInterfaceOnClickListener;
+import pl.bcichecki.rms.client.android.listeners.MainActivityActionBarTabListener;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+import roboguice.activity.RoboFragmentActivity;
+import roboguice.inject.InjectResource;
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
+public class MainActivity extends RoboFragmentActivity {
 
-		/**
-		 * The fragment argument representing the section number for this fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			// Create a new TextView and set its text to the fragment's section
-			// number argument value.
-			TextView textView = new TextView(getActivity());
-			textView.setGravity(Gravity.CENTER);
-			textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-			return textView;
-		}
-	}
-
-	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the sections/tabs/pages.
-	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+		private static final int EVENTS_SECTION_TITLE_ID = R.string.activity_main_events_section_title;
+
+		private static final int DEVICES_SECTION_TITLE_ID = R.string.activity_main_devices_section_title;
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -57,69 +52,104 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 3;
+			return 2;
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
-			return fragment;
+			Fragment fragment;
+			switch (position) {
+				case 0:
+					fragment = new DummySectionFragment();
+					return fragment;
+				case 1:
+					fragment = new DummySectionFragment();
+					return fragment;
+				default:
+					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());
+			}
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
 				case 0:
-					return getString(R.string.activity_main_title_section1).toUpperCase();
+					return StringUtils.upperCase(getString(EVENTS_SECTION_TITLE_ID));
 				case 1:
-					return getString(R.string.activity_main_title_section2).toUpperCase();
+					return StringUtils.upperCase(getString(DEVICES_SECTION_TITLE_ID));
+				default:
+					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());
 			}
-			return null;
 		}
 	}
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which will keep every loaded fragment in memory. If this becomes too
-	 * memory intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
+	private static final String TAG = "MainActivity";
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
-	ViewPager mViewPager;
+	private static final int ACTVITY_MAIN_VIEW_ID = R.layout.activity_main;
+
+	private static final int ACTVITY_MAIN_MENU_ID = R.menu.activity_main;
+
+	private static final int SETTINGS_MENU_ITEM_ID = R.id.activity_main_menu_settings;
+
+	private static final int ABOUT_MENU_ITEM_ID = R.id.activity_main_menu_about;
+
+	private static final int ANDROID_HOME_ID = android.R.id.home;
+
+	private ActionBar actionBar;
+
+	private SectionsPagerAdapter sectionsPagerAdapter;
+
+	private ViewPager viewPager;
+
+	private MainActivityActionBarTabListener mainActivityActionBarTabListener;
+
+	@InjectResource(R.string.activity_main_logout_dialog_title)
+	private String logoutDialogTitle;
+
+	@InjectResource(R.string.activity_main_logout_dialog_message)
+	private String logoutDialogMessage;
+
+	private void logout() {
+		AlertDialog.Builder logoutDialog = new AlertDialog.Builder(this);
+		logoutDialog.setTitle(logoutDialogTitle);
+		logoutDialog.setMessage(logoutDialogMessage);
+		logoutDialog.setPositiveButton(android.R.string.yes, new ActivityAwareDialogInterfaceOnClickListener(this) {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				UserProfileHolder.clear();
+				NavUtils.navigateUpFromSameTask(getActivity());
+			}
+		});
+		logoutDialog.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// Nothing to do...
+			}
+		});
+		logoutDialog.show();
+	}
+
+	@Override
+	public void onBackPressed() {
+		logout();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(ACTVITY_MAIN_VIEW_ID);
 
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
+		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		// Show the Up button in the action bar.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager.setAdapter(sectionsPagerAdapter);
+		viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
@@ -127,53 +157,43 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			}
 		});
 
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i)).setTabListener(this));
+		mainActivityActionBarTabListener = new MainActivityActionBarTabListener(viewPager);
+
+		for (int i = 0; i < sectionsPagerAdapter.getCount(); i++) {
+			Tab tab = actionBar.newTab();
+			tab.setText(sectionsPagerAdapter.getPageTitle(i));
+			tab.setTabListener(mainActivityActionBarTabListener);
+			actionBar.addTab(tab);
 		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(ACTVITY_MAIN_MENU_ID, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				// This ID represents the Home or Up button. In the case of this
-				// activity, the Up button is shown. Use NavUtils to allow users
-				// to navigate up one level in the application structure. For
-				// more details, see the Navigation pattern on Android Design:
-				//
-				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-				//
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
+		if (item.getItemId() == ANDROID_HOME_ID) {
+			logout();
+			return true;
+		}
+		if (item.getItemId() == SETTINGS_MENU_ITEM_ID) {
+			Log.d(TAG, "Moving to Settings Activity...");
+
+			Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
+			startActivity(settingsActivityIntent);
+			return true;
+		}
+		if (item.getItemId() == ABOUT_MENU_ITEM_ID) {
+			Log.v(TAG, "Showing about dialog...");
+
+			AboutDialog aboutDialog = new AboutDialog();
+			aboutDialog.show(getSupportFragmentManager(), TAG);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	}
-
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	}
 
 }
