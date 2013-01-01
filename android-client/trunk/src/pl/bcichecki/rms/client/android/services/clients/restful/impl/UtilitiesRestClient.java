@@ -28,6 +28,7 @@ import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.AbstractRestClient;
 import pl.bcichecki.rms.client.android.services.clients.restful.GsonHolder;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
+import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestConstants;
 import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestUtils;
 
 /**
@@ -36,10 +37,6 @@ import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestUtils;
 public class UtilitiesRestClient extends AbstractRestClient {
 
 	private static final String TAG = "UtilitiesRestClient";
-
-	private static final String RESOURCE_PATH_FORGOT_PASSWORD = "forgotPassword";
-
-	private static final String RESOURCE_PATH_REGISTER = "register";
 
 	public UtilitiesRestClient(Context context, String host, int port, String webServiceContextPath) {
 		super(context, host, port, webServiceContextPath);
@@ -51,7 +48,7 @@ public class UtilitiesRestClient extends AbstractRestClient {
 	}
 
 	public void forgotPassword(String username, AsyncHttpResponseHandler handler) {
-		post(getContext(), getAbsoluteAddress(RESOURCE_PATH_FORGOT_PASSWORD, username), null, handler);
+		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_FORGOT_PASSWORD, username), null, handler);
 	}
 
 	public void registerUser(User user, AsyncHttpResponseHandler handler) {
@@ -68,7 +65,7 @@ public class UtilitiesRestClient extends AbstractRestClient {
 		List<Header> headers = new ArrayList<Header>();
 		RestUtils.decorareHeaderWithMD5(headers, userAsJson);
 
-		put(getContext(), getAbsoluteAddress(RESOURCE_PATH_REGISTER), getHeadersAsArray(headers), userAsHttpEntity,
+		put(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_REGISTER), getHeadersAsArray(headers), userAsHttpEntity,
 		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
 	}
 }

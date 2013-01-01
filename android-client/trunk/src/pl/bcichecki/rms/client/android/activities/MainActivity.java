@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -31,7 +31,7 @@ import android.view.MenuItem;
 
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.dialogs.AboutDialog;
-import pl.bcichecki.rms.client.android.fragments.DummySectionFragment;
+import pl.bcichecki.rms.client.android.fragments.DevicesListFragment;
 import pl.bcichecki.rms.client.android.fragments.EventsListFragment;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.listeners.ActivityAwareDialogInterfaceOnClickListener;
@@ -39,7 +39,7 @@ import pl.bcichecki.rms.client.android.listeners.MainActivityActionBarTabListene
 
 public class MainActivity extends FragmentActivity {
 
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity {
 					fragment = new EventsListFragment();
 					return fragment;
 				case 1:
-					fragment = new DummySectionFragment();
+					fragment = new DevicesListFragment();
 					return fragment;
 				default:
 					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());
@@ -154,7 +154,8 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
+		if (item.getItemId() == android.R.id.home || item.getItemId() == R.id.activity_main_menu_logout) {
+			Log.d(TAG, "Logout requested...");
 			logout();
 			return true;
 		}

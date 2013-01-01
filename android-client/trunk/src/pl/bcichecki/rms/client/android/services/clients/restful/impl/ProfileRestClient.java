@@ -27,16 +27,13 @@ import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.AbstractRestClient;
 import pl.bcichecki.rms.client.android.services.clients.restful.GsonHolder;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
+import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestConstants;
 import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestUtils;
 
 /**
  * @author Bartosz Cichecki
  */
 public class ProfileRestClient extends AbstractRestClient {
-
-	private static final String RESOURCE_PATH_MY = "my";
-
-	private static final String RESOURCE_PATH_PROFILE = "profile";
 
 	public ProfileRestClient(Context context, String host, int port, String webServiceContextPath) {
 		super(context, host, port, webServiceContextPath);
@@ -48,7 +45,7 @@ public class ProfileRestClient extends AbstractRestClient {
 	}
 
 	public void getProfile(AsyncHttpResponseHandler handler) {
-		get(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY), handler);
+		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_PROFILE, RestConstants.RESOURCE_PATH_MY), handler);
 	}
 
 	public void updateProfile(User profile, AsyncHttpResponseHandler handler) throws UnsupportedEncodingException {
@@ -58,8 +55,8 @@ public class ProfileRestClient extends AbstractRestClient {
 		List<Header> headers = new ArrayList<Header>();
 		RestUtils.decorareHeaderWithMD5(headers, profileAsJson);
 
-		post(getContext(), getAbsoluteAddress(RESOURCE_PATH_PROFILE, RESOURCE_PATH_MY), getHeadersAsArray(headers), profileAsHttpEntity,
-		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
+		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_PROFILE, RestConstants.RESOURCE_PATH_MY),
+		        getHeadersAsArray(headers), profileAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
 	}
 
 }
