@@ -236,8 +236,8 @@ public class UserEntity extends AbstractEntity implements Mergeable<UserEntity> 
 	@Override
 	public String toString() {
 		return "UserEntity [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + ", address="
-		        + address + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + ", id=" + id + ", creationUser="
-		        + creationUser + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + address + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + ", id=" + id + ", creationUserId="
+		        + creationUserId + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
 		        + modificationDate + ", version=" + version + "]";
 	}
 

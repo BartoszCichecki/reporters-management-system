@@ -28,6 +28,8 @@ public interface EventsService {
 
 	boolean deleteEvent(String id, Boolean markDeleted) throws ServiceException;
 
+	boolean deleteMyEvent(String id, Boolean markDeleted) throws ServiceException;
+
 	List<EventEntity> getAllCurrentUserEvents(Boolean archived, Boolean deleted, Date from, Date till);
 
 	List<EventEntity> getAllEvents(Boolean archived, Boolean deleted, Date from, Date till);
@@ -40,5 +42,7 @@ public interface EventsService {
 	EventEntity getEvent(String id) throws ServiceException;
 
 	boolean updateEvent(EventEntity event) throws ServiceException;
+
+	boolean updateMyEvent(EventEntity event) throws ServiceException;
 
 }

@@ -46,7 +46,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity, Stri
 	protected String id;
 
 	@Column(name = "CREATED_BY_ID", nullable = true, unique = false)
-	protected String creationUser;
+	protected String creationUserId;
 
 	@Column(name = "MODIFIED_BY_ID", nullable = true, unique = false)
 	protected String modificationUserId;
@@ -86,11 +86,11 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity, Stri
 		} else if (!creationDate.equals(other.creationDate)) {
 			return false;
 		}
-		if (creationUser == null) {
-			if (other.creationUser != null) {
+		if (creationUserId == null) {
+			if (other.creationUserId != null) {
 				return false;
 			}
-		} else if (!creationUser.equals(other.creationUser)) {
+		} else if (!creationUserId.equals(other.creationUserId)) {
 			return false;
 		}
 		if (id == null) {
@@ -131,7 +131,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity, Stri
 
 	@Override
 	public String getCreationUserId() {
-		return creationUser;
+		return creationUserId;
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity, Stri
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (creationDate == null ? 0 : creationDate.hashCode());
-		result = prime * result + (creationUser == null ? 0 : creationUser.hashCode());
+		result = prime * result + (creationUserId == null ? 0 : creationUserId.hashCode());
 		result = prime * result + (id == null ? 0 : id.hashCode());
 		result = prime * result + (modificationDate == null ? 0 : modificationDate.hashCode());
 		result = prime * result + (modificationUserId == null ? 0 : modificationUserId.hashCode());
@@ -196,7 +196,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity, Stri
 
 	@Override
 	public void setCreationUserId(String creationUser) {
-		this.creationUser = creationUser;
+		this.creationUserId = creationUser;
 	}
 
 	public void setId(String id) {

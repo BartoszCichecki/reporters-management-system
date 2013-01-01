@@ -126,8 +126,8 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 
 	@Override
 	public String toString() {
-		return "DeviceEntity [name=" + name + ", description=" + description + ", deleted=" + deleted + ", id=" + id + ", creationUser="
-		        + creationUser + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		return "DeviceEntity [name=" + name + ", description=" + description + ", deleted=" + deleted + ", id=" + id + ", creationUserId="
+		        + creationUserId + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
 		        + modificationDate + ", version=" + version + "]";
 	}
 

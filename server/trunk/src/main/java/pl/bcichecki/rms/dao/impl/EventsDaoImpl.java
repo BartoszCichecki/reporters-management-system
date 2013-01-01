@@ -57,7 +57,7 @@ public class EventsDaoImpl extends AbstractGenericDao<EventEntity> implements Ev
 		}
 		if (userId != null) {
 			predicates.add(criteriaBuilder.or(criteriaBuilder.isMember(usersDao.getById(userId), root.get(EventEntity_.participants)),
-			        criteriaBuilder.equal(root.get(AbstractEntity_.creationUser), userId)));
+			        criteriaBuilder.equal(root.get(AbstractEntity_.creationUserId), userId)));
 		}
 
 		criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));

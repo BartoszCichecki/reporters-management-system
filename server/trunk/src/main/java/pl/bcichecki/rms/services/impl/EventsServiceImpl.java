@@ -73,6 +73,26 @@ public class EventsServiceImpl implements EventsService {
 	}
 
 	@Override
+	public boolean deleteMyEvent(String id, Boolean markDeleted) throws ServiceException {
+		EventEntity event = eventsDao.getById(id);
+		if (event == null) {
+			throw new ServiceException("You can't delete event that does not exist!",
+			        "exceptions.serviceExceptions.events.cantDeleteNotExisting");
+		}
+		if (!SecurityUtils.getCurrentUserId().equals(event.getCreationUserId())) {
+			throw new ServiceException("You can't delete event that is not yours!",
+			        "exceptions.serviceExceptions.events.cantDeleteNotYours");
+		}
+		if (markDeleted) {
+			event.setDeleted(true);
+			eventsDao.update(event);
+		} else {
+			eventsDao.delete(event);
+		}
+		return true;
+	}
+
+	@Override
 	public List<EventEntity> getAllCurrentUserEvents(Boolean archived, Boolean deleted, Date from, Date till) {
 		String currentUserId = SecurityUtils.getCurrentUserId();
 		return getAllUserEvents(currentUserId, archived, deleted, from, till);
@@ -116,6 +136,22 @@ public class EventsServiceImpl implements EventsService {
 		if (retrieved == null) {
 			throw new ServiceException("You can't update event that does not exist!",
 			        "exceptions.serviceExceptions.events.cantUpdateNotExisting");
+		}
+		retrieved.merge(event);
+		eventsDao.update(retrieved);
+		return true;
+	}
+
+	@Override
+	public boolean updateMyEvent(EventEntity event) throws ServiceException {
+		EventEntity retrieved = eventsDao.getById(event.getId());
+		if (retrieved == null) {
+			throw new ServiceException("You can't update event that does not exist!",
+			        "exceptions.serviceExceptions.events.cantUpdateNotExisting");
+		}
+		if (!SecurityUtils.getCurrentUserId().equals(event.getCreationUserId())) {
+			throw new ServiceException("You can't update event that is not yours!",
+			        "exceptions.serviceExceptions.events.cantUpdateNotYours");
 		}
 		retrieved.merge(event);
 		eventsDao.update(retrieved);

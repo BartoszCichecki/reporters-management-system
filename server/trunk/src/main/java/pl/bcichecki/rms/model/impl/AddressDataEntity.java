@@ -357,7 +357,7 @@ public class AddressDataEntity extends AbstractEntity implements Mergeable<Addre
 		return "AddressDataEntity [title=" + title + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
 		        + ", birthday=" + birthday + ", street=" + street + ", streetNumber=" + streetNumber + ", houseNumber=" + houseNumber
 		        + ", zipCode=" + zipCode + ", city=" + city + ", country=" + country + ", contacts=" + contacts + ", id=" + id
-		        + ", creationUser=" + creationUser + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate
+		        + ", creationUserId=" + creationUserId + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate
 		        + ", modificationDate=" + modificationDate + ", version=" + version + "]";
 	}
 

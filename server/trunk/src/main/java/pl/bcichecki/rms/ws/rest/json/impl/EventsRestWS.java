@@ -77,19 +77,25 @@ public class EventsRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_MY_EVENTS + "','" + PrivilegeUtils.Values.DELETE_EVENTS + "','"
-	        + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	void deleteEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
 	        value = "markDeleted", required = false, defaultValue = "true") boolean markDeleted) throws ServiceException {
 		eventsService.deleteEvent(id, markDeleted);
 	}
 
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_MY_EVENTS + "','" + PrivilegeUtils.Values.DELETE_EVENTS + "','"
+	        + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/my/{id}", method = RequestMethod.DELETE)
+	void deleteMyEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException {
+		eventsService.deleteMyEvent(id, true);
+	}
+
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/archived/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
-	String getAllArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
-	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
+	String getAllArchivedEvents(HttpServletRequest request, HttpServletResponse response,
+	        @RequestParam(value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
 			throw new BadRequestException("You must provide from and till timestamp!",
@@ -104,9 +110,9 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
-	String getAllEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(value = "from",
-	        required = false) Long from, @RequestParam(value = "till", required = false) Long till) throws BadRequestException,
-	        ServiceException {
+	String getAllEvents(HttpServletRequest request, HttpServletResponse response,
+	        @RequestParam(value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
+	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
 			throw new BadRequestException("You must provide from and till timestamp!",
 			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
@@ -120,9 +126,9 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/archive/trash/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
-	String getAllTrashedArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
-	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
-	        throws BadRequestException, ServiceException {
+	String getAllTrashedArchivedEvents(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "from",
+	        required = false) Long from, @RequestParam(value = "till", required = false) Long till) throws BadRequestException,
+	        ServiceException {
 		if (from == null || till == null) {
 			throw new BadRequestException("You must provide from and till timestamp!",
 			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
@@ -136,8 +142,8 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/trash/all", method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
-	String getAllTrashedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
-	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
+	String getAllTrashedEvents(HttpServletRequest request, HttpServletResponse response,
+	        @RequestParam(value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
 			throw new BadRequestException("You must provide from and till timestamp!",
@@ -152,9 +158,9 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = { "/archived", "/archived/my" }, method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
-	String getCurrentUserArchivedEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
-	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
-	        throws BadRequestException, ServiceException {
+	String getCurrentUserArchivedEvents(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "from",
+	        required = false) Long from, @RequestParam(value = "till", required = false) Long till) throws BadRequestException,
+	        ServiceException {
 		if (from == null || till == null) {
 			throw new BadRequestException("You must provide from and till timestamp!",
 			        "exceptions.badRequestExceptions.fromAndTillTimestampMissing");
@@ -168,8 +174,8 @@ public class EventsRestWS extends AbstractRestWS {
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = { "", "/my" }, method = RequestMethod.GET, produces = RestUtils.CONTENT_APPLICATION_JSON_UTF8)
 	@ResponseBody
-	String getCurrentUserEvents(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(
-	        value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
+	String getCurrentUserEvents(HttpServletRequest request, HttpServletResponse response,
+	        @RequestParam(value = "from", required = false) Long from, @RequestParam(value = "till", required = false) Long till)
 	        throws BadRequestException, ServiceException {
 		if (from == null || till == null) {
 			throw new BadRequestException("You must provide from and till timestamp!",
@@ -255,7 +261,7 @@ public class EventsRestWS extends AbstractRestWS {
 		return json;
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.UPDATE_MY_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	void updateEvent(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
 		String requestBody = RestUtils.getRequestBody(request);
@@ -264,6 +270,20 @@ public class EventsRestWS extends AbstractRestWS {
 		}
 		try {
 			eventsService.updateEvent(GsonHolder.getGson().fromJson(requestBody, EventEntity.class));
+		} catch (JsonParseException ex) {
+			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
+		}
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.UPDATE_MY_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/my", method = RequestMethod.POST)
+	void updateMyEvent(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
+		String requestBody = RestUtils.getRequestBody(request);
+		if (StringUtils.isBlank(requestBody)) {
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
+		}
+		try {
+			eventsService.updateMyEvent(GsonHolder.getGson().fromJson(requestBody, EventEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}

@@ -152,7 +152,7 @@ public class MessageRecipentEntity extends AbstractEntity implements Mergeable<M
 	@Override
 	public String toString() {
 		return "MessageRecipentEntity [recipent=" + recipent + ", readDate=" + readDate + ", archivedByRecipent=" + archivedByRecipent
-		        + ", deletedByRecipent=" + deletedByRecipent + ", id=" + id + ", creationUser=" + creationUser + ", modificationUserId="
+		        + ", deletedByRecipent=" + deletedByRecipent + ", id=" + id + ", creationUserId=" + creationUserId + ", modificationUserId="
 		        + modificationUserId + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
 		        + "]";
 	}

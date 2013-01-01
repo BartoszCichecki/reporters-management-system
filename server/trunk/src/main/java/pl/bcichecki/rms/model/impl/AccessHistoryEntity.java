@@ -156,7 +156,7 @@ public class AccessHistoryEntity extends AbstractEntity implements Mergeable<Acc
 	@Override
 	public String toString() {
 		return "AccessHistoryEntity [username=" + username + ", accessDate=" + accessDate + ", authenticationStatus="
-		        + authenticationStatus + ", ip=" + ip + ", id=" + id + ", creationUser=" + creationUser + ", modificationUserId="
+		        + authenticationStatus + ", ip=" + ip + ", id=" + id + ", creationUserId=" + creationUserId + ", modificationUserId="
 		        + modificationUserId + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
 		        + "]";
 	}

@@ -307,7 +307,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 	public String toString() {
 		return "EventEntity [title=" + title + ", type=" + type + ", description=" + description + ", startDate=" + startDate
 		        + ", endDate=" + endDate + ", address=" + address + ", participants=" + participants + ", devices=" + devices + ", locked="
-		        + locked + ", archived=" + archived + ", deleted=" + deleted + ", id=" + id + ", creationUser=" + creationUser
+		        + locked + ", archived=" + archived + ", deleted=" + deleted + ", id=" + id + ", creationUserId=" + creationUserId
 		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
 		        + modificationDate + ", version=" + version + "]";
 	}
