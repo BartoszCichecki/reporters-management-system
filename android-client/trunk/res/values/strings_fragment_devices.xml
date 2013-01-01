@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="fragment_devices_list_refresh">Refresh</string>
     <string name="fragment_devices_list_loading">Loading devices&#8230;</string>
     <string name="fragment_devices_list_empty">No devices</string>
     <string name="fragment_devices_list_empty_description">There are no devices to display</string>

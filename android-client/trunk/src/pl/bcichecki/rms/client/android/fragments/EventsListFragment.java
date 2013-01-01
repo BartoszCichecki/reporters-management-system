@@ -22,8 +22,12 @@ import org.apache.http.client.HttpResponseException;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
@@ -108,12 +112,15 @@ public class EventsListFragment extends ListFragment {
 			public void onStart() {
 				Log.d(TAG, "Retrieving events from " + from.toString() + " till " + till.toString() + " started.");
 				showProgressDialog();
+				events.clear();
 			}
 
 			@Override
 			public void onSuccess(int statusCode, List<Event> object) {
+				Log.d(TAG,
+				        "Retrieving events from " + from.toString() + " till " + till.toString() + " successful. Retrieved "
+				                + object.size() + " objects.");
 				events.addAll(object);
-				Log.d(TAG, "Retrieving events from " + from.toString() + " till " + till.toString() + " successful.");
 			}
 		});
 	}
@@ -125,6 +132,27 @@ public class EventsListFragment extends ListFragment {
 		downloadData();
 		eventsListAdapter = new EventsListAdapter(getActivity(), events, eventsRestClient);
 		setListAdapter(eventsListAdapter);
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		getActivity().getMenuInflater().inflate(R.menu.fragment_events_list, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.fragment_events_list_menu_refresh) {
+			Log.d(TAG, "Refreshing events list...");
+			downloadData();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
