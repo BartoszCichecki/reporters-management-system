@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -33,49 +34,34 @@ import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.UtilitiesRestClient;
 import pl.bcichecki.rms.client.android.utils.UiUtils;
 
-import roboguice.fragment.RoboDialogFragment;
-import roboguice.inject.InjectResource;
-
 /**
  * @author Bartosz Cichecki
  * 
  */
-public class RemindPasswordDialog extends RoboDialogFragment {
+public class RemindPasswordDialog extends DialogFragment {
 
 	protected static final String TAG = "RemindPasswordDialog";
 
-	@InjectResource(R.string.dialog_remind_password_title)
-	private String titleText;
+	private UtilitiesRestClient utilitiesRestClient;
 
-	@InjectResource(R.string.dialog_remind_password_message)
-	private String enterUsernameMessageText;
+	private void cancelRequests() {
+		if (utilitiesRestClient != null) {
+			utilitiesRestClient.cancelRequests(getActivity(), true);
+			Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_aborted), Toast.LENGTH_LONG).show();
+		}
+	}
 
-	@InjectResource(R.string.dialog_remind_password_enter_username_hint)
-	private String enterUsernameHintText;
-
-	@InjectResource(R.string.dialog_remind_password_ok)
-	private String okText;
-
-	@InjectResource(R.string.dialog_remind_password_field_required)
-	private String fieldRequiredText;
-
-	@InjectResource(R.string.dialog_remind_password_recovery_successful)
-	private String recoverySuccessful;
-
-	@InjectResource(R.string.dialog_remind_password_recovery_failed)
-	private String recoveryFailed;
-
-	@InjectResource(R.string.dialog_remind_password_recovery_aborted)
-	private String recoveryAborted;
-
-	@InjectResource(R.string.dialog_remind_password_recovery_in_progress)
-	private String recoveryInProgress;
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		cancelRequests();
+		super.onCancel(dialog);
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(titleText);
-		builder.setMessage(enterUsernameMessageText);
+		builder.setTitle(getString(R.string.dialog_remind_password_title));
+		builder.setMessage(getString(R.string.dialog_remind_password_message));
 
 		final LinearLayout layout = new LinearLayout(getActivity());
 		layout.setOrientation(LinearLayout.VERTICAL);
@@ -84,7 +70,7 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 		layout.setPadding(space, 0, space, 0);
 
 		final EditText usernameEditText = new EditText(getActivity());
-		usernameEditText.setHint(enterUsernameHintText);
+		usernameEditText.setHint(getString(R.string.dialog_remind_password_enter_username_hint));
 		usernameEditText.setMaxLines(1);
 		usernameEditText.setSingleLine();
 		usernameEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -99,7 +85,7 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 
 		builder.setView(layout);
 
-		builder.setPositiveButton(okText, new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(getString(R.string.dialog_remind_password_ok), new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
@@ -120,19 +106,23 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 
 			@Override
 			public void onShow(DialogInterface dialogInterface) {
-
-				final UtilitiesRestClient utilitiesRestClient = new UtilitiesRestClient(getActivity(), SharedPreferencesWrapper
-				        .getServerAddress(), SharedPreferencesWrapper.getServerPort(), SharedPreferencesWrapper.getWebserviceContextPath());
+				utilitiesRestClient = new UtilitiesRestClient(getActivity(), SharedPreferencesWrapper.getServerAddress(),
+				        SharedPreferencesWrapper.getServerPort(), SharedPreferencesWrapper.getWebserviceContextPath());
 
 				final Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 				positiveButton.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
+						if (!UiUtils.checkInternetConnection(getActivity())) {
+							Log.d(TAG, "There is NO network connected!");
+							return;
+						}
+
 						usernameEditText.setError(null);
 
 						if (StringUtils.isBlank(usernameEditText.getText().toString())) {
-							usernameEditText.setError(fieldRequiredText);
+							usernameEditText.setError(getString(R.string.dialog_remind_password_field_required));
 							return;
 						}
 
@@ -143,7 +133,8 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 							@Override
 							public void onFailure(Throwable error, String content) {
 								Log.d(TAG, "Reminding password failed. [error=" + error + ", content=" + content + "]");
-								Toast.makeText(getActivity(), recoveryFailed, Toast.LENGTH_LONG).show();
+								Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_failed), Toast.LENGTH_LONG)
+								        .show();
 							}
 
 							@Override
@@ -154,14 +145,16 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 							@Override
 							public void onStart() {
 								Log.d(TAG, "Reminding password for user: " + username);
-								Toast.makeText(getActivity(), recoveryInProgress, Toast.LENGTH_SHORT).show();
+								Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_in_progress),
+								        Toast.LENGTH_SHORT).show();
 								positiveButton.setEnabled(false);
 							}
 
 							@Override
 							public void onSuccess(int statusCode, String content) {
 								Log.d(TAG, "Reminding password success.");
-								Toast.makeText(getActivity(), recoverySuccessful, Toast.LENGTH_SHORT).show();
+								Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_successful),
+								        Toast.LENGTH_SHORT).show();
 								dialog.dismiss();
 							}
 
@@ -175,10 +168,7 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 
 					@Override
 					public void onClick(View v) {
-						if (utilitiesRestClient != null) {
-							utilitiesRestClient.cancelRequests(getActivity(), true);
-							Toast.makeText(getActivity(), recoveryAborted, Toast.LENGTH_LONG).show();
-						}
+						cancelRequests();
 						dialog.dismiss();
 					}
 				});
@@ -187,5 +177,13 @@ public class RemindPasswordDialog extends RoboDialogFragment {
 		});
 
 		return dialog;
+	}
+
+	@Override
+	public void onStop() {
+		if (utilitiesRestClient != null) {
+			utilitiesRestClient.cancelRequests(getActivity(), true);
+		}
+		super.onStop();
 	}
 }

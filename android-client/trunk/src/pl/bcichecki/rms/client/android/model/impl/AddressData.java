@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import pl.bcichecki.rms.client.android.model.AbstractPOJO;
@@ -191,10 +190,9 @@ public class AddressData extends AbstractPOJO implements Mergeable<AddressData> 
 		return contacts;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<String> getContacts(ContactType contactType) {
 		if (contacts == null) {
-			return ListUtils.EMPTY_LIST;
+			return new ArrayList<String>();
 		}
 		List<String> values = new ArrayList<String>();
 		for (AddressDataContact addressDataContact : contacts) {
@@ -329,7 +327,7 @@ public class AddressData extends AbstractPOJO implements Mergeable<AddressData> 
 		return "AddressData [title=" + title + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
 		        + ", birthday=" + birthday + ", street=" + street + ", streetNumber=" + streetNumber + ", houseNumber=" + houseNumber
 		        + ", zipCode=" + zipCode + ", city=" + city + ", country=" + country + ", contacts=" + contacts + ", id=" + id
-		        + ", creationUser=" + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate
+		        + ", creationUserId=" + creationUserId + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate
 		        + ", modificationDate=" + modificationDate + ", version=" + version + "]";
 	}
 

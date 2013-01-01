@@ -18,15 +18,14 @@ import org.apache.http.client.HttpResponseException;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -39,6 +38,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
+
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.dialogs.AboutDialog;
 import pl.bcichecki.rms.client.android.dialogs.RegisterDialog;
@@ -49,75 +50,30 @@ import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpResponseHandler;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.ProfileRestClient;
 import pl.bcichecki.rms.client.android.utils.SecurityUtils;
-
-import roboguice.activity.RoboFragmentActivity;
-import roboguice.inject.InjectResource;
-import roboguice.inject.InjectView;
+import pl.bcichecki.rms.client.android.utils.UiUtils;
 
 /**
  * @author Bartosz Cichecki
  * 
  */
-public class LoginActivity extends RoboFragmentActivity {
+public class LoginActivity extends FragmentActivity {
 
 	private static final String TAG = "LoginActivity";
 
-	private Context CONTEXT;
+	private Activity CONTEXT;
 
 	private static final String FAKE_PASS = "*******";
 
-	private static final int ACTIVITY_LOGIN_VIEW_ID = R.layout.activity_login;
-
-	private static final int ACTIVITY_LOGIN_MENU_ID = R.menu.activity_login;
-
-	private static final int FORGOT_PASSWORD_MENU_ITEM = R.id.activity_login_menu_forgot_password;
-
-	private static final int REGISTER_MENU_ITEM_ID = R.id.activity_login_menu_register;
-
-	private static final int SETTINGS_MENU_ITEM_ID = R.id.activity_login_menu_settings;
-
-	private static final int ABOUT_MENU_ITEM_ID = R.id.activity_login_menu_about;
-
-	@InjectResource(R.string.activity_login_check_your_internet_connection)
-	private String checkYourInternetConnectionText;
-
-	@InjectResource(R.string.activity_login_error_field_required)
-	private String errorFieldRequiredText;
-
-	@InjectResource(R.string.activity_login_login_successful)
-	private String loginSuccessfulText;
-
-	@InjectResource(R.string.activity_login_unsuccessful_login_message_title)
-	private String unsuccessfulLoginMessageTitleText;
-
-	@InjectResource(R.string.activity_login_unsuccessful_login_message_content)
-	private String unsuccessfulLoginMessageContentText;
-
-	@InjectResource(R.string.general_unknown_error_message_title)
-	private String unknownErrorMessageTitleText;
-
-	@InjectResource(R.string.general_unknown_error_message_content)
-	private String unknownErrorMessageConentText;
-
-	@InjectView(R.id.activity_login_login_form)
 	private View loginFormView;
 
-	@InjectView(R.id.activity_login_login_progress)
 	private View loginProgressView;
 
-	@InjectView(R.id.activity_login_login_status_text_view)
-	private TextView loginStatusTextView;
-
-	@InjectView(R.id.activity_login_password_edit_text)
 	private EditText passwordEditText;
 
-	@InjectView(R.id.activity_login_remember_user_check_box)
 	private CheckBox rememberUserCheckBox;
 
-	@InjectView(R.id.activity_login_sign_in_button)
 	private Button signInButton;
 
-	@InjectView(R.id.activity_login_username_edit_text)
 	private EditText usernameEditText;
 
 	private Boolean rememberUser;
@@ -129,24 +85,6 @@ public class LoginActivity extends RoboFragmentActivity {
 	private Boolean isPasswordHashed = false;
 
 	private ProfileRestClient profileRestClient;
-
-	private boolean checkInternetConnection() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-		if (netInfo != null && netInfo.isConnected()) {
-			Log.d(TAG, "There is a network connected.");
-			return true;
-		} else {
-			Log.d(TAG, "There is NO network connected!");
-
-			Toast checkYourInternetConnectionToast = Toast.makeText(getApplicationContext(), checkYourInternetConnectionText,
-			        Toast.LENGTH_LONG);
-			checkYourInternetConnectionToast.show();
-
-			return false;
-		}
-	}
 
 	public String getPassword() {
 		return password;
@@ -189,41 +127,42 @@ public class LoginActivity extends RoboFragmentActivity {
 
 		CONTEXT = this;
 
-		setContentView(ACTIVITY_LOGIN_VIEW_ID);
+		setContentView(R.layout.activity_login);
+		setUpViews();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(ACTIVITY_LOGIN_MENU_ID, menu);
+		getMenuInflater().inflate(R.menu.activity_login, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == FORGOT_PASSWORD_MENU_ITEM) {
-			Log.v(TAG, "Showing Remind Password Dialog...");
+		if (item.getItemId() == R.id.activity_login_menu_remind_password) {
+			Log.d(TAG, "Showing Remind Password Dialog...");
 
 			RemindPasswordDialog remindPasswordDialog = new RemindPasswordDialog();
 			remindPasswordDialog.show(getSupportFragmentManager(), TAG);
 			return true;
 		}
-		if (item.getItemId() == REGISTER_MENU_ITEM_ID) {
-			Log.v(TAG, "Showing Register Dialog...");
+		if (item.getItemId() == R.id.activity_login_menu_register) {
+			Log.d(TAG, "Showing Register Dialog...");
 
 			RegisterDialog registerDialog = new RegisterDialog();
 			registerDialog.show(getSupportFragmentManager(), TAG);
 			return true;
 		}
-		if (item.getItemId() == SETTINGS_MENU_ITEM_ID) {
+		if (item.getItemId() == R.id.activity_login_menu_settings) {
 			Log.d(TAG, "Moving to Settings Activity...");
 
 			Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
 			startActivity(settingsActivityIntent);
 			return true;
 		}
-		if (item.getItemId() == ABOUT_MENU_ITEM_ID) {
-			Log.v(TAG, "Showing about dialog...");
+		if (item.getItemId() == R.id.activity_login_menu_about) {
+			Log.d(TAG, "Showing about dialog...");
 
 			AboutDialog aboutDialog = new AboutDialog();
 			aboutDialog.show(getSupportFragmentManager(), TAG);
@@ -273,7 +212,8 @@ public class LoginActivity extends RoboFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (!checkInternetConnection()) {
+				if (!UiUtils.checkInternetConnection(CONTEXT)) {
+					Log.d(TAG, "There is NO network connected!");
 					return;
 				}
 				if (!validateForm()) {
@@ -287,12 +227,21 @@ public class LoginActivity extends RoboFragmentActivity {
 		});
 	}
 
+	@Override
+	protected void onStop() {
+		if (profileRestClient != null) {
+			profileRestClient.cancelRequests(CONTEXT, true);
+		}
+		super.onStop();
+	}
+
 	protected void performLogin() {
-		Log.d(TAG, "Performing login...");
+		Log.d(TAG, "Performing login... [username=" + username + ", password=" + password + "]");
 		profileRestClient = new ProfileRestClient(CONTEXT, username, password, SharedPreferencesWrapper.getServerRealm(),
 		        SharedPreferencesWrapper.getServerAddress(), SharedPreferencesWrapper.getServerPort(),
 		        SharedPreferencesWrapper.getWebserviceContextPath());
-		profileRestClient.getProfile(new GsonHttpResponseHandler<User>(false) {
+		profileRestClient.getProfile(new GsonHttpResponseHandler<User>(new TypeToken<User>() {
+		}.getType(), false) {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
@@ -301,15 +250,16 @@ public class LoginActivity extends RoboFragmentActivity {
 				errorDialog.setIcon(android.R.drawable.ic_dialog_alert);
 				if (error instanceof HttpResponseException) {
 					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-						errorDialog.setTitle(unsuccessfulLoginMessageTitleText);
-						errorDialog.setMessage(unsuccessfulLoginMessageContentText);
+						errorDialog.setTitle(R.string.activity_login_unsuccessful_login_message_title);
+						errorDialog.setMessage(R.string.activity_login_unsuccessful_login_message_content);
 					} else {
-						errorDialog.setTitle(unknownErrorMessageTitleText);
-						errorDialog.setMessage(String.format(unknownErrorMessageConentText, (HttpResponseException) error));
+						errorDialog.setTitle(R.string.general_unknown_error_message_title);
+						errorDialog.setMessage(String.format(getString(R.string.general_unknown_error_message_content),
+						        (HttpResponseException) error));
 					}
 				} else {
-					errorDialog.setTitle(unknownErrorMessageTitleText);
-					errorDialog.setMessage(String.format(unknownErrorMessageConentText, error));
+					errorDialog.setTitle(R.string.general_unknown_error_message_title);
+					errorDialog.setMessage(String.format(getString(R.string.general_unknown_error_message_content), error));
 				}
 				errorDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
@@ -341,18 +291,18 @@ public class LoginActivity extends RoboFragmentActivity {
 				UserProfileHolder.setUserProfile(null);
 				UserProfileHolder.setUsername(username);
 				UserProfileHolder.setPassword(password);
-				Toast.makeText(CONTEXT, loginSuccessfulText, Toast.LENGTH_SHORT).show();
+				Toast.makeText(CONTEXT, R.string.activity_login_login_successful, Toast.LENGTH_SHORT).show();
 				Intent mainActivityIntent = new Intent(CONTEXT, MainActivity.class);
 				startActivity(mainActivityIntent);
 			}
 
 			@Override
-			public void onSuccess(int statusCode, User jsonObject) {
-				Log.d(TAG, "Success [statusCode=" + statusCode + ", jsonObject=" + jsonObject.toString() + "]");
-				UserProfileHolder.setUserProfile(jsonObject);
+			public void onSuccess(int statusCode, User user) {
+				Log.d(TAG, "Success [statusCode=" + statusCode + ", jsonObject=" + user.toString() + "]");
+				UserProfileHolder.setUserProfile(user);
 				UserProfileHolder.setUsername(username);
 				UserProfileHolder.setPassword(password);
-				Toast.makeText(CONTEXT, loginSuccessfulText, Toast.LENGTH_SHORT).show();
+				Toast.makeText(CONTEXT, R.string.activity_login_login_successful, Toast.LENGTH_SHORT).show();
 				Intent mainActivityIntent = new Intent(CONTEXT, MainActivity.class);
 				startActivity(mainActivityIntent);
 			}
@@ -402,6 +352,15 @@ public class LoginActivity extends RoboFragmentActivity {
 		this.rememberUser = rememberUser;
 	}
 
+	private void setUpViews() {
+		loginFormView = findViewById(R.id.activity_login_login_form);
+		loginProgressView = findViewById(R.id.activity_login_login_progress);
+		passwordEditText = (EditText) findViewById(R.id.activity_login_password_edit_text);
+		rememberUserCheckBox = (CheckBox) findViewById(R.id.activity_login_remember_user_check_box);
+		signInButton = (Button) findViewById(R.id.activity_login_sign_in_button);
+		usernameEditText = (EditText) findViewById(R.id.activity_login_username_edit_text);
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -443,7 +402,7 @@ public class LoginActivity extends RoboFragmentActivity {
 		if (isUsernameBlank) {
 			Log.d(TAG, "Username field is empty!");
 
-			usernameEditText.setError(errorFieldRequiredText);
+			usernameEditText.setError(getString(R.string.activity_login_error_field_required));
 			return false;
 		}
 
@@ -451,7 +410,7 @@ public class LoginActivity extends RoboFragmentActivity {
 		if (isPasswordBlank) {
 			Log.d(TAG, "Password field is empty!");
 
-			passwordEditText.setError(errorFieldRequiredText);
+			passwordEditText.setError(getString(R.string.activity_login_error_field_required));
 			return false;
 		}
 

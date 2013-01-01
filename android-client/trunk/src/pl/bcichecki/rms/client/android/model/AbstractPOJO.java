@@ -20,15 +20,15 @@ import pl.bcichecki.rms.client.android.model.impl.User;
 /**
  * @author Bartosz Cichecki
  */
-public abstract class AbstractPOJO implements Auditable<User>, Serializable, VersionableEntity<Long> {
+public abstract class AbstractPOJO implements Auditable<User, String, Date>, Serializable, VersionableEntity<Long> {
 
 	private static final long serialVersionUID = -4067696286632039806L;
 
 	protected String id;
 
-	protected User creationUser;
+	protected String creationUserId;
 
-	protected User modificationUser;
+	protected String modificationUserId;
 
 	protected Date creationDate;
 
@@ -59,11 +59,11 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 		} else if (!creationDate.equals(other.creationDate)) {
 			return false;
 		}
-		if (creationUser == null) {
-			if (other.creationUser != null) {
+		if (creationUserId == null) {
+			if (other.creationUserId != null) {
 				return false;
 			}
-		} else if (!creationUser.equals(other.creationUser)) {
+		} else if (!creationUserId.equals(other.creationUserId)) {
 			return false;
 		}
 		if (id == null) {
@@ -80,11 +80,11 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 		} else if (!modificationDate.equals(other.modificationDate)) {
 			return false;
 		}
-		if (modificationUser == null) {
-			if (other.modificationUser != null) {
+		if (modificationUserId == null) {
+			if (other.modificationUserId != null) {
 				return false;
 			}
-		} else if (!modificationUser.equals(other.modificationUser)) {
+		} else if (!modificationUserId.equals(other.modificationUserId)) {
 			return false;
 		}
 		if (version == null) {
@@ -103,13 +103,13 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 	}
 
 	@Override
-	public User getCreationUser() {
-		return creationUser;
+	public String getCreationUserId() {
+		return creationUserId;
 	}
 
 	@Override
-	public User getCurrentUser() {
-		return UserProfileHolder.getUserProfile();
+	public String getCurrentUserId() {
+		return UserProfileHolder.getUserProfile().getId();
 	}
 
 	public String getId() {
@@ -122,8 +122,8 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 	}
 
 	@Override
-	public User getModificationUser() {
-		return modificationUser;
+	public String getModificationUserId() {
+		return modificationUserId;
 	}
 
 	@Override
@@ -136,10 +136,10 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (creationDate == null ? 0 : creationDate.hashCode());
-		result = prime * result + (creationUser == null ? 0 : creationUser.hashCode());
+		result = prime * result + (creationUserId == null ? 0 : creationUserId.hashCode());
 		result = prime * result + (id == null ? 0 : id.hashCode());
 		result = prime * result + (modificationDate == null ? 0 : modificationDate.hashCode());
-		result = prime * result + (modificationUser == null ? 0 : modificationUser.hashCode());
+		result = prime * result + (modificationUserId == null ? 0 : modificationUserId.hashCode());
 		result = prime * result + (version == null ? 0 : version.hashCode());
 		return result;
 	}
@@ -150,8 +150,8 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 	}
 
 	@Override
-	public void setCreationUser(User creationUser) {
-		this.creationUser = creationUser;
+	public void setCreationUserId(String creationUser) {
+		creationUserId = creationUser;
 	}
 
 	public void setId(String id) {
@@ -164,8 +164,8 @@ public abstract class AbstractPOJO implements Auditable<User>, Serializable, Ver
 	}
 
 	@Override
-	public void setModificationUser(User modificationUser) {
-		this.modificationUser = modificationUser;
+	public void setModificationUserId(String modificationUser) {
+		modificationUserId = modificationUser;
 	}
 
 	@Override

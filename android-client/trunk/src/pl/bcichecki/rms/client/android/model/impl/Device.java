@@ -115,8 +115,8 @@ public class Device extends AbstractPOJO implements Mergeable<Device> {
 
 	@Override
 	public String toString() {
-		return "Device [name=" + name + ", description=" + description + ", deleted=" + deleted + ", id=" + id + ", creationUser="
-		        + creationUser + ", modificationUser=" + modificationUser + ", creationDate=" + creationDate + ", modificationDate="
+		return "Device [name=" + name + ", description=" + description + ", deleted=" + deleted + ", id=" + id + ", creationUserId="
+		        + creationUserId + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
 		        + modificationDate + ", version=" + version + "]";
 	}
 

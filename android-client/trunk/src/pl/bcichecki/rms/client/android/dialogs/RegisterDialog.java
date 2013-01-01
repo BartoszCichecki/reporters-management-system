@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,61 +38,37 @@ import pl.bcichecki.rms.client.android.services.clients.restful.impl.UtilitiesRe
 import pl.bcichecki.rms.client.android.utils.SecurityUtils;
 import pl.bcichecki.rms.client.android.utils.UiUtils;
 
-import roboguice.fragment.RoboDialogFragment;
-import roboguice.inject.InjectResource;
-
 /**
  * @author Bartosz Cichecki
  * 
  */
-public class RegisterDialog extends RoboDialogFragment {
+public class RegisterDialog extends DialogFragment {
 
 	protected static final String TAG = "RegisterDialog";
 
-	@InjectResource(R.string.dialog_register_title)
-	private String titleText;
+	private UtilitiesRestClient utilitiesRestClient;
 
-	@InjectResource(R.string.dialog_register_message)
-	private String messageText;
+	private void cancelRequests() {
+		if (utilitiesRestClient != null) {
+			utilitiesRestClient.cancelRequests(getActivity(), true);
+			Toast.makeText(getActivity(), getString(R.string.dialog_register_aborted), Toast.LENGTH_LONG).show();
+		}
+	}
 
-	@InjectResource(R.string.dialog_register_enter_username_hint)
-	private String enterUsernameHintText;
-
-	@InjectResource(R.string.dialog_register_enter_password_hint)
-	private String enterPasswordHintText;
-
-	@InjectResource(R.string.dialog_register_enter_email_hint)
-	private String enterEmailHintText;
-
-	@InjectResource(R.string.dialog_register_ok)
-	private String okText;
-
-	@InjectResource(R.string.dialog_register_field_required)
-	private String fieldRequiredText;
-
-	@InjectResource(R.string.dialog_register_email_not_valid)
-	private String emailNotValid;
-
-	@InjectResource(R.string.dialog_register_successful)
-	private String registerSuccessful;
-
-	@InjectResource(R.string.dialog_register_failed)
-	private String registerFailed;
-
-	@InjectResource(R.string.dialog_register_aborted)
-	private String registerAborted;
-
-	@InjectResource(R.string.dialog_register_in_progress)
-	private String registerInProgress;
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		cancelRequests();
+		super.onCancel(dialog);
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(titleText);
-		builder.setMessage(messageText);
+		builder.setTitle(getString(R.string.dialog_register_title));
+		builder.setMessage(getString(R.string.dialog_register_message));
 
 		final EditText usernameEditText = new EditText(getActivity());
-		usernameEditText.setHint(enterUsernameHintText);
+		usernameEditText.setHint(getString(R.string.dialog_register_enter_username_hint));
 		usernameEditText.setMaxLines(1);
 		usernameEditText.setSingleLine();
 		usernameEditText.setImeOptions(EditorInfo.IME_ACTION_NEXT);
@@ -105,7 +82,7 @@ public class RegisterDialog extends RoboDialogFragment {
 		});
 
 		final EditText passwordEditText = new EditText(getActivity());
-		passwordEditText.setHint(enterPasswordHintText);
+		passwordEditText.setHint(getString(R.string.dialog_register_enter_password_hint));
 		passwordEditText.setMaxLines(1);
 		passwordEditText.setSingleLine();
 		passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -120,7 +97,7 @@ public class RegisterDialog extends RoboDialogFragment {
 		});
 
 		final EditText emailEditText = new EditText(getActivity());
-		emailEditText.setHint(enterEmailHintText);
+		emailEditText.setHint(getString(R.string.dialog_register_enter_email_hint));
 		emailEditText.setMaxLines(1);
 		emailEditText.setSingleLine();
 		emailEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -145,7 +122,7 @@ public class RegisterDialog extends RoboDialogFragment {
 
 		builder.setView(layout);
 
-		builder.setPositiveButton(okText, new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(getString(R.string.dialog_register_enter_email_hint), new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
@@ -167,34 +144,37 @@ public class RegisterDialog extends RoboDialogFragment {
 
 			@Override
 			public void onShow(DialogInterface dialogInterface) {
-
-				final UtilitiesRestClient utilitiesRestClient = new UtilitiesRestClient(getActivity(), SharedPreferencesWrapper
-				        .getServerAddress(), SharedPreferencesWrapper.getServerPort(), SharedPreferencesWrapper.getWebserviceContextPath());
+				utilitiesRestClient = new UtilitiesRestClient(getActivity(), SharedPreferencesWrapper.getServerAddress(),
+				        SharedPreferencesWrapper.getServerPort(), SharedPreferencesWrapper.getWebserviceContextPath());
 
 				final Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 				positiveButton.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
+						if (!UiUtils.checkInternetConnection(getActivity())) {
+							Log.d(TAG, "There is NO network connected!");
+							return;
+						}
 
 						usernameEditText.setError(null);
 						passwordEditText.setError(null);
 						emailEditText.setError(null);
 
 						if (StringUtils.isBlank(usernameEditText.getText().toString())) {
-							usernameEditText.setError(fieldRequiredText);
+							usernameEditText.setError(getString(R.string.dialog_register_field_required));
 							return;
 						}
 						if (StringUtils.isBlank(passwordEditText.getText().toString())) {
-							passwordEditText.setError(fieldRequiredText);
+							passwordEditText.setError(getString(R.string.dialog_register_field_required));
 							return;
 						}
 						if (StringUtils.isBlank(emailEditText.getText().toString())) {
-							emailEditText.setError(fieldRequiredText);
+							emailEditText.setError(getString(R.string.dialog_register_field_required));
 							return;
 						}
 						if (!UiUtils.validateEmail(emailEditText.getText().toString())) {
-							emailEditText.setError(emailNotValid);
+							emailEditText.setError(getString(R.string.dialog_register_email_not_valid));
 							return;
 						}
 
@@ -209,7 +189,7 @@ public class RegisterDialog extends RoboDialogFragment {
 							@Override
 							public void onFailure(Throwable error, String content) {
 								Log.d(TAG, "Registering user failed. [error= " + error + ", content=" + content + "]");
-								Toast.makeText(getActivity(), registerFailed, Toast.LENGTH_LONG).show();
+								Toast.makeText(getActivity(), getString(R.string.dialog_register_failed), Toast.LENGTH_LONG).show();
 							}
 
 							@Override
@@ -220,14 +200,14 @@ public class RegisterDialog extends RoboDialogFragment {
 							@Override
 							public void onStart() {
 								Log.d(TAG, "Registering user: " + user.toString());
-								Toast.makeText(getActivity(), registerInProgress, Toast.LENGTH_SHORT).show();
+								Toast.makeText(getActivity(), getString(R.string.dialog_register_in_progress), Toast.LENGTH_SHORT).show();
 								positiveButton.setEnabled(false);
 							}
 
 							@Override
 							public void onSuccess(int statusCode, String content) {
 								Log.d(TAG, "Registered user successfully.");
-								Toast.makeText(getActivity(), registerSuccessful, Toast.LENGTH_SHORT).show();
+								Toast.makeText(getActivity(), getString(R.string.dialog_register_successful), Toast.LENGTH_SHORT).show();
 
 								SharedPreferencesWrapper.setUsername(user.getUsername());
 								SharedPreferencesWrapper.setPasswordHash(user.getPassword());
@@ -246,10 +226,7 @@ public class RegisterDialog extends RoboDialogFragment {
 
 					@Override
 					public void onClick(View v) {
-						if (utilitiesRestClient != null) {
-							utilitiesRestClient.cancelRequests(getActivity(), true);
-							Toast.makeText(getActivity(), registerAborted, Toast.LENGTH_LONG).show();
-						}
+						cancelRequests();
 						dialog.dismiss();
 					}
 				});
@@ -258,5 +235,13 @@ public class RegisterDialog extends RoboDialogFragment {
 		});
 
 		return dialog;
+	}
+
+	@Override
+	public void onStop() {
+		if (utilitiesRestClient != null) {
+			utilitiesRestClient.cancelRequests(getActivity(), true);
+		}
+		super.onStop();
 	}
 }

@@ -11,6 +11,8 @@
 
 package pl.bcichecki.rms.client.android.services.clients.restful.https;
 
+import java.lang.reflect.Type;
+
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -29,16 +31,15 @@ public class GsonHttpResponseHandler<T> extends AsyncHttpResponseHandler {
 
 	private Gson gson;
 
-	private Class<T> clazz;
-
 	private boolean strictMode;
 
-	@SuppressWarnings("unchecked")
-	public GsonHttpResponseHandler(boolean strictMode) {
+	private Type type;
+
+	public GsonHttpResponseHandler(Type type, boolean strictMode) {
 		super();
+		this.type = type;
 		this.strictMode = strictMode;
-		this.gson = GsonHolder.getGson();
-		this.clazz = (Class<T>) ((java.lang.reflect.ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		gson = GsonHolder.getGson();
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class GsonHttpResponseHandler<T> extends AsyncHttpResponseHandler {
 
 	};
 
-	public void onSuccess(int statusCode, T jsonObject) {
+	public void onSuccess(int statusCode, T object) {
 	};
 
 	/**
@@ -70,10 +71,10 @@ public class GsonHttpResponseHandler<T> extends AsyncHttpResponseHandler {
 
 	private void prepareSuccessMessage(int statusCode, String responseBody) {
 		try {
-			T jsonObject = gson.fromJson(responseBody, clazz);
+			T object = gson.fromJson(responseBody, type);
 
-			Log.d(TAG, "Valid JSON response, proceeding to onSuccess(int, " + clazz.getSimpleName() + ")...");
-			onSuccess(statusCode, jsonObject);
+			Log.d(TAG, "Valid JSON response, proceeding to onSuccess(int, T)...");
+			onSuccess(statusCode, object);
 		} catch (JsonParseException ex) {
 			if (strictMode) {
 				Log.d(TAG, "Not a valid JSON response, proceeding to onFailure(Throwable, String)...");

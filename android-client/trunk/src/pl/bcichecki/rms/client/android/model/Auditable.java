@@ -11,29 +11,27 @@
 
 package pl.bcichecki.rms.client.android.model;
 
-import java.util.Date;
-
 /**
  * @author Bartosz Cichecki
  */
-public interface Auditable<T> {
+public interface Auditable<T, Y, Z> {
 
-	Date getCreationDate();
+	Z getCreationDate();
 
-	T getCreationUser();
+	Y getCreationUserId();
 
-	T getCurrentUser();
+	Y getCurrentUserId();
 
-	Date getModificationDate();
+	Z getModificationDate();
 
-	T getModificationUser();
+	Y getModificationUserId();
 
-	void setCreationDate(Date creationDate);
+	void setCreationDate(Z creationDate);
 
-	void setCreationUser(T creationUser);
+	void setCreationUserId(Y creationUserId);
 
-	void setModificationDate(Date modificationDate);
+	void setModificationDate(Z modificationDate);
 
-	void setModificationUser(T modificationUser);
+	void setModificationUserId(Y modificationUserId);
 
 }

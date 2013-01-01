@@ -22,7 +22,6 @@ import java.security.cert.CertificateException;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
-import com.google.inject.Singleton;
 import com.loopj.android.http.AsyncHttpClient;
 
 import pl.bcichecki.rms.client.android.services.clients.restful.https.ssl.SimpleSSLSocketFactory;
@@ -31,7 +30,6 @@ import pl.bcichecki.rms.client.android.services.clients.restful.https.ssl.Simple
  * @author Bartosz Cichecki
  * 
  */
-@Singleton
 public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 
 	protected int connectionTimeout = 5 * 1000;

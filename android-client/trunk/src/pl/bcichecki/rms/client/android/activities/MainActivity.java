@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
@@ -31,20 +32,14 @@ import android.view.MenuItem;
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.dialogs.AboutDialog;
 import pl.bcichecki.rms.client.android.fragments.DummySectionFragment;
+import pl.bcichecki.rms.client.android.fragments.EventsListFragment;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.listeners.ActivityAwareDialogInterfaceOnClickListener;
 import pl.bcichecki.rms.client.android.listeners.MainActivityActionBarTabListener;
 
-import roboguice.activity.RoboFragmentActivity;
-import roboguice.inject.InjectResource;
-
-public class MainActivity extends RoboFragmentActivity {
+public class MainActivity extends FragmentActivity {
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-		private static final int EVENTS_SECTION_TITLE_ID = R.string.activity_main_events_section_title;
-
-		private static final int DEVICES_SECTION_TITLE_ID = R.string.activity_main_devices_section_title;
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -60,7 +55,7 @@ public class MainActivity extends RoboFragmentActivity {
 			Fragment fragment;
 			switch (position) {
 				case 0:
-					fragment = new DummySectionFragment();
+					fragment = new EventsListFragment();
 					return fragment;
 				case 1:
 					fragment = new DummySectionFragment();
@@ -74,9 +69,9 @@ public class MainActivity extends RoboFragmentActivity {
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
 				case 0:
-					return StringUtils.upperCase(getString(EVENTS_SECTION_TITLE_ID));
+					return StringUtils.upperCase(getString(R.string.activity_main_events_section_title));
 				case 1:
-					return StringUtils.upperCase(getString(DEVICES_SECTION_TITLE_ID));
+					return StringUtils.upperCase(getString(R.string.activity_main_devices_section_title));
 				default:
 					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());
 			}
@@ -84,16 +79,6 @@ public class MainActivity extends RoboFragmentActivity {
 	}
 
 	private static final String TAG = "MainActivity";
-
-	private static final int ACTVITY_MAIN_VIEW_ID = R.layout.activity_main;
-
-	private static final int ACTVITY_MAIN_MENU_ID = R.menu.activity_main;
-
-	private static final int SETTINGS_MENU_ITEM_ID = R.id.activity_main_menu_settings;
-
-	private static final int ABOUT_MENU_ITEM_ID = R.id.activity_main_menu_about;
-
-	private static final int ANDROID_HOME_ID = android.R.id.home;
 
 	private ActionBar actionBar;
 
@@ -103,16 +88,10 @@ public class MainActivity extends RoboFragmentActivity {
 
 	private MainActivityActionBarTabListener mainActivityActionBarTabListener;
 
-	@InjectResource(R.string.activity_main_logout_dialog_title)
-	private String logoutDialogTitle;
-
-	@InjectResource(R.string.activity_main_logout_dialog_message)
-	private String logoutDialogMessage;
-
 	private void logout() {
 		AlertDialog.Builder logoutDialog = new AlertDialog.Builder(this);
-		logoutDialog.setTitle(logoutDialogTitle);
-		logoutDialog.setMessage(logoutDialogMessage);
+		logoutDialog.setTitle(R.string.activity_main_logout_dialog_title);
+		logoutDialog.setMessage(R.string.activity_main_logout_dialog_message);
 		logoutDialog.setPositiveButton(android.R.string.yes, new ActivityAwareDialogInterfaceOnClickListener(this) {
 
 			@Override
@@ -139,7 +118,7 @@ public class MainActivity extends RoboFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(ACTVITY_MAIN_VIEW_ID);
+		setContentView(R.layout.activity_main);
 
 		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -169,24 +148,24 @@ public class MainActivity extends RoboFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(ACTVITY_MAIN_MENU_ID, menu);
+		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == ANDROID_HOME_ID) {
+		if (item.getItemId() == android.R.id.home) {
 			logout();
 			return true;
 		}
-		if (item.getItemId() == SETTINGS_MENU_ITEM_ID) {
+		if (item.getItemId() == R.id.activity_main_menu_settings) {
 			Log.d(TAG, "Moving to Settings Activity...");
 
 			Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
 			startActivity(settingsActivityIntent);
 			return true;
 		}
-		if (item.getItemId() == ABOUT_MENU_ITEM_ID) {
+		if (item.getItemId() == R.id.activity_main_menu_about) {
 			Log.v(TAG, "Showing about dialog...");
 
 			AboutDialog aboutDialog = new AboutDialog();
