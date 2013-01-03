@@ -122,7 +122,7 @@ public class RegisterDialog extends DialogFragment {
 
 		builder.setView(layout);
 
-		builder.setPositiveButton(getString(R.string.dialog_register_enter_email_hint), new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(getString(R.string.dialog_register_ok), new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
