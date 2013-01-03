@@ -12,7 +12,9 @@
 package pl.bcichecki.rms.services.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,8 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pl.bcichecki.rms.dao.DevicesDao;
 import pl.bcichecki.rms.dao.EventsDao;
+import pl.bcichecki.rms.dao.UsersDao;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
+import pl.bcichecki.rms.model.impl.DeviceEntity;
 import pl.bcichecki.rms.model.impl.EventEntity;
+import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.services.EventsService;
 import pl.bcichecki.rms.utils.SecurityUtils;
 
@@ -36,6 +41,9 @@ public class EventsServiceImpl implements EventsService {
 
 	@Autowired
 	private DevicesDao devicesDao;
+
+	@Autowired
+	private UsersDao usersDao;
 
 	@Override
 	public boolean createEvent(EventEntity event) throws ServiceException {
@@ -52,6 +60,8 @@ public class EventsServiceImpl implements EventsService {
 		if (eventsDao.contains(event)) {
 			throw new ServiceException("Could not create duplicate event!", "exceptions.serviceExceptions.events.duplicateEvent");
 		}
+		event.setParticipants(reloadParticipants(event.getParticipants()));
+		event.setDevices(reloadDevices(event.getDevices()));
 		eventsDao.create(event);
 		return true;
 	}
@@ -130,6 +140,30 @@ public class EventsServiceImpl implements EventsService {
 		return event;
 	}
 
+	private Set<DeviceEntity> reloadDevices(Set<DeviceEntity> devices) throws ServiceException {
+		Set<DeviceEntity> reloadedDevices = new HashSet<DeviceEntity>();
+		for (DeviceEntity device : devices) {
+			DeviceEntity reloadedDevice = devicesDao.getById(device.getId());
+			if (reloadedDevice == null) {
+				throw new ServiceException("Device with this ID does not exist!", "exceptions.serviceExceptions.devices.notExistId");
+			}
+			reloadedDevices.add(reloadedDevice);
+		}
+		return reloadedDevices;
+	}
+
+	private Set<UserEntity> reloadParticipants(Set<UserEntity> participants) throws ServiceException {
+		Set<UserEntity> reloadedParticipants = new HashSet<UserEntity>();
+		for (UserEntity participant : participants) {
+			UserEntity reloadedParticipant = usersDao.getById(participant.getId());
+			if (reloadedParticipant == null) {
+				throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
+			}
+			reloadedParticipants.add(reloadedParticipant);
+		}
+		return reloadedParticipants;
+	}
+
 	@Override
 	public boolean updateEvent(EventEntity event) throws ServiceException {
 		EventEntity retrieved = eventsDao.getById(event.getId());
@@ -137,6 +171,8 @@ public class EventsServiceImpl implements EventsService {
 			throw new ServiceException("You can't update event that does not exist!",
 			        "exceptions.serviceExceptions.events.cantUpdateNotExisting");
 		}
+		event.setParticipants(reloadParticipants(event.getParticipants()));
+		event.setDevices(reloadDevices(event.getDevices()));
 		retrieved.merge(event);
 		eventsDao.update(retrieved);
 		return true;
@@ -153,6 +189,8 @@ public class EventsServiceImpl implements EventsService {
 			throw new ServiceException("You can't update event that is not yours!",
 			        "exceptions.serviceExceptions.events.cantUpdateNotYours");
 		}
+		event.setParticipants(reloadParticipants(event.getParticipants()));
+		event.setDevices(reloadDevices(event.getDevices()));
 		retrieved.merge(event);
 		eventsDao.update(retrieved);
 		return true;

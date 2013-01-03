@@ -30,6 +30,7 @@ import pl.bcichecki.rms.dao.UsersDao;
 import pl.bcichecki.rms.exceptions.impl.ServiceException;
 import pl.bcichecki.rms.model.impl.CustomUser;
 import pl.bcichecki.rms.model.impl.PrivilegeType;
+import pl.bcichecki.rms.model.impl.RoleEntity;
 import pl.bcichecki.rms.model.impl.UserEntity;
 import pl.bcichecki.rms.services.EmergencyAdminService;
 import pl.bcichecki.rms.services.UsersService;
@@ -72,6 +73,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 			throw new ServiceException("User with such email already exist! Users must have unique emails.",
 			        "exceptions.serviceExceptions.users.duplicateEmail");
 		}
+		user.setRole(reloadRole(user.getRole()));
 		usersDao.create(user);
 		return true;
 	}
@@ -183,6 +185,14 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 		return true;
 	}
 
+	private RoleEntity reloadRole(RoleEntity role) throws ServiceException {
+		RoleEntity reloadedRole = rolesDao.getById(role.getId());
+		if (reloadedRole == null) {
+			throw new ServiceException("Role with this ID does not exist!", "exceptions.serviceExceptions.roles.notExistId");
+		}
+		return reloadedRole;
+	}
+
 	@Override
 	public boolean updateUser(UserEntity user) throws ServiceException {
 		if (usersDao.getByUsername(user.getUsername()) != null) {
@@ -198,6 +208,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 			throw new ServiceException("You can't update user that does not exist!",
 			        "exceptions.serviceExceptions.users.cantUpdateNotExisting");
 		}
+		user.setRole(reloadRole(user.getRole()));
 		retrieved.merge(user);
 		usersDao.update(retrieved);
 		return true;

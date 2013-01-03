@@ -196,7 +196,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity, Stri
 
 	@Override
 	public void setCreationUserId(String creationUser) {
-		this.creationUserId = creationUser;
+		creationUserId = creationUser;
 	}
 
 	public void setId(String id) {
