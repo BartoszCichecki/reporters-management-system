@@ -13,24 +13,16 @@ package pl.bcichecki.rms.client.android.fragments.listAdapters;
 
 import java.util.List;
 
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpResponseException;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.fragments.listAdapters.comparators.DevicesListComparator;
 import pl.bcichecki.rms.client.android.model.impl.Device;
-import pl.bcichecki.rms.client.android.services.clients.restful.impl.DevicesRestClient;
 
 /**
  * @author Bartosz Cichecki
@@ -38,19 +30,14 @@ import pl.bcichecki.rms.client.android.services.clients.restful.impl.DevicesRest
  */
 public class DevicesListAdapter extends ArrayAdapter<Device> {
 
-	private static final String TAG = "DevicesListAdapter";
-
 	private static final int FRAGMENT_DEVICES_LIST_ITEM = R.layout.fragment_devices_list_item;
 
 	private static final int FRAGMENT_DEVICES_LIST_ITEM_TITLE = R.id.fragment_devices_list_item_title;
 
 	private LayoutInflater layoutInflater;
 
-	private DevicesRestClient devicesRestClient;
-
-	public DevicesListAdapter(Context context, List<Device> objects, DevicesRestClient devicesRestClient) {
+	public DevicesListAdapter(Context context, List<Device> objects) {
 		super(context, FRAGMENT_DEVICES_LIST_ITEM, FRAGMENT_DEVICES_LIST_ITEM_TITLE, objects);
-		this.devicesRestClient = devicesRestClient;
 	}
 
 	protected LayoutInflater getLayoutInflater() {
@@ -81,51 +68,6 @@ public class DevicesListAdapter extends ArrayAdapter<Device> {
 	public void refresh() {
 		sort(new DevicesListComparator());
 		notifyDataSetChanged();
-	}
-
-	@Override
-	public void remove(final Device object) {
-		if (devicesRestClient == null) {
-			throw new IllegalStateException("EventsRestClient must not be null");
-		}
-		devicesRestClient.deleteDevice(object, new AsyncHttpResponseHandler() {
-
-			@Override
-			public void onFailure(Throwable error, String content) {
-				Log.d(TAG, "Removing event [event=" + object + "] failed. [error=" + error + ", content=" + content + "]");
-				if (error instanceof HttpResponseException) {
-					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-						Toast.makeText(getContext(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG).show();
-					} else {
-						Toast.makeText(getContext(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG).show();
-					}
-				} else {
-					Toast.makeText(getContext(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG).show();
-				}
-			}
-
-			@Override
-			public void onFinish() {
-				Log.d(TAG, "Attempt to delete event finished. [event=" + object + "]");
-			}
-
-			@Override
-			public void onStart() {
-				Log.d(TAG, "Attempting to delete event. [event=" + object + "]");
-			}
-
-			@Override
-			public void onSuccess(int statusCode, String content) {
-				Log.d(TAG, "Attempt to delete event [event=" + object + "] succesful. Removing object locally");
-				superRemove(object);
-				refresh();
-			}
-
-		});
-	}
-
-	public void superRemove(Device object) {
-		super.remove(object);
 	}
 
 }

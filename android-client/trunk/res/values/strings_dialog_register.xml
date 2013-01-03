@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-   <string name="dialog_register_title">Register new account</string>
-   <string name="dialog_register_message">You need to fill this form in order to register new account. New account must be activated by administrator.</string>
-   <string name="dialog_register_enter_username_hint">Username</string>
-   <string name="dialog_register_enter_password_hint">Password</string>
-   <string name="dialog_register_enter_email_hint">Email</string>
-   <string name="dialog_register_ok">Register</string>
-   <string name="dialog_register_field_required">This field is required</string> 
-   <string name="dialog_register_email_not_valid">This is not a valid email</string> 
-   <string name="dialog_register_failed">Could not register user. Please check your settings and/or try different username.</string>
-   <string name="dialog_register_successful">You were registered. Your account must be activated before can be used.</string>
-   <string name="dialog_register_in_progress">Registering user in progress. Please wait&#8230;</string>
    <string name="dialog_register_aborted">Registering user canceled</string>
+   <string name="dialog_register_email_not_valid">This is not a valid email</string> 
+   <string name="dialog_register_enter_email_hint">Email</string>
+   <string name="dialog_register_enter_password_hint">Password</string>
+   <string name="dialog_register_enter_username_hint">Username</string>
+   <string name="dialog_register_failed">Could not register user. Please check your settings and/or try different username.</string>
+   <string name="dialog_register_field_required">This field is required</string> 
+   <string name="dialog_register_in_progress">Registering user in progress. Please wait&#8230;</string>
+   <string name="dialog_register_message">You need to fill this form in order to register new account. New account must be activated by administrator.</string>
+   <string name="dialog_register_ok">Register</string>
+   <string name="dialog_register_successful">You were registered. Your account must be activated before can be used.</string>
+   <string name="dialog_register_title">Register new account</string>
     
 </resources>

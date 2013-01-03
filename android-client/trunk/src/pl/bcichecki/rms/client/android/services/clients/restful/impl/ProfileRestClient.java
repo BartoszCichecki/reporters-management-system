@@ -56,7 +56,7 @@ public class ProfileRestClient extends AbstractRestClient {
 		RestUtils.decorareHeaderWithMD5(headers, profileAsJson);
 
 		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_PROFILE, RestConstants.RESOURCE_PATH_MY),
-		        getHeadersAsArray(headers), profileAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
+		        getHeadersAsArray(headers), profileAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
 	}
 
 }

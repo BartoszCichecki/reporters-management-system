@@ -23,6 +23,13 @@ public class EventsListComparator implements Comparator<Event> {
 
 	@Override
 	public int compare(Event lhs, Event rhs) {
+		if (lhs.isArchived() && !rhs.isArchived()) {
+			return -1;
+		}
+		if (!lhs.isArchived() && rhs.isArchived()) {
+			return 1;
+		}
+
 		if (lhs.equals(rhs)) {
 			return 0;
 		}

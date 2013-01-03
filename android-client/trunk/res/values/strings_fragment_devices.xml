@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="fragment_devices_list_refresh">Refresh</string>
-    <string name="fragment_devices_list_loading">Loading devices&#8230;</string>
+    <string name="fragment_devices_list_context_menu_delete">Delete</string>
+    <string name="fragment_devices_list_context_menu_edit">Edit</string>
+    <string name="fragment_devices_list_context_menu_share">Share</string>
+    <string name="fragment_devices_list_delete_successful">Devices deleted successfully</string>
     <string name="fragment_devices_list_empty">No devices</string>
     <string name="fragment_devices_list_empty_description">There are no devices to display</string>
+    <string name="fragment_devices_list_loading">Loading devices&#8230;</string>
+    <string name="fragment_devices_list_menu_new">New device</string>
+    <string name="fragment_devices_list_menu_refresh">Refresh</string>
 
 </resources>

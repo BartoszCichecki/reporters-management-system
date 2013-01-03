@@ -27,7 +27,11 @@ public class HttpConstants {
 
 	public static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
+	public static final String CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8 = "application/json; charset=UTF-8";
+
 	public static final String CONTENT_TYPE_TEXT_PLAIN = "text/plain";
+
+	public static final String CONTENT_TYPE_TEXT_PLAIN_CHARSET_UTF8 = "text/plain; charset=UTF-8";
 
 	public static final String PATH_SEPARATOR = "/";
 

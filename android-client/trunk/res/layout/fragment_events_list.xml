@@ -5,18 +5,15 @@
     android:orientation="vertical" >
 
     <ListView
-        android:id="@id/android:list"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:drawSelectorOnTop="false" />
+        android:layout_height="0dip" />
 
     <RelativeLayout
-        android:id="@id/android:empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
-
-        <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <TextView
             android:id="@+id/fragment_events_list_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_events_list_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
     android:orientation="vertical"
-    android:padding="16dp" >
+    android:padding="8dp" >
 
     <TextView
         android:id="@+id/fragment_events_list_item_title"
@@ -58,5 +60,44 @@
             android:layout_below="@id/fragment_events_list_item_from"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_events_list_item_indicators"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/fragment_events_list_item_indicators_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/fragment_events_list_item_indicators_owner_description"
+            android:maxHeight="15dp"
+            android:maxWidth="15dp"
+            android:src="@drawable/owner" />
+
+        <ImageView
+            android:id="@+id/fragment_events_list_item_indicators_locked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/fragment_events_list_item_indicators_locked_description"
+            android:maxHeight="15dp"
+            android:maxWidth="15dp"
+            android:src="@drawable/lock" />
+
+        <ImageView
+            android:id="@+id/fragment_events_list_item_indicators_archived"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/fragment_events_list_item_indicators_archived_description"
+            android:maxHeight="15dp"
+            android:maxWidth="15dp"
+            android:src="@drawable/archive" />
+    </LinearLayout>
 
 </RelativeLayout>

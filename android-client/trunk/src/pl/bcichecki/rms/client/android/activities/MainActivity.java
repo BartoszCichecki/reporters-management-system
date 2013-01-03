@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -39,7 +39,7 @@ import pl.bcichecki.rms.client.android.listeners.MainActivityActionBarTabListene
 
 public class MainActivity extends FragmentActivity {
 
-	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -159,18 +159,25 @@ public class MainActivity extends FragmentActivity {
 			logout();
 			return true;
 		}
-		if (item.getItemId() == R.id.activity_main_menu_settings) {
-			Log.d(TAG, "Moving to Settings Activity...");
-
-			Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
-			startActivity(settingsActivityIntent);
-			return true;
-		}
 		if (item.getItemId() == R.id.activity_main_menu_about) {
 			Log.v(TAG, "Showing about dialog...");
 
 			AboutDialog aboutDialog = new AboutDialog();
 			aboutDialog.show(getSupportFragmentManager(), TAG);
+			return true;
+		}
+		if (item.getItemId() == R.id.activity_main_menu_messaging) {
+			Log.d(TAG, "Moving to Messaging Activity...");
+
+			Intent messagingActivityIntent = new Intent(this, MessagingActivity.class);
+			startActivity(messagingActivityIntent);
+			return true;
+		}
+		if (item.getItemId() == R.id.activity_main_menu_settings) {
+			Log.d(TAG, "Moving to Settings Activity...");
+
+			Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
+			startActivity(settingsActivityIntent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -14,33 +14,27 @@ package pl.bcichecki.rms.client.android.fragments.listAdapters;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpResponseException;
+import org.apache.commons.lang3.StringUtils;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.fragments.listAdapters.comparators.EventsListComparator;
+import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.Event;
-import pl.bcichecki.rms.client.android.services.clients.restful.impl.EventsRestClient;
-import pl.bcichecki.rms.client.android.utils.UiUtils;
+import pl.bcichecki.rms.client.android.utils.AppUtils;
 
 /**
  * @author Bartosz Cichecki
  * 
  */
 public class EventsListAdapter extends ArrayAdapter<Event> {
-
-	private static final String TAG = "EventsListAdapter";
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM = R.layout.fragment_events_list_item;
 
@@ -50,13 +44,16 @@ public class EventsListAdapter extends ArrayAdapter<Event> {
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM_TILL = R.id.fragment_events_list_item_from;
 
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_ARCHIVED = R.id.fragment_events_list_item_indicators_archived;
+
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_LOCKED = R.id.fragment_events_list_item_indicators_locked;
+
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_OWNER = R.id.fragment_events_list_item_indicators_owner;
+
 	private LayoutInflater layoutInflater;
 
-	private EventsRestClient eventsRestClient;
-
-	public EventsListAdapter(Context context, List<Event> objects, EventsRestClient eventsRestClient) {
+	public EventsListAdapter(Context context, List<Event> objects) {
 		super(context, FRAGMENT_EVENTS_LIST_ITEM, FRAGMENT_EVENTS_LIST_ITEM_TITLE, objects);
-		this.eventsRestClient = eventsRestClient;
 	}
 
 	protected LayoutInflater getLayoutInflater() {
@@ -79,13 +76,22 @@ public class EventsListAdapter extends ArrayAdapter<Event> {
 		TextView eventFrom = (TextView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_FROM);
 		TextView eventTill = (TextView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_TILL);
 
+		ImageView archivedIndicator = (ImageView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_ARCHIVED);
+		ImageView lockedIndicator = (ImageView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_LOCKED);
+		ImageView ownerIndicator = (ImageView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_OWNER);
+
 		Locale locale = getContext().getResources().getConfiguration().locale;
 
 		Event event = getItem(position);
 
 		eventTitle.setText(event.getTitle());
-		eventFrom.setText(UiUtils.getFormattedDateAsString(event.getStartDate(), locale));
-		eventTill.setText(UiUtils.getFormattedDateAsString(event.getEndDate(), locale));
+		eventFrom.setText(AppUtils.getFormattedDateAsString(event.getStartDate(), locale));
+		eventTill.setText(AppUtils.getFormattedDateAsString(event.getEndDate(), locale));
+
+		archivedIndicator.setVisibility(event.isArchived() ? View.VISIBLE : View.INVISIBLE);
+		lockedIndicator.setVisibility(event.isLocked() ? View.VISIBLE : View.INVISIBLE);
+		ownerIndicator.setVisibility(UserProfileHolder.getUserProfile().getId()
+		        .equals(StringUtils.defaultString(event.getCreationUserId())) ? View.VISIBLE : View.INVISIBLE);
 
 		return view;
 	}
@@ -93,51 +99,6 @@ public class EventsListAdapter extends ArrayAdapter<Event> {
 	public void refresh() {
 		sort(new EventsListComparator());
 		notifyDataSetChanged();
-	}
-
-	@Override
-	public void remove(final Event object) {
-		if (eventsRestClient == null) {
-			throw new IllegalStateException("EventsRestClient must not be null");
-		}
-		eventsRestClient.deleteMyEvent(object, new AsyncHttpResponseHandler() {
-
-			@Override
-			public void onFailure(Throwable error, String content) {
-				Log.d(TAG, "Removing event [event=" + object + "] failed. [error=" + error + ", content=" + content + "]");
-				if (error instanceof HttpResponseException) {
-					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-						Toast.makeText(getContext(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG).show();
-					} else {
-						Toast.makeText(getContext(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG).show();
-					}
-				} else {
-					Toast.makeText(getContext(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG).show();
-				}
-			}
-
-			@Override
-			public void onFinish() {
-				Log.d(TAG, "Attempt to delete event finished. [event=" + object + "]");
-			}
-
-			@Override
-			public void onStart() {
-				Log.d(TAG, "Attempting to delete event. [event=" + object + "]");
-			}
-
-			@Override
-			public void onSuccess(int statusCode, String content) {
-				Log.d(TAG, "Attempt to delete event [event=" + object + "] succesful. Removing object locally");
-				superRemove(object);
-				refresh();
-			}
-
-		});
-	}
-
-	public void superRemove(Event object) {
-		super.remove(object);
 	}
 
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="activity_messaging_inbox_section_title">Inbox</string>
+    <string name="activity_messaging_menu_item_new">New</string>
+    <string name="activity_messaging_outbox_section_title">Outbox</string>
+    <string name="activity_messaging_title">Messaging</string>
+    
+</resources>

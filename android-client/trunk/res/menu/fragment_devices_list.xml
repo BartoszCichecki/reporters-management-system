@@ -2,7 +2,13 @@
 
     <item
         android:id="@+id/fragment_devices_list_menu_refresh"
+        android:orderInCategory="10"
         android:showAsAction="ifRoom"
-        android:title="@string/fragment_devices_list_refresh"/>
+        android:title="@string/fragment_devices_list_menu_refresh"/>
+    <item
+        android:id="@+id/fragment_devices_list_menu_new"
+        android:orderInCategory="20"
+        android:showAsAction="ifRoom"
+        android:title="@string/fragment_devices_list_menu_new"/>
 
 </menu>

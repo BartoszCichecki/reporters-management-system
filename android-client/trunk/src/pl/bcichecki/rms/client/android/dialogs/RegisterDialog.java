@@ -35,8 +35,8 @@ import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.model.impl.AddressData;
 import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.UtilitiesRestClient;
+import pl.bcichecki.rms.client.android.utils.AppUtils;
 import pl.bcichecki.rms.client.android.utils.SecurityUtils;
-import pl.bcichecki.rms.client.android.utils.UiUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -51,7 +51,7 @@ public class RegisterDialog extends DialogFragment {
 	private void cancelRequests() {
 		if (utilitiesRestClient != null) {
 			utilitiesRestClient.cancelRequests(getActivity(), true);
-			Toast.makeText(getActivity(), getString(R.string.dialog_register_aborted), Toast.LENGTH_LONG).show();
+			AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_register_aborted), Toast.LENGTH_LONG);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class RegisterDialog extends DialogFragment {
 		final LinearLayout layout = new LinearLayout(getActivity());
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setGravity(Gravity.CENTER_HORIZONTAL);
-		int space = (int) UiUtils.convertDpToPixel(getActivity(), 16);
+		int space = (int) AppUtils.convertDpToPixel(getActivity(), 16);
 		layout.setPadding(space, 0, space, 0);
 
 		layout.addView(usernameEditText);
@@ -152,7 +152,7 @@ public class RegisterDialog extends DialogFragment {
 
 					@Override
 					public void onClick(View v) {
-						if (!UiUtils.checkInternetConnection(getActivity())) {
+						if (!AppUtils.checkInternetConnection(getActivity())) {
 							Log.d(TAG, "There is NO network connected!");
 							return;
 						}
@@ -173,7 +173,7 @@ public class RegisterDialog extends DialogFragment {
 							emailEditText.setError(getString(R.string.dialog_register_field_required));
 							return;
 						}
-						if (!UiUtils.validateEmail(emailEditText.getText().toString())) {
+						if (!AppUtils.validateEmail(emailEditText.getText().toString())) {
 							emailEditText.setError(getString(R.string.dialog_register_email_not_valid));
 							return;
 						}
@@ -189,7 +189,7 @@ public class RegisterDialog extends DialogFragment {
 							@Override
 							public void onFailure(Throwable error, String content) {
 								Log.d(TAG, "Registering user failed. [error= " + error + ", content=" + content + "]");
-								Toast.makeText(getActivity(), getString(R.string.dialog_register_failed), Toast.LENGTH_LONG).show();
+								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_register_failed), Toast.LENGTH_LONG);
 							}
 
 							@Override
@@ -200,14 +200,16 @@ public class RegisterDialog extends DialogFragment {
 							@Override
 							public void onStart() {
 								Log.d(TAG, "Registering user: " + user.toString());
-								Toast.makeText(getActivity(), getString(R.string.dialog_register_in_progress), Toast.LENGTH_SHORT).show();
+								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_register_in_progress),
+								        Toast.LENGTH_SHORT);
 								positiveButton.setEnabled(false);
 							}
 
 							@Override
 							public void onSuccess(int statusCode, String content) {
 								Log.d(TAG, "Registered user successfully.");
-								Toast.makeText(getActivity(), getString(R.string.dialog_register_successful), Toast.LENGTH_SHORT).show();
+								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_register_successful),
+								        Toast.LENGTH_SHORT);
 
 								SharedPreferencesWrapper.setUsername(user.getUsername());
 								SharedPreferencesWrapper.setPasswordHash(user.getPassword());

@@ -3,18 +3,22 @@
 
     <item
         android:id="@+id/activity_login_menu_remind_password"
+        android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="@string/activity_login_menu_remind_password"/>
     <item
         android:id="@+id/activity_login_menu_register"
+        android:orderInCategory="110"
         android:showAsAction="never"
         android:title="@string/activity_login_menu_register"/>
     <item
         android:id="@+id/activity_login_menu_settings"
+        android:orderInCategory="120"
         android:showAsAction="never"
         android:title="@string/activity_login_menu_settings"/>
     <item
         android:id="@+id/activity_login_menu_about"
+        android:orderInCategory="130"
         android:showAsAction="never"
         android:title="@string/activity_login_menu_about"/>
 

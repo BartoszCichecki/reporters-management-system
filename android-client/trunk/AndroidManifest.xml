@@ -38,6 +38,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.bcichecki.rms.client.android.activities.LoginActivity" />
         </activity>
+        <activity
+            android:name="pl.bcichecki.rms.client.android.activities.MessagingActivity"
+            android:label="@string/activity_messaging_title" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.bcichecki.rms.client.android.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

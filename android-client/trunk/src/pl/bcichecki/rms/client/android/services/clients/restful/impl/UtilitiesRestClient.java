@@ -66,6 +66,6 @@ public class UtilitiesRestClient extends AbstractRestClient {
 		RestUtils.decorareHeaderWithMD5(headers, userAsJson);
 
 		put(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_REGISTER), getHeadersAsArray(headers), userAsHttpEntity,
-		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON, handler);
+		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
 	}
 }

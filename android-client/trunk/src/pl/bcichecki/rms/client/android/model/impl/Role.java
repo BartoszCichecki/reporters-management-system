@@ -102,8 +102,8 @@ public class Role extends AbstractPOJO implements Mergeable<Role> {
 	@Override
 	public String toString() {
 		return "Role [name=" + name + ", privileges=" + privileges + ", id=" + id + ", creationUserId=" + creationUserId
-		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-		        + ", version=" + version + "]";
+		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

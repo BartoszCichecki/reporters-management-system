@@ -19,8 +19,20 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
+import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.AuthState;
+import org.apache.http.auth.Credentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpContext;
 
 import com.loopj.android.http.AsyncHttpClient;
 
@@ -46,24 +58,8 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 
 	private SimpleAsyncHttpsClient() {
 		super();
-		try {
-			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			keyStore.load(null, null);
-			SSLSocketFactory sslSocketFactory = new SimpleSSLSocketFactory(keyStore);
-			setSSLSocketFactory(sslSocketFactory);
-		} catch (KeyStoreException e) {
-			throw new IllegalStateException(e);
-		} catch (NoSuchAlgorithmException e) {
-			throw new IllegalStateException(e);
-		} catch (CertificateException e) {
-			throw new IllegalStateException(e);
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		} catch (KeyManagementException e) {
-			throw new IllegalStateException(e);
-		} catch (UnrecoverableKeyException e) {
-			throw new IllegalStateException(e);
-		}
+		setUpSsl();
+		enableSetPreemptiveAuth();
 		setTimeout(connectionTimeout);
 	}
 
@@ -81,6 +77,29 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 		this.host = host;
 		this.port = port;
 		setBasicAuth(username, password, new AuthScope(host, port, realm));
+	}
+
+	protected void enableSetPreemptiveAuth() {
+		HttpRequestInterceptor preemptiveAuthInterceptor = new HttpRequestInterceptor() {
+
+			@Override
+			public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
+				AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
+				CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(ClientContext.CREDS_PROVIDER);
+				HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+
+				if (authState.getAuthScheme() == null) {
+					AuthScope authScope = new AuthScope(targetHost.getHostName(), targetHost.getPort());
+					Credentials creds = credsProvider.getCredentials(authScope);
+					if (creds != null) {
+						authState.setAuthScheme(new BasicScheme());
+						authState.setCredentials(creds);
+					}
+				}
+			}
+		};
+
+		((DefaultHttpClient) getHttpClient()).addRequestInterceptor(preemptiveAuthInterceptor, 0);
 	}
 
 	public int getConnectionTimeout() {
@@ -105,15 +124,6 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 
 	public String getUsername() {
 		return username;
-	}
-
-	public void reconfigure(String username, String password, String host, int port, String realm) {
-		setUsername(username);
-		setPassword(password);
-		setHost(host);
-		setPort(port);
-		setRealm(realm);
-		setBasicAuth(username, password, new AuthScope(host, port, realm));
 	}
 
 	@Override
@@ -155,6 +165,30 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 
 	public void setRealm(String realm) {
 		this.realm = realm;
+	}
+
+	/**
+     * 
+     */
+	protected void setUpSsl() {
+		try {
+			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			keyStore.load(null, null);
+			SSLSocketFactory sslSocketFactory = new SimpleSSLSocketFactory(keyStore);
+			setSSLSocketFactory(sslSocketFactory);
+		} catch (KeyStoreException e) {
+			throw new IllegalStateException(e);
+		} catch (NoSuchAlgorithmException e) {
+			throw new IllegalStateException(e);
+		} catch (CertificateException e) {
+			throw new IllegalStateException(e);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		} catch (KeyManagementException e) {
+			throw new IllegalStateException(e);
+		} catch (UnrecoverableKeyException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	public void setUsername(String username) {

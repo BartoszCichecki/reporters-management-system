@@ -96,8 +96,8 @@ public class AddressDataContact extends AbstractPOJO implements Mergeable<Addres
 	@Override
 	public String toString() {
 		return "AddressDataContact [type=" + type + ", value=" + value + ", id=" + id + ", creationUserId=" + creationUserId
-		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-		        + ", version=" + version + "]";
+		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

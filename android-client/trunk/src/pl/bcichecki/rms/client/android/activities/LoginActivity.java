@@ -49,8 +49,8 @@ import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpResponseHandler;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.ProfileRestClient;
+import pl.bcichecki.rms.client.android.utils.AppUtils;
 import pl.bcichecki.rms.client.android.utils.SecurityUtils;
-import pl.bcichecki.rms.client.android.utils.UiUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -212,7 +212,7 @@ public class LoginActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (!UiUtils.checkInternetConnection(CONTEXT)) {
+				if (!AppUtils.checkInternetConnection(CONTEXT)) {
 					Log.d(TAG, "There is NO network connected!");
 					return;
 				}
@@ -241,7 +241,7 @@ public class LoginActivity extends FragmentActivity {
 		        SharedPreferencesWrapper.getServerAddress(), SharedPreferencesWrapper.getServerPort(),
 		        SharedPreferencesWrapper.getWebserviceContextPath());
 		profileRestClient.getProfile(new GsonHttpResponseHandler<User>(new TypeToken<User>() {
-		}.getType(), false) {
+		}.getType(), true) {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
@@ -286,23 +286,12 @@ public class LoginActivity extends FragmentActivity {
 			}
 
 			@Override
-			public void onSuccess(int statusCode, String content) {
-				Log.d(TAG, "Success [statusCode=" + statusCode + ", content=" + content + "]");
-				UserProfileHolder.setUserProfile(null);
-				UserProfileHolder.setUsername(username);
-				UserProfileHolder.setPassword(password);
-				Toast.makeText(CONTEXT, R.string.activity_login_login_successful, Toast.LENGTH_SHORT).show();
-				Intent mainActivityIntent = new Intent(CONTEXT, MainActivity.class);
-				startActivity(mainActivityIntent);
-			}
-
-			@Override
 			public void onSuccess(int statusCode, User user) {
 				Log.d(TAG, "Success [statusCode=" + statusCode + ", jsonObject=" + user.toString() + "]");
 				UserProfileHolder.setUserProfile(user);
 				UserProfileHolder.setUsername(username);
 				UserProfileHolder.setPassword(password);
-				Toast.makeText(CONTEXT, R.string.activity_login_login_successful, Toast.LENGTH_SHORT).show();
+				AppUtils.showCenteredToast(CONTEXT, R.string.activity_login_login_successful, Toast.LENGTH_SHORT);
 				Intent mainActivityIntent = new Intent(CONTEXT, MainActivity.class);
 				startActivity(mainActivityIntent);
 			}

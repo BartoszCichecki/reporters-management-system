@@ -11,22 +11,35 @@
 
 package pl.bcichecki.rms.client.android.services.clients.restful.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.StringEntity;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import pl.bcichecki.rms.client.android.model.impl.Event;
 import pl.bcichecki.rms.client.android.services.clients.restful.AbstractRestClient;
+import pl.bcichecki.rms.client.android.services.clients.restful.GsonHolder;
+import pl.bcichecki.rms.client.android.services.clients.restful.https.HttpConstants;
 import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestConstants;
+import pl.bcichecki.rms.client.android.services.clients.restful.utils.RestUtils;
 
 /**
  * @author Bartosz Cichecki
  * 
  */
 public class EventsRestClient extends AbstractRestClient {
+
+	private static final String TAG = "EventsRestClient";
 
 	public EventsRestClient(Context context, String host, int port, String webServiceContextPath) {
 		super(context, host, port, webServiceContextPath);
@@ -42,6 +55,19 @@ public class EventsRestClient extends AbstractRestClient {
 		        handler);
 	}
 
+	public void getAllArchivedEvents(Date from, Date till, AsyncHttpResponseHandler handler) {
+		RequestParams params = new RequestParams();
+		if (from != null) {
+			params.put(RestConstants.PARAM_FROM, String.valueOf(from.getTime()));
+		}
+		if (till != null) {
+			params.put(RestConstants.PARAM_TILL, String.valueOf(till.getTime()));
+		}
+		get(getContext(),
+		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_ARCHIVED,
+		                RestConstants.RESOURCE_PATH_ALL), params, handler);
+	}
+
 	public void getAllEvents(Date from, Date till, AsyncHttpResponseHandler handler) {
 		RequestParams params = new RequestParams();
 		if (from != null) {
@@ -51,6 +77,23 @@ public class EventsRestClient extends AbstractRestClient {
 			params.put(RestConstants.PARAM_TILL, String.valueOf(till.getTime()));
 		}
 		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_ALL), params, handler);
+	}
+
+	public void updateMyEvent(Event event, AsyncHttpResponseHandler handler) {
+		String eventAsJson = GsonHolder.getGson().toJson(event);
+		HttpEntity eventAsHttpEntity;
+
+		try {
+			eventAsHttpEntity = new StringEntity(eventAsJson, HttpConstants.CHARSET_UTF8);
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, "This system does not support required encoding.", e);
+			throw new IllegalStateException("This system does not support required encoding.", e);
+		}
+		List<Header> headers = new ArrayList<Header>();
+		RestUtils.decorareHeaderWithMD5(headers, eventAsJson);
+
+		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_MY),
+		        getHeadersAsArray(headers), eventAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
 	}
 
 }

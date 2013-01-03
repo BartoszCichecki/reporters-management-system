@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="activity_settings_title">Settings</string>
-    <string name="activity_settings_header_user_account">User account</string>
-    <string name="activity_settings_username_title">Username</string>
-    <string name="activity_settings_username_summary">Your username in RMS system</string>
-    <string name="activity_settings_username_dialog_title">Username</string>
-    <string name="activity_settings_username_dialog_message">Please enter your username</string>
-    <string name="activity_settings_password_title">Password</string>
-    <string name="activity_settings_password_summary">Your password to RMS system</string>
-    <string name="activity_settings_password_dialog_title">Password</string>
-    <string name="activity_settings_password_dialog_message">Please enter your password. <br /> It will be store in a secure way.</string>
-    <string name="activity_settings_remember_user_title">Remember user</string>
-    <string name="activity_settings_remember_user_summary">Check this to store credentials permanently</string>
     <string name="activity_settings_header_server">Server</string>
-    <string name="activity_settings_server_address_dialog_title">Server address</string>
+    <string name="activity_settings_header_user_account">User account</string>
+    <string name="activity_settings_password_dialog_message">Please enter your password. <br /> It will be store in a secure way.</string>
+    <string name="activity_settings_password_dialog_title">Password</string>
+    <string name="activity_settings_password_summary">Your password to RMS system</string>
+    <string name="activity_settings_password_title">Password</string>
+    <string name="activity_settings_remember_user_summary">Check this to store credentials permanently</string>
+    <string name="activity_settings_remember_user_title">Remember user</string>
     <string name="activity_settings_server_address_dialog_message">Please enter either IP or server address</string>
-    <string name="activity_settings_server_address_title">Server address</string>
+    <string name="activity_settings_server_address_dialog_title">Server address</string>
     <string name="activity_settings_server_address_summary">IP or server address</string>
-    <string name="activity_settings_server_port_dialog_title">Server port</string>
-    <string name="activity_settings_server_port_dialog_message">Please choose server port</string>
-    <string name="activity_settings_server_port_title">Server port</string>
-    <string name="activity_settings_server_port_summary">Server port on which client will connect</string>
-    <string name="activity_settings_server_realm_dialog_title">Authentication realm</string>
-    <string name="activity_settings_server_realm_dialog_message">Please enter authentication realm name</string>
-    <string name="activity_settings_server_realm_title">Authentication realm</string>
-    <string name="activity_settings_server_realm_summary">Name of realm for authentication</string>
-    <string name="activity_settings_server_ws_context_path_dialog_title">Webservice context path</string>
-    <string name="activity_settings_server_ws_context_path_dialog_message">Please enter webservice context path</string>
-    <string name="activity_settings_server_ws_context_path_title">Webservice context path</string>
-    <string name="activity_settings_server_ws_context_path_summary">Root of webservice</string>
+    <string name="activity_settings_server_address_title">Server address</string>
     <string name="activity_settings_server_incoming_md5_summary">Decide if check incoming messages MD5 checksum</string>
     <string name="activity_settings_server_incoming_md5_title">Check incoming MD5</string>
     <string name="activity_settings_server_outgoing_md5_summary">Decide if add MD5 checksum to outgoing messages</string>
     <string name="activity_settings_server_outgoing_md5_title">Add outgoing MD5</string>
+    <string name="activity_settings_server_port_dialog_message">Please choose server port</string>
+    <string name="activity_settings_server_port_dialog_title">Server port</string>
+    <string name="activity_settings_server_port_summary">Server port on which client will connect</string>
+    <string name="activity_settings_server_port_title">Server port</string>
+    <string name="activity_settings_server_realm_dialog_message">Please enter authentication realm name</string>
+    <string name="activity_settings_server_realm_dialog_title">Authentication realm</string>
+    <string name="activity_settings_server_realm_summary">Name of realm for authentication</string>
+    <string name="activity_settings_server_realm_title">Authentication realm</string>
+    <string name="activity_settings_server_ws_context_path_dialog_message">Please enter webservice context path</string>
+    <string name="activity_settings_server_ws_context_path_dialog_title">Webservice context path</string>
+    <string name="activity_settings_server_ws_context_path_summary">Root of webservice</string>
+    <string name="activity_settings_server_ws_context_path_title">Webservice context path</string>
+    <string name="activity_settings_title">Settings</string>
+    <string name="activity_settings_username_dialog_message">Please enter your username</string>
+    <string name="activity_settings_username_dialog_title">Username</string>
+    <string name="activity_settings_username_summary">Your username in RMS system</string>
+    <string name="activity_settings_username_title">Username</string>
 
 </resources>

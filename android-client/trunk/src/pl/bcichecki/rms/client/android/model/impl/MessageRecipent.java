@@ -132,9 +132,9 @@ public class MessageRecipent extends AbstractPOJO implements Mergeable<MessageRe
 	@Override
 	public String toString() {
 		return "MessageRecipent [recipent=" + recipent + ", readDate=" + readDate + ", archivedByRecipent=" + archivedByRecipent
-		        + ", deletedByRecipent=" + deletedByRecipent + ", id=" + id + ", creationUserId=" + creationUserId + ", modificationUserId="
-		        + modificationUserId + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", version=" + version
-		        + "]";
+		        + ", deletedByRecipent=" + deletedByRecipent + ", id=" + id + ", creationUserId=" + creationUserId
+		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }

@@ -32,7 +32,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.UtilitiesRestClient;
-import pl.bcichecki.rms.client.android.utils.UiUtils;
+import pl.bcichecki.rms.client.android.utils.AppUtils;
 
 /**
  * @author Bartosz Cichecki
@@ -47,7 +47,7 @@ public class RemindPasswordDialog extends DialogFragment {
 	private void cancelRequests() {
 		if (utilitiesRestClient != null) {
 			utilitiesRestClient.cancelRequests(getActivity(), true);
-			Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_aborted), Toast.LENGTH_LONG).show();
+			AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_remind_password_recovery_aborted), Toast.LENGTH_LONG);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class RemindPasswordDialog extends DialogFragment {
 		final LinearLayout layout = new LinearLayout(getActivity());
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setGravity(Gravity.CENTER_HORIZONTAL);
-		int space = (int) UiUtils.convertDpToPixel(getActivity(), 16);
+		int space = (int) AppUtils.convertDpToPixel(getActivity(), 16);
 		layout.setPadding(space, 0, space, 0);
 
 		final EditText usernameEditText = new EditText(getActivity());
@@ -114,7 +114,7 @@ public class RemindPasswordDialog extends DialogFragment {
 
 					@Override
 					public void onClick(View v) {
-						if (!UiUtils.checkInternetConnection(getActivity())) {
+						if (!AppUtils.checkInternetConnection(getActivity())) {
 							Log.d(TAG, "There is NO network connected!");
 							return;
 						}
@@ -133,8 +133,8 @@ public class RemindPasswordDialog extends DialogFragment {
 							@Override
 							public void onFailure(Throwable error, String content) {
 								Log.d(TAG, "Reminding password failed. [error=" + error + ", content=" + content + "]");
-								Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_failed), Toast.LENGTH_LONG)
-								        .show();
+								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_remind_password_recovery_failed),
+								        Toast.LENGTH_LONG);
 							}
 
 							@Override
@@ -145,16 +145,16 @@ public class RemindPasswordDialog extends DialogFragment {
 							@Override
 							public void onStart() {
 								Log.d(TAG, "Reminding password for user: " + username);
-								Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_in_progress),
-								        Toast.LENGTH_SHORT).show();
+								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_remind_password_recovery_in_progress),
+								        Toast.LENGTH_SHORT);
 								positiveButton.setEnabled(false);
 							}
 
 							@Override
 							public void onSuccess(int statusCode, String content) {
 								Log.d(TAG, "Reminding password success.");
-								Toast.makeText(getActivity(), getString(R.string.dialog_remind_password_recovery_successful),
-								        Toast.LENGTH_SHORT).show();
+								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_remind_password_recovery_successful),
+								        Toast.LENGTH_SHORT);
 								dialog.dismiss();
 							}
 

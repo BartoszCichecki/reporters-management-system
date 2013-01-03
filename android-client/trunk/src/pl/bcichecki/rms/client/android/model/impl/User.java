@@ -213,9 +213,9 @@ public class User extends AbstractPOJO implements Mergeable<User> {
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + ", address=" + address
-		        + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + ", id=" + id + ", creationUserId=" + creationUserId
-		        + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-		        + ", version=" + version + "]";
+		        + ", locked=" + locked + ", comment=" + comment + ", deleted=" + deleted + ", id=" + id + ", creationUserId="
+		        + creationUserId + ", modificationUserId=" + modificationUserId + ", creationDate=" + creationDate + ", modificationDate="
+		        + modificationDate + ", version=" + version + "]";
 	}
 
 }
