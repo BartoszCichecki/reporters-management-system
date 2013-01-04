@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_outbox_messages_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:orientation="vertical"
+    android:padding="8dp" >
+
+    <TextView
+        android:id="@+id/fragment_outbox_messages_list_item_subject"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RelativeLayout
+        android:id="@+id/fragment_outbox_messages_list_item_details_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_outbox_messages_list_item_subject" >
+
+        <TextView
+            android:id="@+id/fragment_outbox_messages_list_item_to_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="2dp"
+            android:text="@string/fragment_outbox_messages_list_item_to_text"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/fragment_outbox_messages_list_item_sent_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_outbox_messages_list_item_to_text"
+            android:paddingRight="2dp"
+            android:text="@string/fragment_outbox_messages_list_item_sent_text"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="italic" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_outbox_messages_list_item_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_outbox_messages_list_item_subject"
+        android:layout_toRightOf="@id/fragment_outbox_messages_list_item_details_text" >
+
+        <TextView
+            android:id="@+id/fragment_outbox_messages_list_item_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/fragment_outbox_messages_list_item_sent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_outbox_messages_list_item_to"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_outbox_messages_list_item_indicators"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/fragment_outbox_messages_list_item_indicators_archived"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/fragment_outbox_messages_list_item_indicators_archived_description"
+            android:maxHeight="15dp"
+            android:maxWidth="15dp"
+            android:src="@drawable/archive" />
+    </LinearLayout>
+
+</RelativeLayout>

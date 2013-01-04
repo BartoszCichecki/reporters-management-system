@@ -64,6 +64,4 @@ public interface MessagesService {
 
 	boolean updateMessage(MessageEntity message) throws ServiceException;
 
-	boolean updateOutboxMessage(MessageEntity message) throws ServiceException;
-
 }

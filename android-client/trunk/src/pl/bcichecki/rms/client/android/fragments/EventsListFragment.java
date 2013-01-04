@@ -20,11 +20,10 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,19 +63,11 @@ public class EventsListFragment extends ListFragment {
 
 	private EventsRestClient eventsRestClient;
 
-	private ProgressDialog progressDialog;
-
 	private boolean showArchivedEvents = false;
 
 	private void cancelRequests() {
 		if (eventsRestClient != null) {
 			eventsRestClient.cancelRequests(getActivity(), true);
-		}
-	}
-
-	private void dismissProgressDialog() {
-		if (progressDialog != null) {
-			progressDialog.dismiss();
 		}
 	}
 
@@ -117,14 +108,14 @@ public class EventsListFragment extends ListFragment {
 			@Override
 			public void onFinish() {
 				eventsListAdapter.refresh();
-				dismissProgressDialog();
+				hideLoadingMessage();
 				Log.d(TAG, "Retrieving archived events finished.");
 			}
 
 			@Override
 			public void onStart() {
 				Log.d(TAG, "Retrieving archived events from " + from.toString() + " till " + till.toString() + " started.");
-				showProgressDialog();
+				showLoadingMessage();
 			}
 
 			@Override
@@ -169,14 +160,14 @@ public class EventsListFragment extends ListFragment {
 			@Override
 			public void onFinish() {
 				eventsListAdapter.refresh();
-				dismissProgressDialog();
+				hideLoadingMessage();
 				Log.d(TAG, "Retrieving events finished.");
 			}
 
 			@Override
 			public void onStart() {
 				Log.d(TAG, "Retrieving events from " + from.toString() + " till " + till.toString() + " started.");
-				showProgressDialog();
+				showLoadingMessage();
 				events.clear();
 			}
 
@@ -190,16 +181,22 @@ public class EventsListFragment extends ListFragment {
 		});
 	}
 
-	private Event getCheckedItem() {
+	private Event getFirstCheckedItem() {
 		if (getListView().getCheckedItemCount() != 1) {
 			return null;
 		}
-		for (int i = 0; i < getListView().getCheckedItemPositions().size(); i++) {
-			if (getListView().getCheckedItemPositions().get(i)) {
+
+		SparseBooleanArray checkedItemPositions = getListView().getCheckedItemPositions();
+		for (int i = 0; i < getListAdapter().getCount(); i++) {
+			if (checkedItemPositions.get(i)) {
 				return (Event) getListAdapter().getItem(i);
 			}
 		}
 		return null;
+	}
+
+	private void hideLoadingMessage() {
+		setListShown(true);
 	}
 
 	protected void load() {
@@ -219,6 +216,7 @@ public class EventsListFragment extends ListFragment {
 		getActivity().getMenuInflater().inflate(R.menu.fragment_events_list, menu);
 
 		MenuItem showArchivedMenuItem = menu.findItem(R.id.fragment_events_list_menu_show_archived);
+		showArchivedMenuItem.setChecked(showArchivedEvents);
 		showArchivedMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
 			@Override
@@ -254,6 +252,7 @@ public class EventsListFragment extends ListFragment {
 		load();
 		setHasOptionsMenu(true);
 		setUpActionModeOnListItems();
+		setEmptyText(getString(R.string.fragment_events_list_empty));
 	}
 
 	@Override
@@ -263,7 +262,7 @@ public class EventsListFragment extends ListFragment {
 	}
 
 	private boolean performAction(ActionMode mode, MenuItem item) {
-		Event selectedEvent = getCheckedItem();
+		Event selectedEvent = getFirstCheckedItem();
 		if (selectedEvent == null) {
 			Log.w(TAG, "Invalid selection. Aborting...");
 			return false;
@@ -318,23 +317,22 @@ public class EventsListFragment extends ListFragment {
 
 			@Override
 			public void onFinish() {
-				dismissProgressDialog();
+				hideLoadingMessage();
 				Log.d(TAG, "Attempt archive Event " + selectedEvent + " finished.");
 			}
 
 			@Override
 			public void onStart() {
 				Log.d(TAG, "Attempting archive Event " + selectedEvent + " started.");
-				showProgressDialog();
+				showLoadingMessage();
 			}
 
 			@Override
 			public void onSuccess(int statusCode, String content) {
-				selectedEvent.setArchived(true);
 				Log.d(TAG, "Event archive succesfull. Refreshing view.");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_archive_successful, Toast.LENGTH_LONG);
-				eventsListAdapter.refresh();
-				mode.finish();
+				downloadData();
+				downloadArchivedData();
 			}
 		});
 	}
@@ -368,11 +366,10 @@ public class EventsListFragment extends ListFragment {
 
 			@Override
 			public void onSuccess(int statusCode, String content) {
-				eventsListAdapter.remove(selectedEvent);
 				Log.d(TAG, "Attempt to delete event " + selectedEvent + " succesful. Removing object locally and refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_delete_successful, Toast.LENGTH_LONG);
-				eventsListAdapter.refresh();
-				mode.finish();
+				downloadData();
+				downloadArchivedData();
 			}
 		});
 	}
@@ -409,11 +406,10 @@ public class EventsListFragment extends ListFragment {
 
 			@Override
 			public void onSuccess(int statusCode, String content) {
-				selectedEvent.setLocked(true);
 				Log.d(TAG, "Attempt to lock event " + selectedEvent + " succesful. Refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_lock_successful, Toast.LENGTH_LONG);
-				eventsListAdapter.refresh();
-				mode.finish();
+				downloadData();
+				downloadArchivedData();
 			}
 		});
 	}
@@ -425,7 +421,6 @@ public class EventsListFragment extends ListFragment {
 			intent.setType("text/plain");
 			intent.putExtra(android.content.Intent.EXTRA_TEXT, selectedEvent.toString());
 			shareActionProvider.setShareIntent(intent);
-			mode.finish();
 
 			Log.d(TAG, "Event " + selectedEvent + " was succesfully shared.");
 		}
@@ -463,11 +458,10 @@ public class EventsListFragment extends ListFragment {
 
 			@Override
 			public void onSuccess(int statusCode, String content) {
-				selectedEvent.setLocked(false);
 				Log.d(TAG, "Attempt to unlock event " + selectedEvent + " succesful. Refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_unlock_successful, Toast.LENGTH_LONG);
-				eventsListAdapter.refresh();
-				mode.finish();
+				downloadData();
+				downloadArchivedData();
 			}
 		});
 	}
@@ -510,30 +504,19 @@ public class EventsListFragment extends ListFragment {
 			}
 
 			private void verifyMenuItems(Menu menu) {
-				Event checkedEvent = getCheckedItem();
-				menu.findItem(R.id.fragment_events_list_context_menu_archive).setEnabled(!checkedEvent.isArchived());
-				menu.findItem(R.id.fragment_events_list_context_menu_edit).setEnabled(
+				Event checkedEvent = getFirstCheckedItem();
+				menu.findItem(R.id.fragment_events_list_context_menu_archive).setVisible(!checkedEvent.isArchived());
+				menu.findItem(R.id.fragment_events_list_context_menu_edit).setVisible(
 				        !checkedEvent.isArchived() || !checkedEvent.isLocked());
-				menu.findItem(R.id.fragment_events_list_context_menu_lock).setEnabled(!checkedEvent.isLocked());
-				menu.findItem(R.id.fragment_events_list_context_menu_share).setEnabled(!checkedEvent.isArchived());
-				menu.findItem(R.id.fragment_events_list_context_menu_unlock).setEnabled(checkedEvent.isLocked());
+				menu.findItem(R.id.fragment_events_list_context_menu_lock).setVisible(!checkedEvent.isLocked());
+				menu.findItem(R.id.fragment_events_list_context_menu_share).setVisible(!checkedEvent.isArchived());
+				menu.findItem(R.id.fragment_events_list_context_menu_unlock).setVisible(checkedEvent.isLocked());
 			}
 		});
 	}
 
-	private void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(getActivity(), ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage(getString(R.string.fragment_events_list_loading));
-			progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-				@Override
-				public void onCancel(DialogInterface dialog) {
-					cancelRequests();
-				}
-			});
-		}
-		progressDialog.show();
+	private void showLoadingMessage() {
+		setListShown(false);
 	}
 
 }

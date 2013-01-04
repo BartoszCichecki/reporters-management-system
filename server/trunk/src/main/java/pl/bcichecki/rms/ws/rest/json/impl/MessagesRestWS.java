@@ -48,11 +48,10 @@ public class MessagesRestWS extends AbstractRestWS {
 	protected MessagesService messagesService;
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/archive/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/archived/{id}", method = RequestMethod.POST)
 	void archiveMessage(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException,
 	        BadRequestException {
-		String requestBody = RestUtils.getRequestBody(request);
-		if (StringUtils.isBlank(requestBody)) {
+		if (StringUtils.isBlank(id)) {
 			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
 		}
 		try {
@@ -249,20 +248,6 @@ public class MessagesRestWS extends AbstractRestWS {
 		}
 		try {
 			messagesService.updateMessage(GsonHolder.getGson().fromJson(requestBody, MessageEntity.class));
-		} catch (JsonParseException ex) {
-			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
-		}
-	}
-
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.UPDATE_OUTGOING_MESSAGES + "','" + PrivilegeUtils.Values.MANAGE_MESSAGES + "')")
-	@RequestMapping(value = "/outbox", method = RequestMethod.POST)
-	void updateOutboxMessage(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
-		String requestBody = RestUtils.getRequestBody(request);
-		if (StringUtils.isBlank(requestBody)) {
-			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
-		}
-		try {
-			messagesService.updateOutboxMessage(GsonHolder.getGson().fromJson(requestBody, MessageEntity.class));
 		} catch (JsonParseException ex) {
 			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
 		}

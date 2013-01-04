@@ -40,9 +40,9 @@ public class EventsListAdapter extends ArrayAdapter<Event> {
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM_TITLE = R.id.fragment_events_list_item_title;
 
-	private static final int FRAGMENT_EVENTS_LIST_ITEM_FROM = R.id.fragment_events_list_item_till;
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_FROM = R.id.fragment_events_list_item_from;
 
-	private static final int FRAGMENT_EVENTS_LIST_ITEM_TILL = R.id.fragment_events_list_item_from;
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_TILL = R.id.fragment_events_list_item_till;
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_ARCHIVED = R.id.fragment_events_list_item_indicators_archived;
 

@@ -83,8 +83,6 @@ public class PrivilegeUtils {
 
 		public static final String UPDATE_MY_EVENTS = "UPDATE_MY_EVENTS";
 
-		public static final String UPDATE_OUTGOING_MESSAGES = "UPDATE_OUTGOING_MESSAGES";
-
 		public static final String UPDATE_ROLES = "UPDATE_ROLES";
 
 		public static final String UPDATE_USERS = "UPDATE_USERS";

@@ -180,6 +180,7 @@ public abstract class AbstractEntity implements AuditableEntity<UserEntity, Stri
 	public void prePersist() {
 		setCreationDate(new Date());
 		setCreationUserId(getCurrentUserId());
+		setVersion(null);
 		preUpdate();
 	}
 

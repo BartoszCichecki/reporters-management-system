@@ -34,7 +34,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.services.clients.restful.https.ssl.SimpleSSLSocketFactory;
 
@@ -124,6 +127,10 @@ public class SimpleAsyncHttpsClient extends AsyncHttpClient {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public void post(Context context, String url, AsyncHttpResponseHandler responseHandler) {
+		post(context, url, null, responseHandler);
 	}
 
 	@Override

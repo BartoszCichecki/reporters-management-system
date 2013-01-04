@@ -28,6 +28,7 @@ import android.view.MenuItem;
 
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.fragments.DummySectionFragment;
+import pl.bcichecki.rms.client.android.fragments.OutboxMessagesListFragment;
 import pl.bcichecki.rms.client.android.listeners.MessagingActivityActionBarTabListener;
 
 public class MessagingActivity extends FragmentActivity {
@@ -51,7 +52,7 @@ public class MessagingActivity extends FragmentActivity {
 					fragment = new DummySectionFragment();
 					return fragment;
 				case 1:
-					fragment = new DummySectionFragment();
+					fragment = new OutboxMessagesListFragment();
 					return fragment;
 				default:
 					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());

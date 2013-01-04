@@ -12,6 +12,7 @@
 package pl.bcichecki.rms.services.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -73,6 +74,8 @@ public class MessagesServiceImpl implements MessagesService {
 
 	@Override
 	public boolean createMessage(MessageEntity message) throws ServiceException {
+		message.setSender(reloadUser(message.getSender()));
+		message.setRecipents(reloadRecipents(message.getRecipents()));
 		messagesDao.create(message);
 		return true;
 	}
@@ -232,6 +235,25 @@ public class MessagesServiceImpl implements MessagesService {
 		return false;
 	}
 
+	private Set<MessageRecipentEntity> reloadRecipents(Set<MessageRecipentEntity> recipents) throws ServiceException {
+		Set<MessageRecipentEntity> reloadedRecipents = new HashSet<MessageRecipentEntity>();
+		for (MessageRecipentEntity recipentEntity : recipents) {
+			MessageRecipentEntity reloadedRecipent = new MessageRecipentEntity();
+			reloadedRecipent.merge(recipentEntity);
+			reloadedRecipent.setRecipent(reloadUser(recipentEntity.getRecipent()));
+			reloadedRecipents.add(reloadedRecipent);
+		}
+		return reloadedRecipents;
+	}
+
+	private UserEntity reloadUser(UserEntity sender) throws ServiceException {
+		UserEntity reloadedUser = usersDao.getById(sender.getId());
+		if (reloadedUser == null) {
+			throw new ServiceException("User with this ID does not exist!", "exceptions.serviceExceptions.users.notExistId");
+		}
+		return reloadedUser;
+	}
+
 	@Override
 	public boolean sendMessage(MessageEntity message) throws ServiceException {
 		if (StringUtils.isBlank(message.getSubject())) {
@@ -294,27 +316,9 @@ public class MessagesServiceImpl implements MessagesService {
 		if (retrievedMessage == null) {
 			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");
 		}
+		retrievedMessage.setSender(reloadUser(retrievedMessage.getSender()));
+		retrievedMessage.setRecipents(reloadRecipents(retrievedMessage.getRecipents()));
 		retrievedMessage.merge(message);
-		messagesDao.update(retrievedMessage);
-		return true;
-	}
-
-	@Override
-	public boolean updateOutboxMessage(MessageEntity message) throws ServiceException {
-		String currentUserId = SecurityUtils.getCurrentUserId();
-		MessageEntity retrievedMessage = messagesDao.getByIdAndSenderId(message.getId(), currentUserId, false, false);
-		if (retrievedMessage == null) {
-			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistId");
-		}
-		for (MessageRecipentEntity messageRecipent : retrievedMessage.getRecipents()) {
-			if (messageRecipent.getReadDate() != null) {
-				throw new ServiceException("Can't update message that has already been read by any of the recipents!",
-				        "exceptions.serviceExceptions.messages.cantUpdateAlreadyRead");
-			}
-		}
-		retrievedMessage.setSubject(message.getSubject());
-		retrievedMessage.setContent(message.getContent());
-		retrievedMessage.setRecipents(message.getRecipents());
 		messagesDao.update(retrievedMessage);
 		return true;
 	}

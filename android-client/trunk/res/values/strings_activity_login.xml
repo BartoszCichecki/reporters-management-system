@@ -13,7 +13,6 @@
     <string name="activity_login_remember_user">Remember me</string>
     <string name="activity_login_signing_in">Signing in&#8230;</string>
     <string name="activity_login_sign_in"><b>Sign in</b></string>
-    <string name="activity_login_title">Sign in</string>
     <string name="activity_login_unsuccessful_login_message_content">There seems to be a problem with your account. Make sure you entered valid credentials. Remember that you will not be able to sign in if your account is locked or not active yet.</string>
     <string name="activity_login_unsuccessful_login_message_title">You were not signed in</string>
     <string name="activity_login_username">Username</string>

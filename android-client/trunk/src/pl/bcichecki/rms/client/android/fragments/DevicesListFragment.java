@@ -17,12 +17,11 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,17 +56,9 @@ public class DevicesListFragment extends ListFragment {
 
 	private DevicesRestClient devicesRestClient;
 
-	private ProgressDialog progressDialog;
-
 	private void cancelRequests() {
 		if (devicesRestClient != null) {
 			devicesRestClient.cancelRequests(getActivity(), true);
-		}
-	}
-
-	private void dismissProgressDialog() {
-		if (progressDialog != null) {
-			progressDialog.dismiss();
 		}
 	}
 
@@ -99,14 +90,14 @@ public class DevicesListFragment extends ListFragment {
 			@Override
 			public void onFinish() {
 				devicesListAdapter.refresh();
-				dismissProgressDialog();
+				hideLoadingMessage();
 				Log.d(TAG, "Retrieving devices finished.");
 			}
 
 			@Override
 			public void onStart() {
 				Log.d(TAG, "Retrieving devices started.");
-				showProgressDialog();
+				showLoadingMessage();
 				devices.clear();
 			}
 
@@ -118,16 +109,22 @@ public class DevicesListFragment extends ListFragment {
 		});
 	}
 
-	private Device getCheckedItem() {
+	private Device getFirstCheckedItem() {
 		if (getListView().getCheckedItemCount() != 1) {
 			return null;
 		}
-		for (int i = 0; i < getListView().getCheckedItemPositions().size(); i++) {
-			if (getListView().getCheckedItemPositions().get(i)) {
-				return devicesListAdapter.getItem(i);
+
+		SparseBooleanArray checkedItemPositions = getListView().getCheckedItemPositions();
+		for (int i = 0; i < getListAdapter().getCount(); i++) {
+			if (checkedItemPositions.get(i)) {
+				return (Device) getListAdapter().getItem(i);
 			}
 		}
 		return null;
+	}
+
+	private void hideLoadingMessage() {
+		setListShown(true);
 	}
 
 	protected void load() {
@@ -145,7 +142,6 @@ public class DevicesListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		load();
-		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -170,7 +166,10 @@ public class DevicesListFragment extends ListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		load();
+		setHasOptionsMenu(true);
 		setUpActionModeOnListItems();
+		setEmptyText(getString(R.string.fragment_devices_list_empty));
 	}
 
 	@Override
@@ -180,7 +179,7 @@ public class DevicesListFragment extends ListFragment {
 	}
 
 	private boolean performAction(MenuItem item) {
-		Device selectedDevice = getCheckedItem();
+		Device selectedDevice = getFirstCheckedItem();
 		if (selectedDevice == null) {
 			Log.w(TAG, "Invalid selection. Aborting...");
 			return false;
@@ -231,9 +230,8 @@ public class DevicesListFragment extends ListFragment {
 
 			@Override
 			public void onSuccess(int statusCode, String content) {
-				devicesListAdapter.remove(selectedDevice);
 				Log.d(TAG, "Attempt to delete event " + selectedDevice + " succesful. Removing object locally and refreshing view...");
-				devicesListAdapter.refresh();
+				downloadData();
 			}
 		});
 	}
@@ -288,19 +286,8 @@ public class DevicesListFragment extends ListFragment {
 		});
 	}
 
-	private void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(getActivity(), ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage(getString(R.string.fragment_events_list_loading));
-			progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-				@Override
-				public void onCancel(DialogInterface dialog) {
-					cancelRequests();
-				}
-			});
-		}
-		progressDialog.show();
+	private void showLoadingMessage() {
+		setListShown(false);
 	}
 
 }

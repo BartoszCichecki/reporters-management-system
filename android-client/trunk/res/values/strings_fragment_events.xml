@@ -9,14 +9,12 @@
     <string name="fragment_events_list_context_menu_share">Share</string>
     <string name="fragment_events_list_context_menu_unlock">Unlock</string>
     <string name="fragment_events_list_delete_successful">Event deleted successfully</string>
-    <string name="fragment_events_list_empty">No events</string>
-    <string name="fragment_events_list_empty_description">There are no events to display</string>
+    <string name="fragment_events_list_empty">There are no events to display</string>
     <string name="fragment_events_list_item_from_text">From&#160;</string>
     <string name="fragment_events_list_item_indicators_archived_description">Archived</string>
     <string name="fragment_events_list_item_indicators_locked_description">Locked</string>
     <string name="fragment_events_list_item_indicators_owner_description">Owner</string>
     <string name="fragment_events_list_item_till_text">Till&#160;</string>
-    <string name="fragment_events_list_loading">Loading events&#8230;</string>
     <string name="fragment_events_list_lock_successful">Event locked successfully</string>
     <string name="fragment_events_list_menu_new">New event</string>
     <string name="fragment_events_list_menu_refresh">Refresh</string>

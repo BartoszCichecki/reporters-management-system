@@ -23,6 +23,8 @@ public class RestConstants {
 
 	public static final String RESOURCE_PATH_ALL = "all";
 
+	public static final String RESOURCE_PATH_MARK_READ = "markRead";
+
 	public static final String RESOURCE_PATH_ARCHIVED = "archived";
 
 	public static final String RESOURCE_PATH_DEVICES = "devices";
@@ -31,7 +33,13 @@ public class RestConstants {
 
 	public static final String RESOURCE_PATH_FORGOT_PASSWORD = "forgotPassword";
 
+	public static final String RESOURCE_PATH_INBOX = "inbox";
+
+	public static final String RESOURCE_PATH_MESSAGES = "messages";
+
 	public static final String RESOURCE_PATH_MY = "my";
+
+	public static final String RESOURCE_PATH_OUTBOX = "outbox";
 
 	public static final String RESOURCE_PATH_PROFILE = "profile";
 

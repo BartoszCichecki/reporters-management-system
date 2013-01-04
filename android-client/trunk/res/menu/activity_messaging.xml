@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/activity_messaging_menu_item_new"
-        android:orderInCategory="100"
+        android:orderInCategory="0"
         android:showAsAction="ifRoom"
         android:title="@string/activity_messaging_menu_item_new"/>
 
