@@ -19,6 +19,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.widget.TextView;
 
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.model.impl.Device;
@@ -63,7 +64,12 @@ public class DeviceReservationsDialog extends DialogFragment {
 				reservations.append(reservation);
 				counter++;
 			}
-			dialogBuilder.setMessage(reservations);
+
+			TextView reservationsTextView = new TextView(getActivity());
+			reservationsTextView.setTextAppearance(getActivity(), android.R.attr.textAppearanceSmall);
+			reservationsTextView.setText(reservations);
+
+			dialogBuilder.setView(reservationsTextView);
 		}
 
 		dialogBuilder.setPositiveButton(R.string.general_back, new DialogInterface.OnClickListener() {
