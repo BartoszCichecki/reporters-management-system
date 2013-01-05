@@ -52,6 +52,9 @@ public class EventsServiceImpl implements EventsService {
 		if (retrievedEvent == null) {
 			throw new ServiceException("Event with this ID does not exist!", "exceptions.serviceExceptions.events.notExistId");
 		}
+		if (retrievedEvent.isLocked()) {
+			throw new ServiceException("This event is locked. You can't alter it!", "exceptions.serviceExceptions.isLocked");
+		}
 		if (!retrievedEvent.getCurrentUser().getId().equals(currentUserId)) {
 			throw new ServiceException("You are not the owner of this event!", "exceptions.serviceExceptions.events.notAOwner");
 		}
@@ -83,36 +86,42 @@ public class EventsServiceImpl implements EventsService {
 
 	@Override
 	public boolean deleteEvent(String id, Boolean markDeleted) throws ServiceException {
-		EventEntity event = eventsDao.getById(id);
-		if (event == null) {
+		EventEntity retrievedEvent = eventsDao.getById(id);
+		if (retrievedEvent == null) {
 			throw new ServiceException("You can't delete event that does not exist!",
 			        "exceptions.serviceExceptions.events.cantDeleteNotExisting");
 		}
+		if (retrievedEvent.isLocked()) {
+			throw new ServiceException("This event is locked. You can't alter it!", "exceptions.serviceExceptions.isLocked");
+		}
 		if (markDeleted) {
-			event.setDeleted(true);
-			eventsDao.update(event);
+			retrievedEvent.setDeleted(true);
+			eventsDao.update(retrievedEvent);
 		} else {
-			eventsDao.delete(event);
+			eventsDao.delete(retrievedEvent);
 		}
 		return true;
 	}
 
 	@Override
 	public boolean deleteMyEvent(String id, Boolean markDeleted) throws ServiceException {
-		EventEntity event = eventsDao.getById(id);
-		if (event == null) {
+		EventEntity retrievedEvent = eventsDao.getById(id);
+		if (retrievedEvent == null) {
 			throw new ServiceException("You can't delete event that does not exist!",
 			        "exceptions.serviceExceptions.events.cantDeleteNotExisting");
 		}
-		if (!SecurityUtils.getCurrentUserId().equals(event.getCreationUserId())) {
+		if (retrievedEvent.isLocked()) {
+			throw new ServiceException("This event is locked. You can't alter it!", "exceptions.serviceExceptions.isLocked");
+		}
+		if (!SecurityUtils.getCurrentUserId().equals(retrievedEvent.getCreationUserId())) {
 			throw new ServiceException("You can't delete event that is not yours!",
 			        "exceptions.serviceExceptions.events.cantDeleteNotYours");
 		}
 		if (markDeleted) {
-			event.setDeleted(true);
-			eventsDao.update(event);
+			retrievedEvent.setDeleted(true);
+			eventsDao.update(retrievedEvent);
 		} else {
-			eventsDao.delete(event);
+			eventsDao.delete(retrievedEvent);
 		}
 		return true;
 	}
@@ -201,7 +210,9 @@ public class EventsServiceImpl implements EventsService {
 		if (retrievedEvent == null) {
 			throw new ServiceException("Event with this ID does not exist!", "exceptions.serviceExceptions.events.notExistId");
 		}
-
+		if (retrievedEvent.isLocked()) {
+			throw new ServiceException("This event is locked. You can't alter it!", "exceptions.serviceExceptions.isLocked");
+		}
 		UserEntity retrievedUser = usersDao.getById(currentUserId);
 		if (signUp) {
 			if (!retrievedEvent.getParticipants().contains(retrievedUser)) {
@@ -217,24 +228,30 @@ public class EventsServiceImpl implements EventsService {
 
 	@Override
 	public boolean updateEvent(EventEntity event) throws ServiceException {
-		EventEntity retrieved = eventsDao.getById(event.getId());
-		if (retrieved == null) {
+		EventEntity retrievedEvent = eventsDao.getById(event.getId());
+		if (retrievedEvent == null) {
 			throw new ServiceException("You can't update event that does not exist!",
 			        "exceptions.serviceExceptions.events.cantUpdateNotExisting");
 		}
+		if (retrievedEvent.isLocked()) {
+			throw new ServiceException("This event is locked. You can't alter it!", "exceptions.serviceExceptions.isLocked");
+		}
 		event.setParticipants(reloadParticipants(event.getParticipants()));
 		event.setDevices(reloadDevices(event.getDevices()));
-		retrieved.merge(event);
-		eventsDao.update(retrieved);
+		retrievedEvent.merge(event);
+		eventsDao.update(retrievedEvent);
 		return true;
 	}
 
 	@Override
 	public boolean updateMyEvent(EventEntity event) throws ServiceException {
-		EventEntity retrieved = eventsDao.getById(event.getId());
-		if (retrieved == null) {
+		EventEntity retrievedEvent = eventsDao.getById(event.getId());
+		if (retrievedEvent == null) {
 			throw new ServiceException("You can't update event that does not exist!",
 			        "exceptions.serviceExceptions.events.cantUpdateNotExisting");
+		}
+		if (retrievedEvent.isLocked()) {
+			throw new ServiceException("This event is locked. You can't alter it!", "exceptions.serviceExceptions.isLocked");
 		}
 		if (!SecurityUtils.getCurrentUserId().equals(event.getCreationUserId())) {
 			throw new ServiceException("You can't update event that is not yours!",
@@ -242,8 +259,8 @@ public class EventsServiceImpl implements EventsService {
 		}
 		event.setParticipants(reloadParticipants(event.getParticipants()));
 		event.setDevices(reloadDevices(event.getDevices()));
-		retrieved.merge(event);
-		eventsDao.update(retrieved);
+		retrievedEvent.merge(event);
+		eventsDao.update(retrievedEvent);
 		return true;
 	}
 

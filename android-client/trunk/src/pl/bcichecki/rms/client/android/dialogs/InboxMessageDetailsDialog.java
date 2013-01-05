@@ -11,7 +11,6 @@
 
 package pl.bcichecki.rms.client.android.dialogs;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -20,6 +19,7 @@ import org.apache.http.client.HttpResponseException;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +27,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
@@ -34,6 +35,7 @@ import pl.bcichecki.rms.client.android.fragments.listAdapters.InboxMessagesListA
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.Message;
 import pl.bcichecki.rms.client.android.model.impl.MessageRecipent;
+import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpResponseHandler;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.MessagesRestClient;
 import pl.bcichecki.rms.client.android.utils.AppUtils;
 
@@ -49,6 +51,8 @@ public class InboxMessageDetailsDialog extends DialogFragment {
 
 	private InboxMessagesListAdapter inboxMessagesListAdapter;
 
+	private Context context;
+
 	private void markRead() {
 		if (!message.isReadByRecipent(UserProfileHolder.getUserProfile())) {
 			messagesRestClient.markMessageRead(message, new AsyncHttpResponseHandler() {
@@ -58,12 +62,12 @@ public class InboxMessageDetailsDialog extends DialogFragment {
 					Log.d(getTag(), "Could  not mark message read [error=" + error + ", content=" + content + "]");
 					if (error instanceof HttpResponseException) {
 						if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-							AppUtils.showCenteredToast(getActivity(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
+							AppUtils.showCenteredToast(context, R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
 						} else {
-							AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+							AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 						}
 					} else {
-						AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+						AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 					}
 				}
 
@@ -80,8 +84,7 @@ public class InboxMessageDetailsDialog extends DialogFragment {
 				@Override
 				public void onSuccess(int statusCode, String content) {
 					Log.d(getTag(), "Message marked read. Refreshing inboxMessagesListAdapter...");
-					message.setReadByRecipent(UserProfileHolder.getUserProfile(), new Date());
-					inboxMessagesListAdapter.refresh();
+					refreshInboxMessage(message);
 				}
 
 			});
@@ -99,6 +102,8 @@ public class InboxMessageDetailsDialog extends DialogFragment {
 		if (inboxMessagesListAdapter == null) {
 			throw new IllegalStateException("InboxMessagesListAdapter has not been set!");
 		}
+
+		context = getActivity();
 
 		markRead();
 
@@ -157,6 +162,52 @@ public class InboxMessageDetailsDialog extends DialogFragment {
 		});
 
 		return dialog;
+	}
+
+	private void refreshInboxMessage(final Message message) {
+		final String messageId = message.getId();
+
+		AsyncHttpResponseHandler handler = new GsonHttpResponseHandler<Message>(new TypeToken<Message>() {
+		}.getType(), true) {
+
+			@Override
+			public void onFailure(Throwable error, String content) {
+				Log.d(getTag(), "Could not get message id " + messageId + " [error=" + error + ", content=" + content + "]");
+				if (error instanceof HttpResponseException) {
+					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+						AppUtils.showCenteredToast(context, R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
+					} else {
+						AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+					}
+				} else {
+					AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+				}
+			}
+
+			@Override
+			public void onFinish() {
+				Log.d(getTag(), "Getting message id " + messageId + " finished.");
+			}
+
+			@Override
+			public void onStart() {
+				Log.d(getTag(), "Started getting message id " + messageId);
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Message retrievedMessage) {
+				Log.d(getTag(), "Got message id " + messageId + ". Refreshing inboxMessagesListAdapter...");
+				inboxMessagesListAdapter.remove(message);
+				inboxMessagesListAdapter.add(retrievedMessage);
+				inboxMessagesListAdapter.refresh();
+			}
+		};
+
+		if (!message.isArchivedByRecipent(UserProfileHolder.getUserProfile())) {
+			messagesRestClient.getInboxMessage(message, handler);
+		} else {
+			messagesRestClient.getArchivedInboxMessage(message, handler);
+		}
 	}
 
 	public void setInboxMessagesListAdapter(InboxMessagesListAdapter inboxMessagesListAdapter) {

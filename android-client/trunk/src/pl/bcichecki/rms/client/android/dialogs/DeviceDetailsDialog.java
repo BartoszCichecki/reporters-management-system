@@ -21,6 +21,7 @@ import org.apache.http.client.HttpResponseException;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -54,11 +55,16 @@ public class DeviceDetailsDialog extends DialogFragment {
 
 	private EventsRestClient eventsRestClient;
 
+	private Context context;
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		if (device == null) {
 			throw new IllegalStateException("Device has not been set!");
 		}
+
+		context = getActivity();
+
 		eventsRestClient = new EventsRestClient(getActivity(), UserProfileHolder.getUsername(), UserProfileHolder.getPassword(),
 		        SharedPreferencesWrapper.getServerRealm(), SharedPreferencesWrapper.getServerAddress(),
 		        SharedPreferencesWrapper.getServerPort(), SharedPreferencesWrapper.getWebserviceContextPath());
@@ -88,13 +94,12 @@ public class DeviceDetailsDialog extends DialogFragment {
 						        + " failed. [error=" + error + ", content=" + content + "]");
 						if (error instanceof HttpResponseException) {
 							if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-								AppUtils.showCenteredToast(getActivity(), R.string.general_unathorized_error_message_title,
-								        Toast.LENGTH_LONG);
+								AppUtils.showCenteredToast(context, R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
 							} else {
-								AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+								AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 							}
 						} else {
-							AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+							AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 						}
 					}
 

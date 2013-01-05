@@ -236,7 +236,8 @@ public class DevicesListFragment extends ListFragment {
 			@Override
 			public void onSuccess(int statusCode, String content) {
 				Log.d(TAG, "Attempt to delete event " + selectedDevice + " succesful. Removing object locally and refreshing view...");
-				downloadData();
+				devicesListAdapter.remove(selectedDevice);
+				devicesListAdapter.refresh();
 			}
 		});
 	}

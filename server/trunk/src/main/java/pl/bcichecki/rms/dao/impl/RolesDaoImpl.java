@@ -20,7 +20,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
 import pl.bcichecki.rms.dao.RolesDao;
-import pl.bcichecki.rms.model.AbstractEntity_;
 import pl.bcichecki.rms.model.impl.RoleEntity;
 import pl.bcichecki.rms.model.impl.RoleEntity_;
 import pl.bcichecki.rms.model.impl.UserEntity;
@@ -50,7 +49,7 @@ public class RolesDaoImpl extends AbstractGenericDao<RoleEntity> implements Role
 		Subquery<RoleEntity> subquery = criteriaQuery.subquery(RoleEntity.class);
 		Root<UserEntity> subqueryRoot = subquery.from(UserEntity.class);
 		subquery.select(subqueryRoot.get(UserEntity_.role));
-		subquery.where(criteriaBuilder.equal(subqueryRoot.get(AbstractEntity_.id), id));
+		subquery.where(criteriaBuilder.equal(subqueryRoot.get(UserEntity_.id), id));
 
 		criteriaQuery.select(root).where(criteriaBuilder.in(root).value(subquery));
 

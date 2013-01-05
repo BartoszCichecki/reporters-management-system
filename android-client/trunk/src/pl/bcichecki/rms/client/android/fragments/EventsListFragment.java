@@ -43,7 +43,6 @@ import pl.bcichecki.rms.client.android.fragments.listAdapters.EventsListAdapter;
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.Event;
-import pl.bcichecki.rms.client.android.model.utils.PojoUtils;
 import pl.bcichecki.rms.client.android.prettyPrinters.impl.EventTextPrettyPrinter;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpResponseHandler;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.EventsRestClient;
@@ -342,8 +341,7 @@ public class EventsListFragment extends ListFragment {
 			public void onSuccess(int statusCode, String content) {
 				Log.d(TAG, "Event archive succesfull. Refreshing view.");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_archive_successful, Toast.LENGTH_LONG);
-				downloadData();
-				downloadArchivedData();
+				refreshEvent(selectedEvent);
 			}
 		});
 	}
@@ -379,8 +377,8 @@ public class EventsListFragment extends ListFragment {
 			public void onSuccess(int statusCode, String content) {
 				Log.d(TAG, "Attempt to delete event " + selectedEvent + " succesful. Removing object locally and refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_delete_successful, Toast.LENGTH_LONG);
-				downloadData();
-				downloadArchivedData();
+				eventsListAdapter.remove(selectedEvent);
+				eventsListAdapter.refresh();
 			}
 		});
 	}
@@ -416,8 +414,7 @@ public class EventsListFragment extends ListFragment {
 			public void onSuccess(int statusCode, String content) {
 				Log.d(TAG, "Attempt to lock event " + selectedEvent + " succesful. Refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_lock_successful, Toast.LENGTH_LONG);
-				downloadData();
-				downloadArchivedData();
+				refreshEvent(selectedEvent);
 			}
 		});
 	}
@@ -436,10 +433,7 @@ public class EventsListFragment extends ListFragment {
 	}
 
 	private void performActionUnlock(final ActionMode mode, MenuItem item, final Event selectedEvent) {
-		final Event selectedEventCopy = PojoUtils.createDefensiveCopy(selectedEvent);
-		selectedEventCopy.setLocked(false);
-
-		eventsRestClient.updateMyEvent(selectedEventCopy, new AsyncHttpResponseHandler() {
+		eventsRestClient.lockEvent(selectedEvent, false, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
@@ -469,8 +463,47 @@ public class EventsListFragment extends ListFragment {
 			public void onSuccess(int statusCode, String content) {
 				Log.d(TAG, "Attempt to unlock event " + selectedEvent + " succesful. Refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_unlock_successful, Toast.LENGTH_LONG);
-				downloadData();
-				downloadArchivedData();
+				refreshEvent(selectedEvent);
+			}
+		});
+	}
+
+	private void refreshEvent(final Event event) {
+		final String eventId = event.getId();
+
+		eventsRestClient.getEvent(event, new GsonHttpResponseHandler<Event>(new TypeToken<Event>() {
+		}.getType(), true) {
+
+			@Override
+			public void onFailure(Throwable error, String content) {
+				Log.d(getTag(), "Could not get event id " + eventId + " [error=" + error + ", content=" + content + "]");
+				if (error instanceof HttpResponseException) {
+					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+						AppUtils.showCenteredToast(getActivity(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
+					} else {
+						AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+					}
+				} else {
+					AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+				}
+			}
+
+			@Override
+			public void onFinish() {
+				Log.d(getTag(), "Getting event id " + eventId + " finished.");
+			}
+
+			@Override
+			public void onStart() {
+				Log.d(getTag(), "Started getting event id " + eventId);
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Event retrievedEvent) {
+				Log.d(getTag(), "Got event id " + eventId + ". Refreshing inboxMessagesListAdapter...");
+				eventsListAdapter.remove(event);
+				eventsListAdapter.add(retrievedEvent);
+				eventsListAdapter.refresh();
 			}
 		});
 	}

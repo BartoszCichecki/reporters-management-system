@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -48,6 +49,8 @@ public class RegisterDialog extends DialogFragment {
 
 	private UtilitiesRestClient utilitiesRestClient;
 
+	private Context context;
+
 	private void cancelRequests() {
 		if (utilitiesRestClient != null) {
 			utilitiesRestClient.cancelRequests(getActivity(), true);
@@ -63,6 +66,8 @@ public class RegisterDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		context = getActivity();
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getString(R.string.dialog_register_title));
 		builder.setMessage(getString(R.string.dialog_register_message));
@@ -189,7 +194,7 @@ public class RegisterDialog extends DialogFragment {
 							@Override
 							public void onFailure(Throwable error, String content) {
 								Log.d(TAG, "Registering user failed. [error= " + error + ", content=" + content + "]");
-								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_register_failed), Toast.LENGTH_LONG);
+								AppUtils.showCenteredToast(context, getString(R.string.dialog_register_failed), Toast.LENGTH_LONG);
 							}
 
 							@Override
@@ -200,16 +205,14 @@ public class RegisterDialog extends DialogFragment {
 							@Override
 							public void onStart() {
 								Log.d(TAG, "Registering user: " + user.toString());
-								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_register_in_progress),
-								        Toast.LENGTH_SHORT);
+								AppUtils.showCenteredToast(context, getString(R.string.dialog_register_in_progress), Toast.LENGTH_SHORT);
 								positiveButton.setEnabled(false);
 							}
 
 							@Override
 							public void onSuccess(int statusCode, String content) {
 								Log.d(TAG, "Registered user successfully.");
-								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_register_successful),
-								        Toast.LENGTH_SHORT);
+								AppUtils.showCenteredToast(context, getString(R.string.dialog_register_successful), Toast.LENGTH_SHORT);
 
 								SharedPreferencesWrapper.setUsername(user.getUsername());
 								SharedPreferencesWrapper.setPasswordHash(user.getPassword());

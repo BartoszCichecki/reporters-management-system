@@ -19,6 +19,7 @@ import org.apache.http.client.HttpResponseException;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -51,6 +52,8 @@ public class EventDetailsDialog extends DialogFragment {
 
 	private EventsListAdapter eventsListAdapter;
 
+	private Context context;
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		if (event == null) {
@@ -62,6 +65,8 @@ public class EventDetailsDialog extends DialogFragment {
 		if (eventsListAdapter == null) {
 			throw new IllegalStateException("EventsListAdapter has not been set!");
 		}
+
+		context = getActivity();
 
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getString(R.string.dialog_event_details_title, event.getTitle()));
@@ -150,7 +155,6 @@ public class EventDetailsDialog extends DialogFragment {
 	}
 
 	private void refreshEvent(final Event event) {
-
 		final String eventId = event.getId();
 
 		eventsRestClient.getEvent(event, new GsonHttpResponseHandler<Event>(new TypeToken<Event>() {
@@ -161,12 +165,12 @@ public class EventDetailsDialog extends DialogFragment {
 				Log.d(getTag(), "Could not get event id " + eventId + " [error=" + error + ", content=" + content + "]");
 				if (error instanceof HttpResponseException) {
 					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-						AppUtils.showCenteredToast(getActivity(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
+						AppUtils.showCenteredToast(context, R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
 					} else {
-						AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+						AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 					}
 				} else {
-					AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+					AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 				}
 			}
 
@@ -188,7 +192,6 @@ public class EventDetailsDialog extends DialogFragment {
 				eventsListAdapter.refresh();
 			}
 		});
-
 	}
 
 	public void setEvent(Event event) {
@@ -211,12 +214,12 @@ public class EventDetailsDialog extends DialogFragment {
 				Log.d(getTag(), "Could change sign up state to " + signUp + " [error=" + error + ", content=" + content + "]");
 				if (error instanceof HttpResponseException) {
 					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-						AppUtils.showCenteredToast(getActivity(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
+						AppUtils.showCenteredToast(context, R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
 					} else {
-						AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+						AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 					}
 				} else {
-					AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+					AppUtils.showCenteredToast(context, R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
 				}
 			}
 

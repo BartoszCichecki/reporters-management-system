@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -44,6 +45,8 @@ public class RemindPasswordDialog extends DialogFragment {
 
 	private UtilitiesRestClient utilitiesRestClient;
 
+	private Context context;
+
 	private void cancelRequests() {
 		if (utilitiesRestClient != null) {
 			utilitiesRestClient.cancelRequests(getActivity(), true);
@@ -59,6 +62,8 @@ public class RemindPasswordDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		context = getActivity();
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getString(R.string.dialog_remind_password_title));
 		builder.setMessage(getString(R.string.dialog_remind_password_message));
@@ -133,7 +138,7 @@ public class RemindPasswordDialog extends DialogFragment {
 							@Override
 							public void onFailure(Throwable error, String content) {
 								Log.d(TAG, "Reminding password failed. [error=" + error + ", content=" + content + "]");
-								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_remind_password_recovery_failed),
+								AppUtils.showCenteredToast(context, getString(R.string.dialog_remind_password_recovery_failed),
 								        Toast.LENGTH_LONG);
 							}
 
@@ -145,7 +150,7 @@ public class RemindPasswordDialog extends DialogFragment {
 							@Override
 							public void onStart() {
 								Log.d(TAG, "Reminding password for user: " + username);
-								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_remind_password_recovery_in_progress),
+								AppUtils.showCenteredToast(context, getString(R.string.dialog_remind_password_recovery_in_progress),
 								        Toast.LENGTH_SHORT);
 								positiveButton.setEnabled(false);
 							}
@@ -153,7 +158,7 @@ public class RemindPasswordDialog extends DialogFragment {
 							@Override
 							public void onSuccess(int statusCode, String content) {
 								Log.d(TAG, "Reminding password success.");
-								AppUtils.showCenteredToast(getActivity(), getString(R.string.dialog_remind_password_recovery_successful),
+								AppUtils.showCenteredToast(context, getString(R.string.dialog_remind_password_recovery_successful),
 								        Toast.LENGTH_SHORT);
 								dialog.dismiss();
 							}

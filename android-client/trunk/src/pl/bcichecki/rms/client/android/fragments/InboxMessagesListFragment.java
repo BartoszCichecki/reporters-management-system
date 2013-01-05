@@ -56,7 +56,7 @@ public class InboxMessagesListFragment extends ListFragment {
 
 	private MessagesRestClient messagesRestClient;
 
-	private boolean showArchivedEvents = false;
+	private boolean showArchivedMessages = false;
 
 	private void cancelRequests() {
 		if (messagesRestClient != null) {
@@ -65,7 +65,7 @@ public class InboxMessagesListFragment extends ListFragment {
 	}
 
 	private void downloadArchivedData() {
-		if (!showArchivedEvents) {
+		if (!showArchivedMessages) {
 			return;
 		}
 
@@ -196,13 +196,13 @@ public class InboxMessagesListFragment extends ListFragment {
 		getActivity().getMenuInflater().inflate(R.menu.fragment_inbox_messages_list, menu);
 
 		MenuItem showArchivedMenuItem = menu.findItem(R.id.fragment_inbox_messages_list_menu_show_archived);
-		showArchivedMenuItem.setChecked(showArchivedEvents);
+		showArchivedMenuItem.setChecked(showArchivedMessages);
 		showArchivedMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				item.setChecked(!item.isChecked());
-				showArchivedEvents = item.isChecked();
+				showArchivedMessages = item.isChecked();
 
 				downloadData();
 				downloadArchivedData();
@@ -247,25 +247,25 @@ public class InboxMessagesListFragment extends ListFragment {
 	}
 
 	private boolean performAction(ActionMode mode, MenuItem item) {
-		Message selectedEvent = getFirstCheckedItem();
-		if (selectedEvent == null) {
+		Message selectedMessage = getFirstCheckedItem();
+		if (selectedMessage == null) {
 			Log.w(TAG, "Invalid selection. Aborting...");
 			return false;
 		}
 
 		if (item.getItemId() == R.id.fragment_inbox_messages_list_context_menu_archive) {
-			performActionArchive(mode, item, selectedEvent);
+			performActionArchive(mode, item, selectedMessage);
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_inbox_messages_list_context_menu_delete) {
-			performActionDelete(mode, item, selectedEvent);
+			performActionDelete(mode, item, selectedMessage);
 			return true;
 		}
 		return false;
 	}
 
-	private void performActionArchive(final ActionMode mode, MenuItem item, final Message selectedEvent) {
-		messagesRestClient.archiveMessage(selectedEvent, new AsyncHttpResponseHandler() {
+	private void performActionArchive(final ActionMode mode, MenuItem item, final Message selectedMessage) {
+		messagesRestClient.archiveMessage(selectedMessage, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
@@ -284,12 +284,12 @@ public class InboxMessagesListFragment extends ListFragment {
 			@Override
 			public void onFinish() {
 				hideLoadingMessage();
-				Log.d(TAG, "Attempt archive inbox message " + selectedEvent + " finished.");
+				Log.d(TAG, "Attempt archive inbox message " + selectedMessage + " finished.");
 			}
 
 			@Override
 			public void onStart() {
-				Log.d(TAG, "Attempting archive inbox message " + selectedEvent + " started.");
+				Log.d(TAG, "Attempting archive inbox message " + selectedMessage + " started.");
 				showLoadingMessage();
 			}
 
@@ -303,12 +303,12 @@ public class InboxMessagesListFragment extends ListFragment {
 		});
 	}
 
-	private void performActionDelete(final ActionMode mode, MenuItem item, final Message selectedEvent) {
+	private void performActionDelete(final ActionMode mode, MenuItem item, final Message selectedMessage) {
 		AsyncHttpResponseHandler handler = new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
-				Log.d(TAG, "Removing inbox message " + selectedEvent + " failed. [error=" + error + ", content=" + content + "]");
+				Log.d(TAG, "Removing inbox message " + selectedMessage + " failed. [error=" + error + ", content=" + content + "]");
 				if (error instanceof HttpResponseException) {
 					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
 						AppUtils.showCenteredToast(getActivity(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
@@ -322,17 +322,17 @@ public class InboxMessagesListFragment extends ListFragment {
 
 			@Override
 			public void onFinish() {
-				Log.d(TAG, "Attempt to delete inbox message finished. " + selectedEvent);
+				Log.d(TAG, "Attempt to delete inbox message finished. " + selectedMessage);
 			}
 
 			@Override
 			public void onStart() {
-				Log.d(TAG, "Attempting to delete inbox message. " + selectedEvent);
+				Log.d(TAG, "Attempting to delete inbox message. " + selectedMessage);
 			}
 
 			@Override
 			public void onSuccess(int statusCode, String content) {
-				Log.d(TAG, "Attempt to delete inbox message " + selectedEvent
+				Log.d(TAG, "Attempt to delete inbox message " + selectedMessage
 				        + " succesful. Removing object locally and refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_inbox_messages_list_delete_successful, Toast.LENGTH_LONG);
 				downloadData();
@@ -340,10 +340,10 @@ public class InboxMessagesListFragment extends ListFragment {
 			}
 		};
 
-		if (!selectedEvent.isArchivedBySender()) {
-			messagesRestClient.deleteInboxMessage(selectedEvent, handler);
+		if (!selectedMessage.isArchivedBySender()) {
+			messagesRestClient.deleteInboxMessage(selectedMessage, handler);
 		} else {
-			messagesRestClient.deleteArchivedInboxMessage(selectedEvent, handler);
+			messagesRestClient.deleteArchivedInboxMessage(selectedMessage, handler);
 		}
 	}
 

@@ -99,6 +99,28 @@ public class MessagesRestClient extends AbstractRestClient {
 		                RestConstants.RESOURCE_PATH_ALL), handler);
 	}
 
+	public void getArchivedInboxMessage(Message message, AsyncHttpResponseHandler handler) {
+		get(getContext(),
+		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_ARCHIVED,
+		                RestConstants.RESOURCE_PATH_INBOX, message.getId()), handler);
+	}
+
+	public void getArchivedOutboxMessage(Message message, AsyncHttpResponseHandler handler) {
+		get(getContext(),
+		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_ARCHIVED,
+		                RestConstants.RESOURCE_PATH_OUTBOX, message.getId()), handler);
+	}
+
+	public void getInboxMessage(Message message, AsyncHttpResponseHandler handler) {
+		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_INBOX, message.getId()),
+		        handler);
+	}
+
+	public void getOutboxMessage(Message message, AsyncHttpResponseHandler handler) {
+		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_OUTBOX, message.getId()),
+		        handler);
+	}
+
 	public void markMessageRead(Message message, AsyncHttpResponseHandler handler) {
 		post(getContext(),
 		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_INBOX,
