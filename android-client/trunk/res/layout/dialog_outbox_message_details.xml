@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" >
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_subject_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/dialog_outbox_message_details_subject_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_subject_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_outbox_message_details_subject_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_recipents_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_outbox_message_details_subject_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_outbox_message_details_recipents_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_recipents_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_outbox_message_details_recipents_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_sent_date_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_outbox_message_details_recipents_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_outbox_message_details_sent_date_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_sent_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_outbox_message_details_sent_date_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_content_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_outbox_message_details_sent_date_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_outbox_message_details_content_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_outbox_message_details_content_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_outbox_message_details_content_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+    </RelativeLayout>
+
+</ScrollView>

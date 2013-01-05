@@ -44,7 +44,7 @@ CREATE TABLE `access_history` (
 
 LOCK TABLES `access_history` WRITE;
 /*!40000 ALTER TABLE `access_history` DISABLE KEYS */;
-INSERT INTO `access_history` VALUES ('1','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'2012-12-09 12:00:00','AUTHENTICATION_OK','127.0.0.1','admin',NULL,NULL);
+INSERT INTO `access_history` VALUES ('0ed31d18-7b3a-4b17-a21f-454b4d7eb6f7','2013-01-05 18:20:55','2013-01-05 18:20:55',0,'2013-01-05 18:20:55','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL),('1','2012-12-09 12:00:00','2012-12-09 12:00:00',1,'2012-12-09 12:00:00','AUTHENTICATION_OK','127.0.0.1','admin',NULL,NULL),('1a8317c6-6687-4808-ac45-754c95aaa401','2013-01-05 18:20:57','2013-01-05 18:20:57',0,'2013-01-05 18:20:57','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL),('31ae6e59-93d8-4ef3-9028-2168c1450015','2013-01-05 18:24:56','2013-01-05 18:24:56',0,'2013-01-05 18:24:56','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL),('4ebc0c56-9540-4117-851e-16e41ac6e86b','2013-01-05 18:20:55','2013-01-05 18:20:55',0,'2013-01-05 18:20:55','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL),('9cb9e213-3165-4fc8-8a34-7881700f6430','2013-01-05 18:24:54','2013-01-05 18:24:54',0,'2013-01-05 18:24:54','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL),('a4d3f42c-afe6-47e3-aa99-65ee13a245d3','2013-01-05 18:25:03','2013-01-05 18:25:03',0,'2013-01-05 18:25:03','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL),('e30fffe7-76d7-49a0-a1d6-b795cb9cc329','2013-01-05 18:20:57','2013-01-05 18:20:57',0,'2013-01-05 18:20:57','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL),('f7370c9a-e69a-40d6-8905-830c230cbd57','2013-01-05 18:20:55','2013-01-05 18:20:55',0,'2013-01-05 18:20:55','AUTHENTICATION_OK','192.168.0.100','admin',NULL,NULL);
 /*!40000 ALTER TABLE `access_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -307,7 +307,7 @@ CREATE TABLE `message_recipents` (
 
 LOCK TABLES `message_recipents` WRITE;
 /*!40000 ALTER TABLE `message_recipents` DISABLE KEYS */;
-INSERT INTO `message_recipents` VALUES ('1','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,1,'2012-12-12 16:00:00','1','3','3','1'),('2','2012-12-12 12:00:00','2012-12-12 12:00:00',1,1,0,'2012-12-12 10:00:00','1','2','2','2'),('3','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,0,'2012-12-12 12:00:00','1','2','2','3'),('4','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,0,'2012-12-12 11:00:00','1','5','5','3');
+INSERT INTO `message_recipents` VALUES ('1','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,1,'2012-12-12 16:00:00','1','3','3','1'),('2','2012-12-12 12:00:00','2012-12-12 12:00:00',1,1,0,'2012-12-12 10:00:00','1','2','2','2'),('3','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,0,'2012-12-12 12:00:00','1','2','2','3'),('4','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,0,'2012-12-12 11:00:00','1','5','5','3'),('5','2102-12-12 13:00:00','2102-12-12 13:00:00',1,0,0,'2102-12-12 13:00:00','2','2','1','4');
 /*!40000 ALTER TABLE `message_recipents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +344,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES ('1','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,'Twoje konto zostanie zablokowane jeżeli nie zaczniesz zachowywać się normalnie.','2012-12-12 12:00:00',0,'Ostrzeżenie','1','1','1'),('2','2012-12-12 12:00:00','2012-12-12 12:00:00',2,1,'Pamiętaj o zwrocie sprzętu.','2012-12-11 13:00:00',0,'Przypominajka','1','1','1'),('3','2012-12-12 12:00:00','2012-12-12 12:00:00',2,0,'Nie wiem czy pamiętacie ale potrzebni są ludzie żeby podjechać do Happysadu. Zapiszcie się na event jeżeli macie wtedy wolne plz.','2012-12-08 21:30:00',0,'Prośba','1','1','1');
+INSERT INTO `messages` VALUES ('1','2012-12-12 12:00:00','2012-12-12 12:00:00',1,0,'Twoje konto zostanie zablokowane jeżeli nie zaczniesz zachowywać się normalnie.','2012-12-12 12:00:00',0,'Ostrzeżenie','1','1','1'),('2','2012-12-12 12:00:00','2012-12-12 12:00:00',2,1,'Pamiętaj o zwrocie sprzętu.','2012-12-11 13:00:00',0,'Przypominajka','1','1','1'),('3','2012-12-12 12:00:00','2012-12-12 12:00:00',2,0,'Nie wiem czy pamiętacie ale potrzebni są ludzie żeby podjechać do Happysadu. Zapiszcie się na event jeżeli macie wtedy wolne plz.','2012-12-08 21:30:00',0,'Prośba','1','1','1'),('4','2102-12-12 12:00:00','2102-12-12 12:00:00',1,0,'Hej, odblokuj mi konto plz.','2102-12-12 12:00:00',0,'Prośba o odblokowanie konta','2','2','2');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,4 +458,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-12 19:37:32
+-- Dump completed on 2013-01-05 18:25:29

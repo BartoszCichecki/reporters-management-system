@@ -24,13 +24,16 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
+import pl.bcichecki.rms.client.android.dialogs.OutboxMessageDetailsDialog;
 import pl.bcichecki.rms.client.android.fragments.listAdapters.OutboxMessagesListAdapter;
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
@@ -207,6 +210,13 @@ public class OutboxMessagesListFragment extends ListFragment {
 				return false;
 			}
 		});
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		OutboxMessageDetailsDialog outboxMessageDetailsDialog = new OutboxMessageDetailsDialog();
+		outboxMessageDetailsDialog.setMessage(outboxMessagesListAdapter.getItem(position));
+		outboxMessageDetailsDialog.show(getFragmentManager(), TAG);
 	}
 
 	@Override

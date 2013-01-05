@@ -100,8 +100,9 @@ public class MessagesRestClient extends AbstractRestClient {
 	}
 
 	public void markMessageRead(Message message, AsyncHttpResponseHandler handler) {
-		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_INBOX, message.getId()),
-		        handler);
+		post(getContext(),
+		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_INBOX,
+		                RestConstants.RESOURCE_PATH_MARK_READ, message.getId()), handler);
 	}
 
 	public void sendMessage(Message message, AsyncHttpResponseHandler handler) {

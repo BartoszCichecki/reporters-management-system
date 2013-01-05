@@ -119,6 +119,15 @@ public class Message extends AbstractPOJO {
 		return date;
 	}
 
+	public Date getReadByRecipentDate(User user) {
+		for (MessageRecipent recipent : recipents) {
+			if (recipent.getRecipent().getId().equals(user.getId())) {
+				return recipent.getReadDate();
+			}
+		}
+		return null;
+	}
+
 	public Set<MessageRecipent> getRecipents() {
 		return recipents;
 	}
@@ -171,6 +180,10 @@ public class Message extends AbstractPOJO {
 		return deletedBySender;
 	}
 
+	public boolean isReadByRecipent(User user) {
+		return getReadByRecipentDate(user) != null;
+	}
+
 	public void merge(Message message) {
 		setSender(message.getSender());
 		setRecipents(message.getRecipents());
@@ -195,6 +208,16 @@ public class Message extends AbstractPOJO {
 
 	public void setDeletedBySender(boolean deletedBySender) {
 		this.deletedBySender = deletedBySender;
+	}
+
+	public boolean setReadByRecipent(User user, Date readDate) {
+		for (MessageRecipent recipent : recipents) {
+			if (recipent.getRecipent().getId().equals(user.getId())) {
+				recipent.setReadDate(readDate);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void setRecipents(Set<MessageRecipent> recipents) {

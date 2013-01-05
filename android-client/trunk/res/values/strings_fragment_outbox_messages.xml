@@ -9,7 +9,7 @@
     <string name="fragment_outbox_messages_list_item_indicators_archived_description">Archived</string>
     <string name="fragment_outbox_messages_list_menu_refresh">Refresh</string>
     <string name="fragment_outbox_messages_list_menu_show_archived">Show archived messages</string>
-    <string name="fragment_outbox_messages_list_item_sent_text">Sent on:</string>
-    <string name="fragment_outbox_messages_list_item_to_text">To:</string>
+    <string name="fragment_outbox_messages_list_item_sent_text">Sent on: </string>
+    <string name="fragment_outbox_messages_list_item_to_text">To: </string>
 
 </resources>

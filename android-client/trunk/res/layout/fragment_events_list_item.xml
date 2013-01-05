@@ -80,6 +80,16 @@
             android:src="@drawable/owner" />
 
         <ImageView
+            android:id="@+id/fragment_events_list_item_indicators_signed_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/fragment_events_list_item_indicators_signed_up_description"
+            android:maxHeight="15dp"
+            android:maxWidth="15dp"
+            android:src="@drawable/signed_up" />
+
+        <ImageView
             android:id="@+id/fragment_events_list_item_indicators_locked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

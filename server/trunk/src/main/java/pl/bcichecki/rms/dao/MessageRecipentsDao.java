@@ -18,6 +18,6 @@ import pl.bcichecki.rms.model.impl.MessageRecipentEntity;
  */
 public interface MessageRecipentsDao extends GenericDao<MessageRecipentEntity> {
 
-	MessageRecipentEntity getByIdAndRecipentId(String id, String recipentId, boolean archived, boolean deleted);
+	MessageRecipentEntity getByMessageIdAndRecipentId(String messageId, String recipentId, boolean archived, boolean deleted);
 
 }

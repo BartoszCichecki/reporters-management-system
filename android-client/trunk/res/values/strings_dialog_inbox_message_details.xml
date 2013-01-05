@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_inbox_message_details_title">Inbox message</string>
+    <string name="dialog_inbox_message_details_reply">Reply</string>
+    <string name="dialog_inbox_message_details_re">Re</string>
+    <string name="dialog_inbox_message_details_subject_title">Subject:</string>
+    <string name="dialog_inbox_message_details_sender_title">Sender:</string>
+    <string name="dialog_inbox_message_details_received_date_title">Received date:</string>
+    <string name="dialog_inbox_message_details_content_title">Content:</string>
+
+</resources>

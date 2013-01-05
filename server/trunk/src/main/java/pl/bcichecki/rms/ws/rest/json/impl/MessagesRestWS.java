@@ -214,10 +214,6 @@ public class MessagesRestWS extends AbstractRestWS {
 	@RequestMapping(value = "/inbox/markRead/{id}", method = RequestMethod.POST)
 	void markMessageRead(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException,
 	        BadRequestException {
-		String requestBody = RestUtils.getRequestBody(request);
-		if (StringUtils.isBlank(requestBody)) {
-			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
-		}
 		try {
 			messagesService.markMessageRead(id, true);
 		} catch (JsonParseException ex) {

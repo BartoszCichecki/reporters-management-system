@@ -12,6 +12,7 @@
     <string name="fragment_events_list_empty">There are no events to display</string>
     <string name="fragment_events_list_item_from_text">From&#160;</string>
     <string name="fragment_events_list_item_indicators_archived_description">Archived</string>
+    <string name="fragment_events_list_item_indicators_signed_up_description">Signed up</string>
     <string name="fragment_events_list_item_indicators_locked_description">Locked</string>
     <string name="fragment_events_list_item_indicators_owner_description">Owner</string>
     <string name="fragment_events_list_item_till_text">Till&#160;</string>

@@ -206,6 +206,15 @@ public class Event extends AbstractPOJO implements Mergeable<Event> {
 		return locked;
 	}
 
+	public boolean isUserSignedUp(User userProfile) {
+		for (User participant : participants) {
+			if (participant.getId().equals(userProfile.getId())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void merge(Event event) {
 		setTitle(StringUtils.defaultString(event.getTitle()));

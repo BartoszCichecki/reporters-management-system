@@ -83,7 +83,7 @@ public class MessagesServiceImpl implements MessagesService {
 	@Override
 	public boolean deleteArchivedInboxMessage(String id) throws ServiceException {
 		String currentUserId = SecurityUtils.getCurrentUserId();
-		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByIdAndRecipentId(id, currentUserId, true, false);
+		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByMessageIdAndRecipentId(id, currentUserId, true, false);
 		if (messageRecipent == null) {
 			throw new ServiceException("You can't delete message that does not exist!",
 			        "exceptions.serviceExceptions.messages.cantDeleteNotExisting");
@@ -109,7 +109,7 @@ public class MessagesServiceImpl implements MessagesService {
 	@Override
 	public boolean deleteInboxMessage(String id) throws ServiceException {
 		String currentUserId = SecurityUtils.getCurrentUserId();
-		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByIdAndRecipentId(id, currentUserId, false, false);
+		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByMessageIdAndRecipentId(id, currentUserId, false, false);
 		if (messageRecipent == null) {
 			throw new ServiceException("You can't delete message that does not exist!",
 			        "exceptions.serviceExceptions.messages.cantDeleteNotExisting");
@@ -226,7 +226,7 @@ public class MessagesServiceImpl implements MessagesService {
 	@Override
 	public boolean markMessageRead(String id, boolean isRead) throws ServiceException {
 		String currentUserId = SecurityUtils.getCurrentUserId();
-		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByIdAndRecipentId(id, currentUserId, false, false);
+		MessageRecipentEntity messageRecipent = messageRecipentsDao.getByMessageIdAndRecipentId(id, currentUserId, false, false);
 		if (messageRecipent == null) {
 			throw new ServiceException("Message with this ID does not exist!", "exceptions.serviceExceptions.messages.notExistsId");
 		}

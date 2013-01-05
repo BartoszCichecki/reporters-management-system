@@ -38,17 +38,19 @@ public class EventsListAdapter extends ArrayAdapter<Event> {
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM = R.layout.fragment_events_list_item;
 
-	private static final int FRAGMENT_EVENTS_LIST_ITEM_TITLE = R.id.fragment_events_list_item_title;
-
 	private static final int FRAGMENT_EVENTS_LIST_ITEM_FROM = R.id.fragment_events_list_item_from;
-
-	private static final int FRAGMENT_EVENTS_LIST_ITEM_TILL = R.id.fragment_events_list_item_till;
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_ARCHIVED = R.id.fragment_events_list_item_indicators_archived;
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_LOCKED = R.id.fragment_events_list_item_indicators_locked;
 
 	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_OWNER = R.id.fragment_events_list_item_indicators_owner;
+
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_SIGNED_UP = R.id.fragment_events_list_item_indicators_signed_up;
+
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_TILL = R.id.fragment_events_list_item_till;
+
+	private static final int FRAGMENT_EVENTS_LIST_ITEM_TITLE = R.id.fragment_events_list_item_title;
 
 	private LayoutInflater layoutInflater;
 
@@ -77,6 +79,7 @@ public class EventsListAdapter extends ArrayAdapter<Event> {
 		TextView eventTill = (TextView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_TILL);
 
 		ImageView archivedIndicator = (ImageView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_ARCHIVED);
+		ImageView signedUpIndicator = (ImageView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_SIGNED_UP);
 		ImageView lockedIndicator = (ImageView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_LOCKED);
 		ImageView ownerIndicator = (ImageView) view.findViewById(FRAGMENT_EVENTS_LIST_ITEM_INDICATORS_OWNER);
 
@@ -89,6 +92,7 @@ public class EventsListAdapter extends ArrayAdapter<Event> {
 		eventTill.setText(AppUtils.getFormattedDateAsString(event.getEndDate(), locale));
 
 		archivedIndicator.setVisibility(event.isArchived() ? View.VISIBLE : View.INVISIBLE);
+		signedUpIndicator.setVisibility(event.isUserSignedUp(UserProfileHolder.getUserProfile()) ? View.VISIBLE : View.INVISIBLE);
 		lockedIndicator.setVisibility(event.isLocked() ? View.VISIBLE : View.INVISIBLE);
 		ownerIndicator.setVisibility(UserProfileHolder.getUserProfile().getId()
 		        .equals(StringUtils.defaultString(event.getCreationUserId())) ? View.VISIBLE : View.INVISIBLE);
