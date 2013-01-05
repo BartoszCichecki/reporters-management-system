@@ -297,6 +297,7 @@ public class OutboxMessagesListFragment extends ListFragment {
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_outbox_messages_list_archive_successful, Toast.LENGTH_LONG);
 				downloadData();
 				downloadArchivedData();
+				mode.finish();
 			}
 		});
 	}
@@ -335,6 +336,7 @@ public class OutboxMessagesListFragment extends ListFragment {
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_outbox_messages_list_delete_successful, Toast.LENGTH_LONG);
 				downloadData();
 				downloadArchivedData();
+				mode.finish();
 			}
 		};
 

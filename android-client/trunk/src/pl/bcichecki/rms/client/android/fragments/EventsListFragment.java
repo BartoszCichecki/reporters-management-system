@@ -342,6 +342,7 @@ public class EventsListFragment extends ListFragment {
 				Log.d(TAG, "Event archive succesfull. Refreshing view.");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_archive_successful, Toast.LENGTH_LONG);
 				refreshEvent(selectedEvent);
+				mode.finish();
 			}
 		});
 	}
@@ -379,6 +380,7 @@ public class EventsListFragment extends ListFragment {
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_delete_successful, Toast.LENGTH_LONG);
 				eventsListAdapter.remove(selectedEvent);
 				eventsListAdapter.refresh();
+				mode.finish();
 			}
 		});
 	}
@@ -415,6 +417,7 @@ public class EventsListFragment extends ListFragment {
 				Log.d(TAG, "Attempt to lock event " + selectedEvent + " succesful. Refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_lock_successful, Toast.LENGTH_LONG);
 				refreshEvent(selectedEvent);
+				mode.finish();
 			}
 		});
 	}
@@ -464,6 +467,7 @@ public class EventsListFragment extends ListFragment {
 				Log.d(TAG, "Attempt to unlock event " + selectedEvent + " succesful. Refreshing view...");
 				AppUtils.showCenteredToast(getActivity(), R.string.fragment_events_list_unlock_successful, Toast.LENGTH_LONG);
 				refreshEvent(selectedEvent);
+				mode.finish();
 			}
 		});
 	}

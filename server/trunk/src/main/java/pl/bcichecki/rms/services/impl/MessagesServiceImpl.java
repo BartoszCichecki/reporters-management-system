@@ -58,7 +58,7 @@ public class MessagesServiceImpl implements MessagesService {
 			} else {
 				Set<MessageRecipentEntity> recipents = retrievedMessage.getRecipents();
 				for (MessageRecipentEntity messageRecipentEntity : recipents) {
-					if (messageRecipentEntity.getRecipent().getId() == currentUserId) {
+					if (messageRecipentEntity.getRecipent().getId().equals(currentUserId)) {
 						messageRecipentEntity.setArchivedByRecipent(true);
 						break;
 					}

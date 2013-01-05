@@ -183,7 +183,7 @@ public class DevicesListFragment extends ListFragment {
 		super.onStop();
 	}
 
-	private boolean performAction(MenuItem item) {
+	private boolean performAction(ActionMode mode, MenuItem item) {
 		Device selectedDevice = getFirstCheckedItem();
 		if (selectedDevice == null) {
 			Log.w(TAG, "Invalid selection. Aborting...");
@@ -191,7 +191,7 @@ public class DevicesListFragment extends ListFragment {
 		}
 
 		if (item.getItemId() == R.id.fragment_devices_list_context_menu_delete) {
-			performActionDelete(item, selectedDevice);
+			performActionDelete(mode, item, selectedDevice);
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_devices_list_context_menu_edit) {
@@ -199,13 +199,13 @@ public class DevicesListFragment extends ListFragment {
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_devices_list_context_menu_share) {
-			performActionShare(item, selectedDevice);
+			performActionShare(mode, item, selectedDevice);
 			return true;
 		}
 		return false;
 	}
 
-	private void performActionDelete(MenuItem item, final Device selectedDevice) {
+	private void performActionDelete(final ActionMode mode, MenuItem item, final Device selectedDevice) {
 		devicesRestClient.deleteDevice(selectedDevice, new AsyncHttpResponseHandler() {
 
 			@Override
@@ -238,11 +238,12 @@ public class DevicesListFragment extends ListFragment {
 				Log.d(TAG, "Attempt to delete event " + selectedDevice + " succesful. Removing object locally and refreshing view...");
 				devicesListAdapter.remove(selectedDevice);
 				devicesListAdapter.refresh();
+				mode.finish();
 			}
 		});
 	}
 
-	private void performActionShare(MenuItem item, final Device selectedDevice) {
+	private void performActionShare(final ActionMode mode, MenuItem item, final Device selectedDevice) {
 		ShareActionProvider shareActionProvider = (ShareActionProvider) item.getActionProvider();
 		if (shareActionProvider != null) {
 			Intent intent = new Intent(Intent.ACTION_SEND);
@@ -261,7 +262,7 @@ public class DevicesListFragment extends ListFragment {
 
 			@Override
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				return performAction(item);
+				return performAction(mode, item);
 			}
 
 			@Override
