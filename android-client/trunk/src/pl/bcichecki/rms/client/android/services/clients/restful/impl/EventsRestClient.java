@@ -26,6 +26,7 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import pl.bcichecki.rms.client.android.model.impl.Device;
 import pl.bcichecki.rms.client.android.model.impl.Event;
 import pl.bcichecki.rms.client.android.services.clients.restful.AbstractRestClient;
 import pl.bcichecki.rms.client.android.services.clients.restful.GsonHolder;
@@ -82,6 +83,18 @@ public class EventsRestClient extends AbstractRestClient {
 			params.put(RestConstants.PARAM_TILL, String.valueOf(till.getTime()));
 		}
 		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_ALL), params, handler);
+	}
+
+	public void getDevicesEvents(Device device, Date from, Date till, AsyncHttpResponseHandler handler) {
+		RequestParams params = new RequestParams();
+		if (from != null) {
+			params.put(RestConstants.PARAM_FROM, String.valueOf(from.getTime()));
+		}
+		if (till != null) {
+			params.put(RestConstants.PARAM_TILL, String.valueOf(till.getTime()));
+		}
+		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_DEVICES, device.getId()),
+		        params, handler);
 	}
 
 	public void lockEvent(Event event, boolean lock, AsyncHttpResponseHandler handler) {

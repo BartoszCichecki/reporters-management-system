@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" >
+
+        <TextView
+            android:id="@+id/dialog_device_details_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/dialog_device_details_name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_device_details_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_device_details_name_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_device_details_description_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_device_details_name_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_device_details_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_device_details_description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_device_details_description_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+    </RelativeLayout>
+
+</ScrollView>
