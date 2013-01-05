@@ -30,14 +30,14 @@ public class DeviceTextPrettyPrinterPrinter extends AbstractPrettyPrinter<Device
 	@Override
 	public String print(Device device) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getContext().getString(R.string.strings_pretty_printer_device_teaser));
-		sb.append(getContext().getString(R.string.strings_pretty_printer_device_name));
+		sb.append(getContext().getString(R.string.pretty_printer_device_teaser));
+		sb.append(getContext().getString(R.string.pretty_printer_device_name));
 		sb.append(device.getName());
 		sb.append("\n");
-		sb.append(getContext().getString(R.string.strings_pretty_printer_device_description));
+		sb.append(getContext().getString(R.string.pretty_printer_device_description));
 		sb.append(device.getDescription());
 		sb.append("\n");
-		sb.append(getContext().getString(R.string.strings_pretty_printer_device_footer));
+		sb.append(getContext().getString(R.string.pretty_printer_device_footer));
 		return sb.toString();
 	}
 

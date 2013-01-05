@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="strings_pretty_printer_event_teaser"><![CDATA[Hi!\nHere are event\'s details you asked for.\n]]></string>
-    <string name="strings_pretty_printer_event_title"><![CDATA[\nTitle:\n]]></string>
-    <string name="strings_pretty_printer_event_description"><![CDATA[\nDescription:\n]]></string>
-    <string name="strings_pretty_printer_event_type"><![CDATA[\Type:\n]]></string>
-    <string name="strings_pretty_printer_event_type_meeting"><![CDATA[Meeting]]></string>
-    <string name="strings_pretty_printer_event_type_interview"><![CDATA[Interview]]></string>
-    <string name="strings_pretty_printer_event_starts_at"><![CDATA[\nStarts at:\n]]></string>
-    <string name="strings_pretty_printer_event_ends_at"><![CDATA[\nEnds at:\n]]></string>
-    <string name="strings_pretty_printer_event_participants"><![CDATA[\nParticipants:\n]]></string>
-    <string name="strings_pretty_printer_event_devices"><![CDATA[\nDevices:\n]]></string>
-    <string name="strings_pretty_printer_event_footer"><![CDATA[\nBest regards,\n]]></string>
+    <string name="pretty_printer_event_teaser"><![CDATA[Hi!\nHere are event\'s details you asked for.\n]]></string>
+    <string name="pretty_printer_event_title"><![CDATA[\nTitle:\n]]></string>
+    <string name="pretty_printer_event_description"><![CDATA[\nDescription:\n]]></string>
+    <string name="pretty_printer_event_type"><![CDATA[Type:\n]]></string>
+    <string name="pretty_printer_event_type_meeting"><![CDATA[Meeting]]></string>
+    <string name="pretty_printer_event_type_interview"><![CDATA[Interview]]></string>
+    <string name="pretty_printer_event_starts_at"><![CDATA[\nStarts at:\n]]></string>
+    <string name="pretty_printer_event_ends_at"><![CDATA[\nEnds at:\n]]></string>
+    <string name="pretty_printer_event_participants"><![CDATA[\nParticipants:\n]]></string>
+    <string name="pretty_printer_event_devices"><![CDATA[\nDevices:\n]]></string>
+    <string name="pretty_printer_event_footer"><![CDATA[\nBest regards,\n]]></string>
 
 </resources>

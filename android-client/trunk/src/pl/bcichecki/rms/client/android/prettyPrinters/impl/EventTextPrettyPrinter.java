@@ -36,28 +36,28 @@ public class EventTextPrettyPrinter extends AbstractPrettyPrinter<Event> {
 	@Override
 	public String print(Event event) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getContext().getString(R.string.strings_pretty_printer_event_teaser));
-		sb.append(getContext().getString(R.string.strings_pretty_printer_event_title));
+		sb.append(getContext().getString(R.string.pretty_printer_event_teaser));
+		sb.append(getContext().getString(R.string.pretty_printer_event_title));
 		sb.append(event.getTitle());
 		sb.append("\n");
-		sb.append(getContext().getString(R.string.strings_pretty_printer_event_type));
+		sb.append(getContext().getString(R.string.pretty_printer_event_type));
 		if (event.getType().equals(EventType.INTERVIEW)) {
-			sb.append(getContext().getString(R.string.strings_pretty_printer_event_type_interview));
+			sb.append(getContext().getString(R.string.pretty_printer_event_type_interview));
 		}
 		if (event.getType().equals(EventType.MEETING)) {
-			sb.append(getContext().getString(R.string.strings_pretty_printer_event_type_meeting));
+			sb.append(getContext().getString(R.string.pretty_printer_event_type_meeting));
 		}
 		sb.append("\n");
-		sb.append(getContext().getString(R.string.strings_pretty_printer_event_starts_at));
+		sb.append(getContext().getString(R.string.pretty_printer_event_starts_at));
 		sb.append(AppUtils.getFormattedDateAsString(event.getStartDate(), Locale.getDefault()));
-		sb.append(getContext().getString(R.string.strings_pretty_printer_event_ends_at));
+		sb.append(getContext().getString(R.string.pretty_printer_event_ends_at));
 		sb.append(AppUtils.getFormattedDateAsString(event.getEndDate(), Locale.getDefault()));
 		sb.append("\n");
-		sb.append(getContext().getString(R.string.strings_pretty_printer_event_description));
+		sb.append(getContext().getString(R.string.pretty_printer_event_description));
 		sb.append(event.getDescription());
 		sb.append("\n");
 		if (event.getParticipants() != null && event.getParticipants().size() > 0) {
-			sb.append(getContext().getString(R.string.strings_pretty_printer_event_participants));
+			sb.append(getContext().getString(R.string.pretty_printer_event_participants));
 			for (User participant : event.getParticipants()) {
 				sb.append(" - ");
 				if (participant.getAddress() != null && participant.getAddress().getFirstName() != null
@@ -70,12 +70,12 @@ public class EventTextPrettyPrinter extends AbstractPrettyPrinter<Event> {
 			}
 		}
 		if (event.getDevices() != null && event.getDevices().size() > 0) {
-			sb.append(getContext().getString(R.string.strings_pretty_printer_event_devices));
+			sb.append(getContext().getString(R.string.pretty_printer_event_devices));
 			for (Device device : event.getDevices()) {
 				sb.append(" - ").append(device.getName()).append("\n");
 			}
 		}
-		sb.append(getContext().getString(R.string.strings_pretty_printer_event_footer));
+		sb.append(getContext().getString(R.string.pretty_printer_event_footer));
 		return sb.toString();
 	}
 
