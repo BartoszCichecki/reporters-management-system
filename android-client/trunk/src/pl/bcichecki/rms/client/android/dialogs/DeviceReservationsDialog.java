@@ -19,8 +19,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.SpannableString;
-import android.text.style.BulletSpan;
 
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.model.impl.Device;
@@ -53,17 +51,17 @@ public class DeviceReservationsDialog extends DialogFragment {
 			dialogBuilder.setMessage(R.string.dialog_device_reservations_empty);
 		} else {
 			StringBuilder reservations = new StringBuilder();
+			int counter = 1;
 			for (Event event : events) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(AppUtils.getFormattedDateAsString(event.getStartDate(), Locale.getDefault()));
-				sb.append(" - ");
-				sb.append(AppUtils.getFormattedDateAsString(event.getEndDate(), Locale.getDefault()));
-				sb.append(" (").append(event.getTitle()).append(")");
-
-				SpannableString reservation = new SpannableString(sb.toString());
-				reservation.setSpan(new BulletSpan(), 0, reservation.length(), 0);
-
+				StringBuilder reservation = new StringBuilder();
+				reservation.append(counter).append(". ");
+				reservation.append(AppUtils.getFormattedDateAsString(event.getStartDate(), Locale.getDefault()));
+				reservation.append(" - ");
+				reservation.append(AppUtils.getFormattedDateAsString(event.getEndDate(), Locale.getDefault()));
+				reservation.append(" (").append(event.getTitle()).append(")");
+				reservation.append("\n");
 				reservations.append(reservation);
+				counter++;
 			}
 			dialogBuilder.setMessage(reservations);
 		}
