@@ -46,6 +46,21 @@ public class EventsServiceImpl implements EventsService {
 	private UsersDao usersDao;
 
 	@Override
+	public boolean archiveEvent(String id) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
+		EventEntity retrievedEvent = eventsDao.getById(id);
+		if (retrievedEvent == null) {
+			throw new ServiceException("Event with this ID does not exist!", "exceptions.serviceExceptions.events.notExistId");
+		}
+		if (!retrievedEvent.getCurrentUser().getId().equals(currentUserId)) {
+			throw new ServiceException("You are not the owner of this event!", "exceptions.serviceExceptions.events.notAOwner");
+		}
+		retrievedEvent.setArchived(true);
+		eventsDao.update(retrievedEvent);
+		return true;
+	}
+
+	@Override
 	public boolean createEvent(EventEntity event) throws ServiceException {
 		if (eventsDao.contains(event)) {
 			throw new ServiceException("Could not create duplicate event!", "exceptions.serviceExceptions.events.duplicateEvent");
@@ -140,6 +155,21 @@ public class EventsServiceImpl implements EventsService {
 		return event;
 	}
 
+	@Override
+	public boolean lockEvent(String id, boolean lock) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
+		EventEntity retrievedEvent = eventsDao.getById(id);
+		if (retrievedEvent == null) {
+			throw new ServiceException("Event with this ID does not exist!", "exceptions.serviceExceptions.events.notExistId");
+		}
+		if (!retrievedEvent.getCurrentUser().getId().equals(currentUserId)) {
+			throw new ServiceException("You are not the owner of this event!", "exceptions.serviceExceptions.events.notAOwner");
+		}
+		retrievedEvent.setLocked(lock);
+		eventsDao.update(retrievedEvent);
+		return true;
+	}
+
 	private Set<DeviceEntity> reloadDevices(Set<DeviceEntity> devices) throws ServiceException {
 		Set<DeviceEntity> reloadedDevices = new HashSet<DeviceEntity>();
 		for (DeviceEntity device : devices) {
@@ -162,6 +192,34 @@ public class EventsServiceImpl implements EventsService {
 			reloadedParticipants.add(reloadedParticipant);
 		}
 		return reloadedParticipants;
+	}
+
+	@Override
+	public boolean signUpForEvent(String id, boolean signUp) throws ServiceException {
+		String currentUserId = SecurityUtils.getCurrentUserId();
+		EventEntity retrievedEvent = eventsDao.getById(id);
+		if (retrievedEvent == null) {
+			throw new ServiceException("Event with this ID does not exist!", "exceptions.serviceExceptions.events.notExistId");
+		}
+
+		for (UserEntity participant : retrievedEvent.getParticipants()) {
+			if (signUp) {
+				if (participant.getId().equals(currentUserId)) {
+					UserEntity retrievedUser = usersDao.getById(currentUserId);
+					retrievedEvent.getParticipants().add(retrievedUser);
+					break;
+				}
+			} else {
+				if (participant.getId().equals(currentUserId)) {
+					UserEntity retrievedUser = usersDao.getById(currentUserId);
+					retrievedEvent.getParticipants().remove(retrievedUser);
+					break;
+				}
+			}
+		}
+
+		eventsDao.update(retrievedEvent);
+		return false;
 	}
 
 	@Override

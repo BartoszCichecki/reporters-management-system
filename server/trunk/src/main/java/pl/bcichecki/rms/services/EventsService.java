@@ -22,6 +22,8 @@ import pl.bcichecki.rms.model.impl.EventEntity;
  */
 public interface EventsService {
 
+	boolean archiveEvent(String id) throws ServiceException;
+
 	boolean createEvent(EventEntity event) throws ServiceException;
 
 	boolean createLockedEvent(EventEntity event) throws ServiceException;
@@ -40,6 +42,10 @@ public interface EventsService {
 	        throws ServiceException;
 
 	EventEntity getEvent(String id) throws ServiceException;
+
+	boolean lockEvent(String id, boolean lock) throws ServiceException;
+
+	boolean signUpForEvent(String id, boolean signUp) throws ServiceException;
 
 	boolean updateEvent(EventEntity event) throws ServiceException;
 

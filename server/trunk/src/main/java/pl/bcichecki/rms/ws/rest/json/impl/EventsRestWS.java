@@ -47,6 +47,20 @@ public class EventsRestWS extends AbstractRestWS {
 	@Autowired
 	protected EventsService eventsService;
 
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/archived/{id}", method = RequestMethod.POST)
+	void archiveEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException,
+	        BadRequestException {
+		if (StringUtils.isBlank(id)) {
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
+		}
+		try {
+			eventsService.archiveEvent(id);
+		} catch (JsonParseException ex) {
+			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
+		}
+	}
+
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.POST_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	void createEvent(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
@@ -259,6 +273,62 @@ public class EventsRestWS extends AbstractRestWS {
 		        eventsService.getAllUserEvents(userId, false, false, new Date(from), new Date(till)));
 		RestUtils.decorateResponseHeaderWithMD5(response, json);
 		return json;
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/lock/{id}", method = RequestMethod.POST)
+	void lockEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException,
+	        BadRequestException {
+		if (StringUtils.isBlank(id)) {
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
+		}
+		try {
+			eventsService.lockEvent(id, true);
+		} catch (JsonParseException ex) {
+			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
+		}
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/signOut/{id}", method = RequestMethod.POST)
+	void signOutFromEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException,
+	        BadRequestException {
+		if (StringUtils.isBlank(id)) {
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
+		}
+		try {
+			eventsService.signUpForEvent(id, false);
+		} catch (JsonParseException ex) {
+			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
+		}
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/signUp/{id}", method = RequestMethod.POST)
+	void signUpForEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException,
+	        BadRequestException {
+		if (StringUtils.isBlank(id)) {
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
+		}
+		try {
+			eventsService.signUpForEvent(id, true);
+		} catch (JsonParseException ex) {
+			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
+		}
+	}
+
+	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.VIEW_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
+	@RequestMapping(value = "/unlock/{id}", method = RequestMethod.POST)
+	void unlockEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id) throws ServiceException,
+	        BadRequestException {
+		if (StringUtils.isBlank(id)) {
+			throw new BadRequestException("You can't update \"nothing\".", "exceptions.badRequestExceptions.cantUpdateNothing");
+		}
+		try {
+			eventsService.lockEvent(id, false);
+		} catch (JsonParseException ex) {
+			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
+		}
 	}
 
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
