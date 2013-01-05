@@ -63,7 +63,7 @@ public class EventEntity extends AbstractEntity implements Mergeable<EventEntity
 	protected Date endDate;
 
 	@OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = false)
+	@JoinColumn(name = "ADDRESS", referencedColumnName = "ID", nullable = true)
 	protected AddressDataEntity address;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

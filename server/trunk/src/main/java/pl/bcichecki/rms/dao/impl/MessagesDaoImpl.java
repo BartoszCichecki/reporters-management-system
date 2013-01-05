@@ -30,7 +30,6 @@ import pl.bcichecki.rms.model.impl.MessageEntity_;
 import pl.bcichecki.rms.model.impl.MessageRecipentEntity;
 import pl.bcichecki.rms.model.impl.MessageRecipentEntity_;
 import pl.bcichecki.rms.model.impl.UserEntity;
-import pl.bcichecki.rms.model.impl.UserEntity_;
 
 /**
  * @author Bartosz Cichecki
@@ -58,8 +57,8 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
 		Join<MessageEntity, UserEntity> join = root.join(MessageEntity_.sender);
-		Predicate predicate1 = criteriaBuilder.equal(root.get(MessageEntity_.id), id);
-		Predicate predicate2 = criteriaBuilder.equal(join.get(UserEntity_.id), senderId);
+		Predicate predicate1 = criteriaBuilder.equal(root.get(AbstractEntity_.id), id);
+		Predicate predicate2 = criteriaBuilder.equal(join.get(AbstractEntity_.id), senderId);
 		Predicate predicate3 = criteriaBuilder.equal(root.get(MessageEntity_.archivedBySender), archived);
 		Predicate predicate4 = criteriaBuilder.equal(root.get(MessageEntity_.deletedBySender), deleted);
 		criteriaQuery.where(criteriaBuilder.and(predicate1, predicate2, predicate3, predicate4));
@@ -74,7 +73,7 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 		SetJoin<MessageEntity, MessageRecipentEntity> join = root.join(MessageEntity_.recipents);
 		Join<MessageRecipentEntity, UserEntity> join2 = join.join(MessageRecipentEntity_.recipent);
 		Collection<Predicate> predicates = new ArrayList<>();
-		predicates.add(criteriaBuilder.equal(join2.get(UserEntity_.id), recipentId));
+		predicates.add(criteriaBuilder.equal(join2.get(AbstractEntity_.id), recipentId));
 		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.archivedByRecipent), archived));
 		predicates.add(criteriaBuilder.equal(join.get(MessageRecipentEntity_.deletedByRecipent), deleted));
 		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
@@ -87,7 +86,7 @@ public class MessagesDaoImpl extends AbstractGenericDao<MessageEntity> implement
 		CriteriaQuery<MessageEntity> criteriaQuery = criteriaBuilder.createQuery(MessageEntity.class);
 		Root<MessageEntity> root = criteriaQuery.from(MessageEntity.class);
 		Join<MessageEntity, UserEntity> join = root.join(MessageEntity_.sender);
-		Predicate predicate1 = criteriaBuilder.equal(join.get(UserEntity_.id), senderId);
+		Predicate predicate1 = criteriaBuilder.equal(join.get(AbstractEntity_.id), senderId);
 		Predicate predicate2 = criteriaBuilder.equal(root.get(MessageEntity_.archivedBySender), archived);
 		Predicate predicate3 = criteriaBuilder.equal(root.get(MessageEntity_.deletedBySender), deleted);
 		criteriaQuery.where(criteriaBuilder.and(predicate1, predicate2, predicate3));

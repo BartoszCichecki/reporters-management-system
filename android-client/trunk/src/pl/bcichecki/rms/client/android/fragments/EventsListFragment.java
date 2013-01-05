@@ -28,7 +28,9 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
+import pl.bcichecki.rms.client.android.dialogs.EventDetailsDialog;
 import pl.bcichecki.rms.client.android.fragments.listAdapters.EventsListAdapter;
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
@@ -232,6 +235,15 @@ public class EventsListFragment extends ListFragment {
 				return false;
 			}
 		});
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		EventDetailsDialog eventDetailsDialog = new EventDetailsDialog();
+		eventDetailsDialog.setEvent(eventsListAdapter.getItem(position));
+		eventDetailsDialog.setEventsListAdapter(eventsListAdapter);
+		eventDetailsDialog.setEventsRestClient(eventsRestClient);
+		eventDetailsDialog.show(getFragmentManager(), TAG);
 	}
 
 	@Override
@@ -461,6 +473,11 @@ public class EventsListFragment extends ListFragment {
 				downloadArchivedData();
 			}
 		});
+	}
+
+	public void refreshEventsList() {
+		downloadData();
+		downloadArchivedData();
 	}
 
 	private void setUpActionModeOnListItems() {

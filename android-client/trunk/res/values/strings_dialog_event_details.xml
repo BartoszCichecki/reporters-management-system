@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_event_details_title">%s details</string>
+    <string name="dialog_event_details_title_title">Title:</string>
+    <string name="dialog_event_details_starts_title">Starts on:</string>
+    <string name="dialog_event_details_ends_title">End on:</string>
+    <string name="dialog_event_details_description_title">Description:</string>
+    <string name="dialog_event_details_participants_title">Participant:</string>
+    <string name="dialog_event_details_devices_title">Devices:</string>
+    <string name="dialog_event_details_no_participants">There are no participants</string>
+    <string name="dialog_event_details_no_devices">There are no devices</string>
+    <string name="dialog_event_details_sign_up">Sign up</string>
+    <string name="dialog_event_details_sign_out">Sign out</string>
+
+</resources>

@@ -202,20 +202,13 @@ public class EventsServiceImpl implements EventsService {
 			throw new ServiceException("Event with this ID does not exist!", "exceptions.serviceExceptions.events.notExistId");
 		}
 
-		for (UserEntity participant : retrievedEvent.getParticipants()) {
-			if (signUp) {
-				if (participant.getId().equals(currentUserId)) {
-					UserEntity retrievedUser = usersDao.getById(currentUserId);
-					retrievedEvent.getParticipants().add(retrievedUser);
-					break;
-				}
-			} else {
-				if (participant.getId().equals(currentUserId)) {
-					UserEntity retrievedUser = usersDao.getById(currentUserId);
-					retrievedEvent.getParticipants().remove(retrievedUser);
-					break;
-				}
+		UserEntity retrievedUser = usersDao.getById(currentUserId);
+		if (signUp) {
+			if (!retrievedEvent.getParticipants().contains(retrievedUser)) {
+				retrievedEvent.getParticipants().add(retrievedUser);
 			}
+		} else {
+			retrievedEvent.getParticipants().remove(retrievedUser);
 		}
 
 		eventsDao.update(retrievedEvent);

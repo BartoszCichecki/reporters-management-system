@@ -97,6 +97,10 @@ public class EventsRestClient extends AbstractRestClient {
 		        params, handler);
 	}
 
+	public void getEvent(Event event, AsyncHttpResponseHandler handler) {
+		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, event.getId()), handler);
+	}
+
 	public void lockEvent(Event event, boolean lock, AsyncHttpResponseHandler handler) {
 		post(getContext(),
 		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, lock ? RestConstants.RESOURCE_PATH_LOCK

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" >
+
+        <TextView
+            android:id="@+id/dialog_event_details_title_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/dialog_event_details_title_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_title_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_starts_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_title_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_event_details_starts_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_starts_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_starts_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_ends_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_starts_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_event_details_ends_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_ends_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_ends_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_description_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_ends_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_event_details_description_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_description_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_participants_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_description_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_event_details_participants_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_participants_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_participants_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_devices_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_participants_text"
+            android:paddingTop="6dp"
+            android:text="@string/dialog_event_details_devices_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dialog_event_details_devices_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/dialog_event_details_devices_title"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:typeface="sans" />
+    </RelativeLayout>
+
+</ScrollView>
