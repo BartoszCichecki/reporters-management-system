@@ -18,7 +18,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -38,8 +37,10 @@ import pl.bcichecki.rms.client.android.fragments.listAdapters.DevicesListAdapter
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.Device;
+import pl.bcichecki.rms.client.android.prettyPrinters.impl.DeviceTextPrettyPrinterPrinter;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpResponseHandler;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.DevicesRestClient;
+import pl.bcichecki.rms.client.android.utils.AppConstants;
 import pl.bcichecki.rms.client.android.utils.AppUtils;
 
 /**
@@ -139,12 +140,6 @@ public class DevicesListFragment extends ListFragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		load();
-	}
-
-	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		getActivity().getMenuInflater().inflate(R.menu.fragment_devices_list, menu);
@@ -239,9 +234,10 @@ public class DevicesListFragment extends ListFragment {
 	private void performActionShare(MenuItem item, final Device selectedDevice) {
 		ShareActionProvider shareActionProvider = (ShareActionProvider) item.getActionProvider();
 		if (shareActionProvider != null) {
-			Intent intent = new Intent();
-			intent.setType("text/plain");
-			intent.putExtra(android.content.Intent.EXTRA_TEXT, selectedDevice.toString());
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType(AppConstants.CONTENT_TEXT_PLAIN);
+			intent.putExtra(Intent.EXTRA_TEXT, new DeviceTextPrettyPrinterPrinter(getActivity()).print(selectedDevice));
+			shareActionProvider.setShareHistoryFileName(null);
 			shareActionProvider.setShareIntent(intent);
 
 			Log.d(TAG, "Device " + selectedDevice + " was succesfully shared.");

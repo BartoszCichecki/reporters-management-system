@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fragment_inbox_messages_list_archive_successful">Inbox message archived successfully</string>
+    <string name="fragment_inbox_messages_list_context_menu_archive">Archive</string>
+    <string name="fragment_inbox_messages_list_context_menu_delete">Delete</string>
+    <string name="fragment_inbox_messages_list_delete_successful">Inbox message deleted successfully</string>
+    <string name="fragment_inbox_messages_list_empty">There are no inbox messages to display</string>
+    <string name="fragment_inbox_messages_list_item_indicators_archived_description">Archived</string>
+    <string name="fragment_inbox_messages_list_menu_refresh">Refresh</string>
+    <string name="fragment_inbox_messages_list_menu_show_archived">Show archived messages</string>
+    <string name="fragment_inbox_messages_list_item_sender_text">Sender:</string>
+    <string name="fragment_inbox_messages_list_item_sent_on_text">Sent on:</string>
+
+</resources>

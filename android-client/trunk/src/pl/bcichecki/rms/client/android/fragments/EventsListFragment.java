@@ -41,8 +41,10 @@ import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.Event;
 import pl.bcichecki.rms.client.android.model.utils.PojoUtils;
+import pl.bcichecki.rms.client.android.prettyPrinters.impl.EventTextPrettyPrinter;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpResponseHandler;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.EventsRestClient;
+import pl.bcichecki.rms.client.android.utils.AppConstants;
 import pl.bcichecki.rms.client.android.utils.AppUtils;
 
 /**
@@ -296,10 +298,7 @@ public class EventsListFragment extends ListFragment {
 	}
 
 	private void performActionArchive(final ActionMode mode, MenuItem item, final Event selectedEvent) {
-		final Event selectedEventCopy = PojoUtils.createDefensiveCopy(selectedEvent);
-		selectedEventCopy.setArchived(true);
-
-		eventsRestClient.updateMyEvent(selectedEventCopy, new AsyncHttpResponseHandler() {
+		eventsRestClient.archiveEvent(selectedEvent, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
@@ -375,10 +374,7 @@ public class EventsListFragment extends ListFragment {
 	}
 
 	private void performActionLock(final ActionMode mode, MenuItem item, final Event selectedEvent) {
-		final Event selectedEventCopy = PojoUtils.createDefensiveCopy(selectedEvent);
-		selectedEventCopy.setLocked(true);
-
-		eventsRestClient.updateMyEvent(selectedEventCopy, new AsyncHttpResponseHandler() {
+		eventsRestClient.lockEvent(selectedEvent, true, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onFailure(Throwable error, String content) {
@@ -417,9 +413,10 @@ public class EventsListFragment extends ListFragment {
 	private void performActionShare(ActionMode mode, MenuItem item, Event selectedEvent) {
 		ShareActionProvider shareActionProvider = (ShareActionProvider) item.getActionProvider();
 		if (shareActionProvider != null) {
-			Intent intent = new Intent();
-			intent.setType("text/plain");
-			intent.putExtra(android.content.Intent.EXTRA_TEXT, selectedEvent.toString());
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType(AppConstants.CONTENT_TEXT_PLAIN);
+			intent.putExtra(android.content.Intent.EXTRA_TEXT, new EventTextPrettyPrinter(getActivity()).print(selectedEvent));
+			shareActionProvider.setShareHistoryFileName(null);
 			shareActionProvider.setShareIntent(intent);
 
 			Log.d(TAG, "Event " + selectedEvent + " was succesfully shared.");

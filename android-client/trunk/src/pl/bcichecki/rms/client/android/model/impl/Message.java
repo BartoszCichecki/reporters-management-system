@@ -145,8 +145,26 @@ public class Message extends AbstractPOJO {
 		return result;
 	}
 
+	public boolean isArchivedByRecipent(User user) {
+		for (MessageRecipent recipent : recipents) {
+			if (recipent.getRecipent().getId().equals(user.getId())) {
+				return recipent.isArchivedByRecipent();
+			}
+		}
+		return false;
+	}
+
 	public boolean isArchivedBySender() {
 		return archivedBySender;
+	}
+
+	public boolean isDeletedByRecipent(User user) {
+		for (MessageRecipent recipent : recipents) {
+			if (recipent.getRecipent().getId().equals(user.getId())) {
+				return recipent.isDeletedByRecipent();
+			}
+		}
+		return false;
 	}
 
 	public boolean isDeletedBySender() {

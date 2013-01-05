@@ -23,6 +23,14 @@ public class RestConstants {
 
 	public static final String RESOURCE_PATH_ALL = "all";
 
+	public static final String RESOURCE_PATH_SIGN_UP = "signUp";
+
+	public static final String RESOURCE_PATH_SIGN_OUT = "signOut";
+
+	public static final String RESOURCE_PATH_LOCK = "lock";
+
+	public static final String RESOURCE_PATH_UNLOCK = "unlock";
+
 	public static final String RESOURCE_PATH_MARK_READ = "markRead";
 
 	public static final String RESOURCE_PATH_ARCHIVED = "archived";

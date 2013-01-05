@@ -3,35 +3,39 @@
 
     <EditTextPreference
         android:defaultValue="127.0.0.1"
-        android:dialogMessage="@string/activity_settings_server_address_dialog_message"
-        android:dialogTitle="@string/activity_settings_server_address_dialog_title"
+        android:dialogMessage="@string/activity_settings_server_address_summary"
+        android:dialogTitle="@string/activity_settings_server_address_title"
         android:key="server.address"
         android:maxLines="1"
+        android:singleLine="true"
         android:summary="@string/activity_settings_server_address_summary"
         android:title="@string/activity_settings_server_address_title" />
     <EditTextPreference
         android:defaultValue="443"
-        android:dialogMessage="@string/activity_settings_server_port_dialog_message"
-        android:dialogTitle="@string/activity_settings_server_port_dialog_title"
+        android:dialogMessage="@string/activity_settings_server_port_summary"
+        android:dialogTitle="@string/activity_settings_server_port_title"
         android:inputType="number"
         android:key="server.port"
         android:maxLines="1"
+        android:singleLine="true"
         android:summary="@string/activity_settings_server_port_summary"
         android:title="@string/activity_settings_server_port_title" />
     <EditTextPreference
         android:defaultValue="rms"
-        android:dialogMessage="@string/activity_settings_server_realm_dialog_message"
-        android:dialogTitle="@string/activity_settings_server_realm_dialog_title"
+        android:dialogMessage="@string/activity_settings_server_realm_summary"
+        android:dialogTitle="@string/activity_settings_server_realm_title"
         android:key="server.realm"
         android:maxLines="1"
+        android:singleLine="true"
         android:summary="@string/activity_settings_server_realm_summary"
         android:title="@string/activity_settings_server_realm_title" />
     <EditTextPreference
         android:defaultValue="/rest"
-        android:dialogMessage="@string/activity_settings_server_ws_context_path_dialog_message"
-        android:dialogTitle="@string/activity_settings_server_ws_context_path_dialog_title"
+        android:dialogMessage="@string/activity_settings_server_ws_context_path_summary"
+        android:dialogTitle="@string/activity_settings_server_ws_context_path_title"
         android:key="server.ws_context_path"
         android:maxLines="1"
+        android:singleLine="true"
         android:summary="@string/activity_settings_server_ws_context_path_summary"
         android:title="@string/activity_settings_server_ws_context_path_title" />
 

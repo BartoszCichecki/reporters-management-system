@@ -50,6 +50,11 @@ public class EventsRestClient extends AbstractRestClient {
 		super(context, username, password, realm, host, port, webServiceContextPath);
 	}
 
+	public void archiveEvent(Event event, AsyncHttpResponseHandler handler) {
+		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_ARCHIVED, event.getId()),
+		        handler);
+	}
+
 	public void deleteMyEvent(Event eventToDelete, AsyncHttpResponseHandler handler) {
 		delete(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_MY, eventToDelete.getId()),
 		        handler);
@@ -77,6 +82,18 @@ public class EventsRestClient extends AbstractRestClient {
 			params.put(RestConstants.PARAM_TILL, String.valueOf(till.getTime()));
 		}
 		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_ALL), params, handler);
+	}
+
+	public void lockEvent(Event event, boolean lock, AsyncHttpResponseHandler handler) {
+		post(getContext(),
+		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, lock ? RestConstants.RESOURCE_PATH_LOCK
+		                : RestConstants.RESOURCE_PATH_UNLOCK, event.getId()), handler);
+	}
+
+	public void signUpForEvent(Event event, boolean signUp, AsyncHttpResponseHandler handler) {
+		post(getContext(),
+		        getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, signUp ? RestConstants.RESOURCE_PATH_SIGN_UP
+		                : RestConstants.RESOURCE_PATH_SIGN_OUT, event.getId()), handler);
 	}
 
 	public void updateMyEvent(Event event, AsyncHttpResponseHandler handler) {

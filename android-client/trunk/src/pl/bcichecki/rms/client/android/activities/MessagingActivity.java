@@ -27,7 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import pl.bcichecki.rms.client.android.R;
-import pl.bcichecki.rms.client.android.fragments.DummySectionFragment;
+import pl.bcichecki.rms.client.android.fragments.InboxMessagesListFragment;
 import pl.bcichecki.rms.client.android.fragments.OutboxMessagesListFragment;
 import pl.bcichecki.rms.client.android.listeners.MessagingActivityActionBarTabListener;
 
@@ -49,7 +49,7 @@ public class MessagingActivity extends FragmentActivity {
 			Fragment fragment;
 			switch (position) {
 				case 0:
-					fragment = new DummySectionFragment();
+					fragment = new InboxMessagesListFragment();
 					return fragment;
 				case 1:
 					fragment = new OutboxMessagesListFragment();
