@@ -21,23 +21,23 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import pl.bcichecki.rms.client.android.R;
-import pl.bcichecki.rms.client.android.fragments.listAdapters.comparators.DevicesListComparator;
-import pl.bcichecki.rms.client.android.model.impl.Device;
+import pl.bcichecki.rms.client.android.fragments.listAdapters.comparators.UsersListComparator;
+import pl.bcichecki.rms.client.android.model.impl.User;
 
 /**
  * @author Bartosz Cichecki
  * 
  */
-public class DevicesListAdapter extends ArrayAdapter<Device> {
+public class UsersListAdapter extends ArrayAdapter<User> {
 
-	private static final int FRAGMENT_DEVICES_LIST_ITEM = R.layout.fragment_devices_list_item;
+	private static final int FRAGMENT_USERS_LIST_ITEM = R.layout.fragment_users_list_item;
 
-	private static final int FRAGMENT_DEVICES_LIST_ITEM_TITLE = R.id.fragment_devices_list_item_title;
+	private static final int FRAGMENT_USERS_LIST_ITEM_TITLE = R.id.fragment_users_list_item_title;
 
 	private LayoutInflater layoutInflater;
 
-	public DevicesListAdapter(Context context, List<Device> objects) {
-		super(context, FRAGMENT_DEVICES_LIST_ITEM, FRAGMENT_DEVICES_LIST_ITEM_TITLE, objects);
+	public UsersListAdapter(Context context, List<User> objects) {
+		super(context, FRAGMENT_USERS_LIST_ITEM, FRAGMENT_USERS_LIST_ITEM_TITLE, objects);
 	}
 
 	protected LayoutInflater getLayoutInflater() {
@@ -51,22 +51,26 @@ public class DevicesListAdapter extends ArrayAdapter<Device> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
 		if (convertView == null) {
-			view = getLayoutInflater().inflate(FRAGMENT_DEVICES_LIST_ITEM, parent, false);
+			view = getLayoutInflater().inflate(FRAGMENT_USERS_LIST_ITEM, parent, false);
 		} else {
 			view = convertView;
 		}
 
-		TextView deviceTitle = (TextView) view.findViewById(FRAGMENT_DEVICES_LIST_ITEM_TITLE);
+		TextView userTitle = (TextView) view.findViewById(FRAGMENT_USERS_LIST_ITEM_TITLE);
 
-		Device device = getItem(position);
+		User user = getItem(position);
 
-		deviceTitle.setText(device.getName());
+		if (user.getAddress() != null && user.getAddress().getFirstName() != null && user.getAddress().getLastName() != null) {
+			userTitle.setText(user.getAddress().getFirstName() + " " + user.getAddress().getLastName());
+		} else {
+			userTitle.setText(user.getUsername());
+		}
 
 		return view;
 	}
 
 	public void refresh() {
-		sort(new DevicesListComparator());
+		sort(new UsersListComparator());
 		notifyDataSetChanged();
 	}
 

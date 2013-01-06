@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fragment_users_list_empty">There are no users to display</string>
+    <string name="fragment_users_list_menu_refresh">Refresh</string>
+
+</resources>

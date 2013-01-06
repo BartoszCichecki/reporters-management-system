@@ -33,6 +33,7 @@ import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.dialogs.AboutDialog;
 import pl.bcichecki.rms.client.android.fragments.DevicesListFragment;
 import pl.bcichecki.rms.client.android.fragments.EventsListFragment;
+import pl.bcichecki.rms.client.android.fragments.UsersListFragment;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.listeners.ActivityAwareDialogInterfaceOnClickListener;
 import pl.bcichecki.rms.client.android.listeners.MainActivityActionBarTabListener;
@@ -47,7 +48,7 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -59,6 +60,9 @@ public class MainActivity extends FragmentActivity {
 					return fragment;
 				case 1:
 					fragment = new DevicesListFragment();
+					return fragment;
+				case 2:
+					fragment = new UsersListFragment();
 					return fragment;
 				default:
 					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());
@@ -72,6 +76,8 @@ public class MainActivity extends FragmentActivity {
 					return StringUtils.upperCase(getString(R.string.activity_main_events_section_title));
 				case 1:
 					return StringUtils.upperCase(getString(R.string.activity_main_devices_section_title));
+				case 2:
+					return StringUtils.upperCase(getString(R.string.activity_main_users_section_title));
 				default:
 					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());
 			}

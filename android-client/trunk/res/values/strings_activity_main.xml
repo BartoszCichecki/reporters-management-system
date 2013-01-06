@@ -3,6 +3,7 @@
 
     <string name="activity_main_devices_section_title">Devices</string>
     <string name="activity_main_events_section_title">Events</string>
+    <string name="activity_main_users_section_title">Users</string>
     <string name="activity_main_logout_dialog_message">Are you sure you want to logout?</string>
     <string name="activity_main_logout_dialog_title">Logout</string>
     <string name="activity_main_menu_about">About</string>
