@@ -31,7 +31,7 @@ public class DeviceEntity extends AbstractEntity implements Mergeable<DeviceEnti
 	@Transient
 	private static final long serialVersionUID = -1108300387924092896L;
 
-	@Column(name = "NAME", nullable = false, unique = true, length = 250)
+	@Column(name = "NAME", nullable = false, unique = false, length = 250)
 	protected String name;
 
 	@Column(name = "DESCRIPTION", nullable = true, unique = false, length = 1000)

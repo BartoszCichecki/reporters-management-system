@@ -161,8 +161,7 @@ CREATE TABLE `devices` (
   `CREATED_BY_ID` varchar(255) DEFAULT NULL,
   `MODIFIED_BY_ID` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `NAME` (`NAME`)
+  UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
