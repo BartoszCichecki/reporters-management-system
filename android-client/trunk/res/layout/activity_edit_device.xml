@@ -24,8 +24,9 @@
             android:layout_below="@id/activity_edit_device_name_title"
             android:ems="10"
             android:hint="@string/activity_edit_device_name_text_hint"
-            android:inputType="text"
-            android:singleLine="true" >
+            android:inputType="textCapSentences"
+            android:singleLine="true"
+            android:imeOptions="actionNext" >
 
             <requestFocus />
         </EditText>
@@ -50,7 +51,8 @@
             android:inputType="textMultiLine"
             android:maxLines="10"
             android:minLines="1"
-            android:hint="@string/activity_edit_device_description_text_hint" />
+            android:hint="@string/activity_edit_device_description_text_hint"
+            android:imeOptions="actionDone" />
     </RelativeLayout>
 
 </ScrollView>

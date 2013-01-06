@@ -140,7 +140,7 @@ public class MessagesRestClient extends AbstractRestClient {
 		List<Header> headers = new ArrayList<Header>();
 		RestUtils.decorareHeaderWithMD5(headers, messageAsJson);
 
-		put(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_OUTBOX, message.getId()),
+		put(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_MESSAGES, RestConstants.RESOURCE_PATH_OUTBOX),
 		        getHeadersAsArray(headers), messageAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
 	}
 

@@ -4,7 +4,6 @@
     <string name="general_app_name">RMS Client</string>
     <string name="general_back">Back</string>
     <string name="general_close">Close</string>
-    <string name="general_no">No</string>
     <string name="general_unathorized_error_message_title">You are not authorized to perform this operation</string>
     <string name="general_unknown_error_message_content">An unknown error occurred. Cause:<br />%s</string>
     <string name="general_unknown_error_message_title">Unknown error</string>

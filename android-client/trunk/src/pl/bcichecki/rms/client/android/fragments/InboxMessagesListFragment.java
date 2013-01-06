@@ -355,6 +355,11 @@ public class InboxMessagesListFragment extends ListFragment {
 		}
 	}
 
+	public void refresh() {
+		downloadData();
+		downloadArchivedData();
+	}
+
 	private void setUpActionModeOnListItems() {
 		getListView().setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
 		getListView().setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {

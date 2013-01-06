@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -46,14 +47,13 @@ public class MessagingActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			Fragment fragment;
 			switch (position) {
 				case 0:
-					fragment = new InboxMessagesListFragment();
-					return fragment;
+					inboxMessagesListFragment = new InboxMessagesListFragment();
+					return inboxMessagesListFragment;
 				case 1:
-					fragment = new OutboxMessagesListFragment();
-					return fragment;
+					outboxMessagesListFragment = new OutboxMessagesListFragment();
+					return outboxMessagesListFragment;
 				default:
 					throw new IllegalArgumentException("Requested position " + position + " out of " + getCount());
 			}
@@ -72,6 +72,10 @@ public class MessagingActivity extends FragmentActivity {
 		}
 	}
 
+	private InboxMessagesListFragment inboxMessagesListFragment;
+
+	private OutboxMessagesListFragment outboxMessagesListFragment;
+
 	private static final String TAG = "MessagingActivity";
 
 	private ActionBar actionBar;
@@ -81,6 +85,19 @@ public class MessagingActivity extends FragmentActivity {
 	private ViewPager viewPager;
 
 	private MessagingActivityActionBarTabListener messagingActivityActionBarTabListener;
+
+	private static final int RESULT_CODE_OK = 111;
+
+	private static final int REQUEST_CODE_SEND_MESSAGE = 417;
+
+	private static final int REQUEST_CODE_REPLY_MESSAGE = 197025;
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if ((requestCode == REQUEST_CODE_SEND_MESSAGE || requestCode == REQUEST_CODE_REPLY_MESSAGE) && resultCode == RESULT_CODE_OK) {
+			refreshLists();
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +138,26 @@ public class MessagingActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.activity_messaging_menu_item_new) {
+			Log.d(TAG, "Starting new message activity...");
+			Intent newMessageIntent = new Intent(this, NewMessageActivity.class);
+			startActivityForResult(newMessageIntent, REQUEST_CODE_SEND_MESSAGE);
+		}
 		if (item.getItemId() == android.R.id.home) {
 			Log.d(TAG, "Up tapped...");
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void refreshLists() {
+		if (inboxMessagesListFragment != null) {
+			inboxMessagesListFragment.refresh();
+		}
+		if (outboxMessagesListFragment != null) {
+			outboxMessagesListFragment.refresh();
+		}
 	}
 
 }

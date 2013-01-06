@@ -33,7 +33,7 @@ public class OutboxMessagesListComparator implements Comparator<Message> {
 		if (lhs.equals(rhs)) {
 			return 0;
 		}
-		return lhs.getDate().compareTo(rhs.getDate());
+		return rhs.getDate().compareTo(lhs.getDate());
 	}
 
 }

@@ -262,7 +262,7 @@ public class MessagesServiceImpl implements MessagesService {
 		if (StringUtils.isBlank(message.getContent())) {
 			throw new ServiceException("You must provide message content.", "exceptions.serviceExceptions.messages.noContent");
 		}
-		message.setSender(SecurityUtils.getCurrentUser());
+		message.setSender(reloadUser(SecurityUtils.getCurrentUser()));
 		message.setArchivedBySender(false);
 		message.setDeletedBySender(false);
 		message.setDate(new Date());

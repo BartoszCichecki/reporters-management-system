@@ -1,6 +1,7 @@
 
 package pl.bcichecki.rms.client.android.activities;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
@@ -12,6 +13,7 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -70,6 +72,21 @@ public class EditDeviceActivity extends FragmentActivity {
 		nameText = (EditText) findViewById(R.id.activity_edit_device_name_text);
 		descriptionText = (EditText) findViewById(R.id.activity_edit_device_description_text);
 
+		nameText.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				((EditText) v).setError(null);
+			}
+		});
+		descriptionText.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				((EditText) v).setError(null);
+			}
+		});
+
 		setupFormFromIntent(savedInstanceState);
 	}
 
@@ -100,6 +117,15 @@ public class EditDeviceActivity extends FragmentActivity {
 	}
 
 	private void performActionSave(MenuItem item) {
+		if (StringUtils.isBlank(nameText.getText().toString())) {
+			nameText.setError(getString(R.string.activity_edit_device_field_is_required));
+			return;
+		}
+		if (StringUtils.isBlank(descriptionText.getText().toString())) {
+			descriptionText.setError(getString(R.string.activity_edit_device_field_is_required));
+			return;
+		}
+
 		AsyncHttpResponseHandler handler = new AsyncHttpResponseHandler() {
 
 			@Override

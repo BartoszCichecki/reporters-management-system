@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" >
+
+        <TextView
+            android:id="@+id/activity_new_message_subject_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/activity_new_message_subject_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/activity_new_message_subject_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_new_message_subject_title"
+            android:ems="10"
+            android:hint="@string/activity_new_message_subject_text_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences"
+            android:singleLine="true" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/activity_new_message_recipents_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_new_message_subject_text"
+            android:paddingTop="6dp"
+            android:text="@string/activity_new_message_recipents_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/activity_new_message_recipents_add"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/activity_new_message_recipents_title"
+            android:drawableStart="@drawable/add_recipent" />
+
+        <EditText
+            android:id="@+id/activity_new_message_recipents_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/activity_new_message_recipents_add"
+            android:layout_toLeftOf="@id/activity_new_message_recipents_add"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/activity_new_message_recipents_text_hint"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/activity_new_message_content_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_new_message_recipents_add"
+            android:paddingTop="6dp"
+            android:text="@string/activity_new_message_content_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/activity_new_message_content_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_new_message_content_title"
+            android:ems="10"
+            android:hint="@string/activity_new_message_content_text_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:minLines="1" />
+    </RelativeLayout>
+
+</ScrollView>

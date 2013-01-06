@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
+import pl.bcichecki.rms.client.android.activities.NewMessageActivity;
 import pl.bcichecki.rms.client.android.fragments.listAdapters.InboxMessagesListAdapter;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.Message;
@@ -52,6 +54,10 @@ public class InboxMessageDetailsDialog extends DialogFragment {
 	private InboxMessagesListAdapter inboxMessagesListAdapter;
 
 	private Context context;
+
+	private static final String MESSAGE_EXTRA = "MESSAGE_EXTRA";
+
+	private static final int REQUEST_CODE_SEND_MESSAGE = 417;
 
 	private void markRead() {
 		if (!message.isReadByRecipent(UserProfileHolder.getUserProfile())) {
@@ -117,11 +123,15 @@ public class InboxMessageDetailsDialog extends DialogFragment {
 				MessageRecipent messageRecipent = new MessageRecipent();
 				messageRecipent.setRecipent(message.getSender());
 				HashSet<MessageRecipent> messageRecipents = new HashSet<MessageRecipent>();
+				messageRecipents.add(messageRecipent);
 				Message replyMessage = new Message();
 				replyMessage.setSubject(getString(R.string.dialog_inbox_message_details_re) + ": " + message.getSubject());
 				replyMessage.setRecipents(messageRecipents);
 
-				// TODO reply message
+				Log.d(getTag(), "Starting reply message activity...");
+				Intent newMessageIntent = new Intent(context, NewMessageActivity.class);
+				newMessageIntent.putExtra(MESSAGE_EXTRA, replyMessage);
+				startActivityForResult(newMessageIntent, REQUEST_CODE_SEND_MESSAGE);
 			}
 		});
 		dialogBuilder.setPositiveButton(R.string.general_close, new DialogInterface.OnClickListener() {
