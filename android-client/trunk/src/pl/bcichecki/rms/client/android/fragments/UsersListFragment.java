@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.Menu;
@@ -121,6 +122,12 @@ public class UsersListFragment extends ListFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		load();
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		getActivity().getMenuInflater().inflate(R.menu.fragment_users_list, menu);
@@ -146,7 +153,6 @@ public class UsersListFragment extends ListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		load();
 		setHasOptionsMenu(true);
 		setEmptyText(getString(R.string.fragment_users_list_empty));
 	}

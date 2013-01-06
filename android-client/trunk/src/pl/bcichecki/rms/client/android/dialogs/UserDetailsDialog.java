@@ -19,6 +19,7 @@ import android.support.v4.app.DialogFragment;
 
 import pl.bcichecki.rms.client.android.R;
 import pl.bcichecki.rms.client.android.model.impl.User;
+import pl.bcichecki.rms.client.android.prettyPrinters.impl.UsersTextPrettyPrinter;
 
 /**
  * @author Bartosz Cichecki
@@ -34,11 +35,9 @@ public class UserDetailsDialog extends DialogFragment {
 			throw new IllegalStateException("User has not been set!");
 		}
 
-		// TODO expand details
-
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getString(R.string.dialog_device_details_title, user.getUsername()));
-		dialogBuilder.setMessage(user.toString());
+		dialogBuilder.setMessage(new UsersTextPrettyPrinter(getActivity()).print(user));
 		dialogBuilder.setPositiveButton(R.string.general_close, new DialogInterface.OnClickListener() {
 
 			@Override

@@ -45,6 +45,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.bcichecki.rms.client.android.activities.MainActivity" />
         </activity>
+        <activity
+            android:name="pl.bcichecki.rms.client.android.activities.EditDeviceActivity"
+            android:label="@string/activity_edit_device_title_edit" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.bcichecki.rms.client.android.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

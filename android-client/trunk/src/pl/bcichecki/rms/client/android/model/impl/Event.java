@@ -11,6 +11,7 @@
 
 package pl.bcichecki.rms.client.android.model.impl;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ import pl.bcichecki.rms.client.android.model.Mergeable;
 /**
  * @author Bartosz Cichecki
  */
-public class Event extends AbstractPOJO implements Mergeable<Event> {
+public class Event extends AbstractPOJO implements Serializable, Mergeable<Event> {
 
 	private static final long serialVersionUID = -6149510997653672596L;
 

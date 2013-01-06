@@ -13,6 +13,7 @@ package pl.bcichecki.rms.client.android.model.utils;
 
 import com.google.gson.Gson;
 
+import pl.bcichecki.rms.client.android.model.impl.Device;
 import pl.bcichecki.rms.client.android.model.impl.Event;
 
 /**
@@ -23,7 +24,17 @@ public class PojoUtils {
 
 	private static Gson gson = new Gson();
 
+	public static Device createDefensiveCopy(Device deviceToCopy) {
+		if (deviceToCopy == null) {
+			return null;
+		}
+		return gson.fromJson(gson.toJson(deviceToCopy), Device.class);
+	}
+
 	public static Event createDefensiveCopy(Event eventToCopy) {
+		if (eventToCopy == null) {
+			return null;
+		}
 		return gson.fromJson(gson.toJson(eventToCopy), Event.class);
 	}
 

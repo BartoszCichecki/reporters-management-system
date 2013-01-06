@@ -21,6 +21,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -215,6 +216,12 @@ public class EventsListFragment extends ListFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		load();
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		getActivity().getMenuInflater().inflate(R.menu.fragment_events_list, menu);
@@ -262,7 +269,6 @@ public class EventsListFragment extends ListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		load();
 		setHasOptionsMenu(true);
 		setUpActionModeOnListItems();
 		setEmptyText(getString(R.string.fragment_events_list_empty));
@@ -504,7 +510,7 @@ public class EventsListFragment extends ListFragment {
 
 			@Override
 			public void onSuccess(int statusCode, Event retrievedEvent) {
-				Log.d(getTag(), "Got event id " + eventId + ". Refreshing inboxMessagesListAdapter...");
+				Log.d(getTag(), "Got event id " + eventId + ". Refreshing eventsListAdapter...");
 				eventsListAdapter.remove(event);
 				eventsListAdapter.add(retrievedEvent);
 				eventsListAdapter.refresh();

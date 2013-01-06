@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -191,6 +192,12 @@ public class OutboxMessagesListFragment extends ListFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		load();
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		getActivity().getMenuInflater().inflate(R.menu.fragment_outbox_messages_list, menu);
@@ -232,7 +239,6 @@ public class OutboxMessagesListFragment extends ListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		load();
 		setHasOptionsMenu(true);
 		setUpActionModeOnListItems();
 		setEmptyText(getString(R.string.fragment_outbox_messages_list_empty));

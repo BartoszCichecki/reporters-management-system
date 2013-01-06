@@ -11,6 +11,7 @@
 
 package pl.bcichecki.rms.client.android.model.impl;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ import pl.bcichecki.rms.client.android.model.Mergeable;
 /**
  * @author Bartosz Cichecki
  */
-public class Role extends AbstractPOJO implements Mergeable<Role> {
+public class Role extends AbstractPOJO implements Serializable, Mergeable<Role> {
 
 	private static final long serialVersionUID = -113983953800149169L;
 

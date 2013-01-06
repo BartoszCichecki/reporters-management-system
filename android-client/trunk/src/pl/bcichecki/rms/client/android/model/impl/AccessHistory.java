@@ -11,6 +11,7 @@
 
 package pl.bcichecki.rms.client.android.model.impl;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ import pl.bcichecki.rms.client.android.model.Mergeable;
 /**
  * @author Bartosz Cichecki
  */
-public class AccessHistory extends AbstractPOJO implements Mergeable<AccessHistory> {
+public class AccessHistory extends AbstractPOJO implements Serializable, Mergeable<AccessHistory> {
 
 	private static final long serialVersionUID = -8583688459079578896L;
 

@@ -48,15 +48,7 @@ public class DevicesRestClient extends AbstractRestClient {
 		super(context, username, password, realm, host, port, webServiceContextPath);
 	}
 
-	public void deleteDevice(Device deviceToDelete, AsyncHttpResponseHandler handler) {
-		delete(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES, deviceToDelete.getId()), handler);
-	}
-
-	public void getAllDevices(AsyncHttpResponseHandler handler) {
-		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES, RestConstants.RESOURCE_PATH_ALL), handler);
-	}
-
-	public void updateMyDevice(Device device, AsyncHttpResponseHandler handler) {
+	public void createDevice(Device device, AsyncHttpResponseHandler handler) {
 		String deviceAsJson = GsonHolder.getGson().toJson(device);
 		HttpEntity deviceAsHttpEntity;
 
@@ -69,8 +61,37 @@ public class DevicesRestClient extends AbstractRestClient {
 		List<Header> headers = new ArrayList<Header>();
 		RestUtils.decorareHeaderWithMD5(headers, deviceAsJson);
 
-		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES, RestConstants.RESOURCE_PATH_MY),
-		        getHeadersAsArray(headers), deviceAsHttpEntity, HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
+		put(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES), getHeadersAsArray(headers), deviceAsHttpEntity,
+		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
+	}
+
+	public void deleteDevice(Device deviceToDelete, AsyncHttpResponseHandler handler) {
+		delete(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES, deviceToDelete.getId()), handler);
+	}
+
+	public void getAllDevices(AsyncHttpResponseHandler handler) {
+		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES, RestConstants.RESOURCE_PATH_ALL), handler);
+	}
+
+	public void getDevice(Device device, AsyncHttpResponseHandler handler) {
+		get(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES, device.getId()), handler);
+	}
+
+	public void updateDevice(Device device, AsyncHttpResponseHandler handler) {
+		String deviceAsJson = GsonHolder.getGson().toJson(device);
+		HttpEntity deviceAsHttpEntity;
+
+		try {
+			deviceAsHttpEntity = new StringEntity(deviceAsJson, HttpConstants.CHARSET_UTF8);
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, "This system does not support required encoding.", e);
+			throw new IllegalStateException("This system does not support required encoding.", e);
+		}
+		List<Header> headers = new ArrayList<Header>();
+		RestUtils.decorareHeaderWithMD5(headers, deviceAsJson);
+
+		post(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_DEVICES), getHeadersAsArray(headers), deviceAsHttpEntity,
+		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
 	}
 
 }

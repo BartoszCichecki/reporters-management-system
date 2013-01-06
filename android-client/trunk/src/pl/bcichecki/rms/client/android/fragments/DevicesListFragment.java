@@ -18,6 +18,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -35,6 +36,7 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
+import pl.bcichecki.rms.client.android.activities.EditDeviceActivity;
 import pl.bcichecki.rms.client.android.dialogs.DeviceDetailsDialog;
 import pl.bcichecki.rms.client.android.fragments.listAdapters.DevicesListAdapter;
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
@@ -53,6 +55,16 @@ import pl.bcichecki.rms.client.android.utils.AppUtils;
 public class DevicesListFragment extends ListFragment {
 
 	private static final String TAG = "DevicesListFragment";
+
+	private static final String EDIT_DEVICE_EXTRA = "EDIT_DEVICE_EXTRA";
+
+	private static final String EDIT_DEVICE_EXTRA_RET = "EDIT_DEVICE_EXTRA_RET";
+
+	private static final int REQUEST_CODE_EDIT_DEVICE = 331;
+
+	private static final int REQUEST_CODE_NEW_DEVICE = 771;
+
+	private static final int RESULT_CODE_OK = 111;
 
 	private List<Device> devices = new ArrayList<Device>();
 
@@ -143,6 +155,23 @@ public class DevicesListFragment extends ListFragment {
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_CODE_NEW_DEVICE && resultCode == RESULT_CODE_OK) {
+			downloadData();
+		}
+		if (requestCode == REQUEST_CODE_EDIT_DEVICE && resultCode == RESULT_CODE_OK) {
+			Device deviceToRefresh = (Device) data.getSerializableExtra(EDIT_DEVICE_EXTRA_RET);
+			refreshDevice(deviceToRefresh);
+		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		load();
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		getActivity().getMenuInflater().inflate(R.menu.fragment_devices_list, menu);
@@ -158,7 +187,7 @@ public class DevicesListFragment extends ListFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.fragment_devices_list_menu_new) {
-			// TODO performActionNew
+			performActionNew(item);
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_devices_list_menu_refresh) {
@@ -171,7 +200,6 @@ public class DevicesListFragment extends ListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		load();
 		setHasOptionsMenu(true);
 		setUpActionModeOnListItems();
 		setEmptyText(getString(R.string.fragment_devices_list_empty));
@@ -195,7 +223,7 @@ public class DevicesListFragment extends ListFragment {
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_devices_list_context_menu_edit) {
-			// TODO performActionEdit
+			performActionEdit(mode, item, selectedDevice);
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_devices_list_context_menu_share) {
@@ -243,6 +271,17 @@ public class DevicesListFragment extends ListFragment {
 		});
 	}
 
+	private void performActionEdit(ActionMode mode, MenuItem item, Device selectedDevice) {
+		Intent editDeviceIntent = new Intent(getActivity(), EditDeviceActivity.class);
+		editDeviceIntent.putExtra(EDIT_DEVICE_EXTRA, selectedDevice);
+		startActivityForResult(editDeviceIntent, REQUEST_CODE_EDIT_DEVICE);
+	}
+
+	private void performActionNew(MenuItem item) {
+		Intent editDeviceIntent = new Intent(getActivity(), EditDeviceActivity.class);
+		startActivityForResult(editDeviceIntent, REQUEST_CODE_NEW_DEVICE);
+	}
+
 	private void performActionShare(final ActionMode mode, MenuItem item, final Device selectedDevice) {
 		ShareActionProvider shareActionProvider = (ShareActionProvider) item.getActionProvider();
 		if (shareActionProvider != null) {
@@ -254,6 +293,46 @@ public class DevicesListFragment extends ListFragment {
 
 			Log.d(TAG, "Device " + selectedDevice + " was succesfully shared.");
 		}
+	}
+
+	private void refreshDevice(final Device device) {
+		final String eventId = device.getId();
+
+		devicesRestClient.getDevice(device, new GsonHttpResponseHandler<Device>(new TypeToken<Device>() {
+		}.getType(), true) {
+
+			@Override
+			public void onFailure(Throwable error, String content) {
+				Log.d(getTag(), "Could not get device id " + eventId + " [error=" + error + ", content=" + content + "]");
+				if (error instanceof HttpResponseException) {
+					if (((HttpResponseException) error).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+						AppUtils.showCenteredToast(getActivity(), R.string.general_unathorized_error_message_title, Toast.LENGTH_LONG);
+					} else {
+						AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+					}
+				} else {
+					AppUtils.showCenteredToast(getActivity(), R.string.general_unknown_error_message_title, Toast.LENGTH_LONG);
+				}
+			}
+
+			@Override
+			public void onFinish() {
+				Log.d(getTag(), "Getting device id " + eventId + " finished.");
+			}
+
+			@Override
+			public void onStart() {
+				Log.d(getTag(), "Started getting device id " + eventId);
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Device retrievedDevice) {
+				Log.d(getTag(), "Got device id " + eventId + ". Refreshing devicesListAdapter...");
+				devicesListAdapter.remove(device);
+				devicesListAdapter.add(retrievedDevice);
+				devicesListAdapter.refresh();
+			}
+		});
 	}
 
 	private void setUpActionModeOnListItems() {

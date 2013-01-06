@@ -11,6 +11,7 @@
 
 package pl.bcichecki.rms.client.android.model.impl;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import pl.bcichecki.rms.client.android.model.AbstractPOJO;
@@ -19,7 +20,7 @@ import pl.bcichecki.rms.client.android.model.Mergeable;
 /**
  * @author Bartosz Cichecki
  */
-public class MessageRecipent extends AbstractPOJO implements Mergeable<MessageRecipent> {
+public class MessageRecipent extends AbstractPOJO implements Serializable, Mergeable<MessageRecipent> {
 
 	private static final long serialVersionUID = 8831025727208405070L;
 

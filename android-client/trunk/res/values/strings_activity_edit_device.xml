@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_edit_device_title_edit">Edit device</string>
+    <string name="activity_edit_device_title_new">New device</string>
+    <string name="activity_edit_device_menu_save">Save</string>
+    <string name="activity_edit_device_name_title">Name</string>
+    <string name="activity_edit_device_name_text_hint">eg. Sony X-1 Camera</string>
+    <string name="activity_edit_device_description_title">Description</string>
+    <string name="activity_edit_device_description_text_hint">eg. Digital camera, with external mic. Light and compact.</string>
+
+</resources>
