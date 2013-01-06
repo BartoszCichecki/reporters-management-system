@@ -91,9 +91,9 @@ public class DevicesServiceImpl implements DevicesService {
 
 	@Override
 	public boolean updateDevice(DeviceEntity device) throws ServiceException {
-		if (devicesDao.getByName(device.getName(), false) != null) {
-			throw new ServiceException("Device with such name already exist! Devices must have unique names.",
-			        "exceptions.serviceExceptions.devices.duplicateName");
+		if (devicesDao.getByName(device.getName(), true) != null) {
+			throw new ServiceException("You can't update device that does not exist!",
+			        "exceptions.serviceExceptions.devices.cantUpdateNotExisting");
 		}
 		DeviceEntity retrieved = devicesDao.getById(device.getId());
 		if (retrieved == null) {
