@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pretty_printer_device_teaser"><![CDATA[Cześć!\nTutaj są szczegóły urządzenia o które pytałeś.\n]]></string>
+    <string name="pretty_printer_device_name"><![CDATA[\nNazwa:\n]]></string>
+    <string name="pretty_printer_device_description"><![CDATA[\nOpis:\n]]></string>
+    <string name="pretty_printer_device_footer"><![CDATA[\nPozdrawiam,\n]]></string>
+
+</resources>

@@ -56,7 +56,7 @@ import pl.bcichecki.rms.client.android.utils.AppUtils;
  */
 public class EventsListFragment extends ListFragment {
 
-	private static final int DAYS_AHEAD = 14;
+	private static final int DAYS_AHEAD = 30;
 
 	private static final int DAYS_BACK = -3;
 

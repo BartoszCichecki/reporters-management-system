@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fragment_events_list_archive_successful">Wydarzenie zarchiwizowane</string>
+    <string name="fragment_events_list_context_menu_archive">Archiwizuj</string>
+    <string name="fragment_events_list_context_menu_delete">Usuń</string>
+    <string name="fragment_events_list_context_menu_edit">Edytuj</string>
+    <string name="fragment_events_list_context_menu_lock">Zablokuj</string>
+    <string name="fragment_events_list_context_menu_share">Udostępnij</string>
+    <string name="fragment_events_list_context_menu_unlock">Odblokuj</string>
+    <string name="fragment_events_list_delete_successful">Wydarzenie usunięte</string>
+    <string name="fragment_events_list_empty">Brak wydarzeń</string>
+    <string name="fragment_events_list_item_from_text">Od&#160;</string>
+    <string name="fragment_events_list_item_indicators_archived_description">Zarchiwizowane</string>
+    <string name="fragment_events_list_item_indicators_signed_up_description">Zapisano</string>
+    <string name="fragment_events_list_item_indicators_locked_description">Zablokowane</string>
+    <string name="fragment_events_list_item_indicators_owner_description">Właściciel</string>
+    <string name="fragment_events_list_item_till_text">Do&#160;</string>
+    <string name="fragment_events_list_lock_successful">Wydarzenie zablokowane</string>
+    <string name="fragment_events_list_menu_new">Nowe wydarzenie</string>
+    <string name="fragment_events_list_menu_refresh">Odśwież</string>
+    <string name="fragment_events_list_menu_show_archived">Pokaż zarchiwizowane</string>
+    <string name="fragment_events_list_unlock_successful">Wydarzenie odblokowane</string>
+
+</resources>

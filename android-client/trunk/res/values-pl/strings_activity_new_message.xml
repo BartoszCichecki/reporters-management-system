@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_new_message_title">Nowa wiadomość</string>
+    <string name="activity_new_message_menu_send">Wyślij</string>
+    <string name="activity_new_message_subject_title">Temat</string>
+    <string name="activity_new_message_subject_text_hint">Wpisz tutaj temat</string>
+    <string name="activity_new_message_recipents_title">Odbiorcy</string>
+    <string name="activity_new_message_recipents_text_hint">Brak odbiorców</string>
+    <string name="activity_new_message_content_title">Treść</string>
+    <string name="activity_new_message_content_text_hint">Wpisz tutaj treść wiadomości</string>
+    <string name="activity_new_message_field_is_required">To pole jest wymagane</string>
+    <string name="activity_new_message_pick_recipents">Wybierz odbiorców</string>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_inbox_message_details_title">Wiadomość przychodząca</string>
+    <string name="dialog_inbox_message_details_reply">Odpowiedz</string>
+    <string name="dialog_inbox_message_details_subject_title">Temat:</string>
+    <string name="dialog_inbox_message_details_sender_title">Nadawca:</string>
+    <string name="dialog_inbox_message_details_received_date_title">Otrzymano:</string>
+    <string name="dialog_inbox_message_details_content_title">Treść:</string>
+
+</resources>

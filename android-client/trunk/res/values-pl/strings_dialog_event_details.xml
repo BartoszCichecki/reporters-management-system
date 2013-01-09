@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_event_details_title">Szegóły %s</string>
+    <string name="dialog_event_details_title_title">Tytuł:</string>
+    <string name="dialog_event_details_starts_title">Rozpoczęcie:</string>
+    <string name="dialog_event_details_ends_title">Zakończenie:</string>
+    <string name="dialog_event_details_description_title">Opis:</string>
+    <string name="dialog_event_details_participants_title">Uczestnicy:</string>
+    <string name="dialog_event_details_devices_title">Urządzenia:</string>
+    <string name="dialog_event_details_no_participants">Nie ma uczestników</string>
+    <string name="dialog_event_details_no_devices">Nie ma urządzeń</string>
+    <string name="dialog_event_details_sign_up">Zapisz się</string>
+    <string name="dialog_event_details_sign_out">Zrezygnuj</string>
+
+</resources>

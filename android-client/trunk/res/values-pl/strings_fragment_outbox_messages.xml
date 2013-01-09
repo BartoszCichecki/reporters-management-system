@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fragment_outbox_messages_list_archive_successful">Wiadomość wychodząca zarchiwizowana</string>
+    <string name="fragment_outbox_messages_list_context_menu_archive">Archiwizuj</string>
+    <string name="fragment_outbox_messages_list_context_menu_delete">Usuń</string>
+    <string name="fragment_outbox_messages_list_delete_successful">Wiadomość wychodząca usunięta</string>
+    <string name="fragment_outbox_messages_list_empty">Brak wiadomości wychodzących</string>
+    <string name="fragment_outbox_messages_list_item_indicators_archived_description">Zarchiwizowana</string>
+    <string name="fragment_outbox_messages_list_menu_refresh">Odśwież</string>
+    <string name="fragment_outbox_messages_list_menu_show_archived">Pokaż zarchiwizowane</string>
+    <string name="fragment_outbox_messages_list_item_sent_text">Wysłana: </string>
+    <string name="fragment_outbox_messages_list_item_to_text">Do: </string>
+
+</resources>

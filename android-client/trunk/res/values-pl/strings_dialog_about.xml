@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_about_app_name_main">System Zarządzania Reporterami</string>
+    <string name="dialog_about_app_name_summary">Klient dla systemu Android</string>
+    <string name="dialog_about_authors_content">Bartosz Cichecki</string>
+    <string name="dialog_about_authors_title">Autorzy:</string>
+    <string name="dialog_about_license_title">Licencja:</string>
+    <string name="dialog_about_title">O programie</string>
+    <string name="dialog_about_tul">Politechnika Łódzka 2012</string>
+
+</resources>

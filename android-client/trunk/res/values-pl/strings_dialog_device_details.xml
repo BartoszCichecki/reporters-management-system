@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_device_details_title">Szczegóły %s</string>
+    <string name="dialog_device_details_name">Nazwa:</string>
+    <string name="dialog_device_details_description">Opis:</string>
+    <string name="dialog_device_details_btn_show_reservations">Pokaż rezerwacje</string>
+
+</resources>

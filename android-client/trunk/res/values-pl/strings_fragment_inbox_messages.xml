@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fragment_inbox_messages_list_archive_successful">Wiadomość przychodząca zarchiwizowana</string>
+    <string name="fragment_inbox_messages_list_context_menu_archive">Archiwizuj</string>
+    <string name="fragment_inbox_messages_list_context_menu_delete">Usuń</string>
+    <string name="fragment_inbox_messages_list_delete_successful">Wiadomość przychodząca usunięta</string>
+    <string name="fragment_inbox_messages_list_empty">Brak wiadomości przychodzących</string>
+    <string name="fragment_inbox_messages_list_item_indicators_archived_description">Zarchiwizowana</string>
+    <string name="fragment_inbox_messages_list_item_indicators_unread_description">Nieprzeczytana</string>
+    <string name="fragment_inbox_messages_list_menu_refresh">Odśwież</string>
+    <string name="fragment_inbox_messages_list_menu_show_archived">Pokaż zarchiwizowane</string>
+    <string name="fragment_inbox_messages_list_item_sender_text">Nadawca:</string>
+    <string name="fragment_inbox_messages_list_item_sent_on_text">Wysłana:</string>
+
+</resources>

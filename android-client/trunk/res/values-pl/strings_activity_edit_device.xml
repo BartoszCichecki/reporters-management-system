@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_edit_device_title_edit">Edytuj sprzęt</string>
+    <string name="activity_edit_device_title_new">Nowy sprzęt</string>
+    <string name="activity_edit_device_menu_save">Zapisz</string>
+    <string name="activity_edit_device_name_title">Nazwa</string>
+    <string name="activity_edit_device_name_text_hint">np. Sony X-1 Camera</string>
+    <string name="activity_edit_device_description_title">Opis</string>
+    <string name="activity_edit_device_description_text_hint">np. Aparat cyfrowy z zewnętrznym mikrofonem i statywem.</string>
+    <string name="activity_edit_device_field_is_required">To pole jest wymagane</string>
+
+</resources>

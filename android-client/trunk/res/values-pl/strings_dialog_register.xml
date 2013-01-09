@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+   <string name="dialog_register_aborted">Rejestracja przerwana</string>
+   <string name="dialog_register_email_not_valid">To nie jest prawidłowy email</string> 
+   <string name="dialog_register_enter_email_hint">Email</string>
+   <string name="dialog_register_enter_password_hint">Hasło</string>
+   <string name="dialog_register_enter_username_hint">Nazwa użytkownika</string>
+   <string name="dialog_register_failed">Nie można zarejestrować konta. Spróbuj ponownie z inną nazwą użytkownika.</string>
+   <string name="dialog_register_field_required">To pole jest wymagane</string> 
+   <string name="dialog_register_in_progress">Rejestracja w toku&#8230;</string>
+   <string name="dialog_register_message">Wypełnij wszystkie pola, aby utworzyć konto. Nowe konta muszą zostać aktywowane przez administratora.</string>
+   <string name="dialog_register_ok">Rejestruj</string>
+   <string name="dialog_register_successful">Zostałeś zarejestrowany. Twoje konto musi zostać aktywowane.</string>
+   <string name="dialog_register_title">Zarejestruj nowe konto</string>
+    
+</resources>

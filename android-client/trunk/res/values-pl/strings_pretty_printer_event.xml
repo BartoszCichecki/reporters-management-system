@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pretty_printer_event_teaser"><![CDATA[Cześć!\nTutaj są szczegóły wydarzenie o które pytałeś.\n]]></string>
+    <string name="pretty_printer_event_title"><![CDATA[\nTytuł:\n]]></string>
+    <string name="pretty_printer_event_description"><![CDATA[\nOpis:\n]]></string>
+    <string name="pretty_printer_event_type"><![CDATA[Typ:\n]]></string>
+    <string name="pretty_printer_event_type_meeting"><![CDATA[Spotkanie]]></string>
+    <string name="pretty_printer_event_type_interview"><![CDATA[Wywiad]]></string>
+    <string name="pretty_printer_event_starts_at"><![CDATA[\nRozpoczęcie:\n]]></string>
+    <string name="pretty_printer_event_ends_at"><![CDATA[\nZakończenia:\n]]></string>
+    <string name="pretty_printer_event_participants"><![CDATA[\nUczestnicy:\n]]></string>
+    <string name="pretty_printer_event_devices"><![CDATA[\nUrządzenia:\n]]></string>
+    <string name="pretty_printer_event_footer"><![CDATA[\nPozdrowienia,\n]]></string>
+
+</resources>

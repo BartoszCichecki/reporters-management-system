@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_login_check_your_internet_connection">Nie masz połączenia z siecią.<br /> Sprawdź swoje połączenie i spróbuj ponownie.</string>
+    <string name="activity_login_enter_your_credentials">Twoje dane logowania:</string>
+    <string name="activity_login_error_field_required">To pole jest wymagane</string>
+    <string name="activity_login_login_successful">Zalogowano pomyślnie</string>
+    <string name="activity_login_menu_about">O programie</string>
+    <string name="activity_login_menu_register">Rejestracja</string>
+    <string name="activity_login_menu_remind_password">Odzyskiwanie hasła</string>
+    <string name="activity_login_menu_settings">Ustawienia</string>
+    <string name="activity_login_password">Hasło</string>
+    <string name="activity_login_remember_user">Pamiętaj mnie</string>
+    <string name="activity_login_signing_in">Logowanie&#8230;</string>
+    <string name="activity_login_sign_in"><b>Zaloguj się</b></string>
+    <string name="activity_login_unsuccessful_login_message_content">Wystąpił problem z Twoim kontem. Upewnij się, że podałeś prawidłowe dane. Pamiętaj, nie będziesz się mógł zalogować jeśli Twoje konto nie jest aktywne lub zostało zablokowane.</string>
+    <string name="activity_login_unsuccessful_login_message_title">Nie zostałeś zalogowany</string>
+    <string name="activity_login_username">Nazwa użytkownika</string>
+
+</resources>

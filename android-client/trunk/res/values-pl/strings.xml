@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="general_app_name">SZR Klient</string>
+    <string name="general_back">Wróc</string>
+    <string name="general_close">Zamknij</string>
+    <string name="general_unathorized_error_message_title">Nie masz uprawnien do wykonania tej akcji.</string>
+    <string name="general_unknown_error_message_content">Wystąpił nieznany błąd:<br />%s</string>
+    <string name="general_unknown_error_message_title">Nieznany błąd</string>
+    <string name="general_yes">Tak</string>
+
+</resources>

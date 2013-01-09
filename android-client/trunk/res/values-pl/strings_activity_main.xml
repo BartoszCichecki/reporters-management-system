@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_main_devices_section_title">Urządzenia</string>
+    <string name="activity_main_events_section_title">Wydarzenia</string>
+    <string name="activity_main_users_section_title">Użytkownicy</string>
+    <string name="activity_main_logout_dialog_message">Na pewno chcesz się wylogować?</string>
+    <string name="activity_main_logout_dialog_title">Wyloguj</string>
+    <string name="activity_main_menu_about">O programie</string>
+    <string name="activity_main_menu_logout">Wyloguj</string>
+    <string name="activity_main_menu_messaging">Wiadomości</string>
+    <string name="activity_main_menu_settings">Ustawienia</string>
+
+</resources>

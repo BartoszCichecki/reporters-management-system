@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fragment_devices_list_context_menu_delete">Usuń</string>
+    <string name="fragment_devices_list_context_menu_edit">Edytuj</string>
+    <string name="fragment_devices_list_context_menu_share">Udostępnij</string>
+    <string name="fragment_devices_list_delete_successful">Urządzenie usunięte</string>
+    <string name="fragment_devices_list_empty">Brak urządzeń</string>
+    <string name="fragment_devices_list_menu_new">Nowe urządzenie</string>
+    <string name="fragment_devices_list_menu_refresh">Odśwież</string>
+
+</resources>

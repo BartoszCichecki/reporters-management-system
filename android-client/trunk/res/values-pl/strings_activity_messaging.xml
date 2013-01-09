@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="activity_messaging_inbox_section_title">Przychodzące</string>
+    <string name="activity_messaging_menu_item_new">Nowa</string>
+    <string name="activity_messaging_outbox_section_title">Wychodzące</string>
+    <string name="activity_messaging_title">Wiadomości</string>
+    
+</resources>

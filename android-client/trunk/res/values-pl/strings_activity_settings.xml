@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_settings_header_server">Serwer (Zaawansowane)</string>
+    <string name="activity_settings_header_user_account">Konto</string>
+    <string name="activity_settings_password_summary">Twoje hasło do systemu</string>
+    <string name="activity_settings_password_title">Hasło</string>
+    <string name="activity_settings_remember_user_summary">Zaznacz, aby zachować dane logowania</string>
+    <string name="activity_settings_remember_user_title">Pamiętaj użytkownika</string>
+    <string name="activity_settings_server_address_summary">Adres IP lub adres internetowy serwera</string>
+    <string name="activity_settings_server_address_title">Address serwera</string>
+    <string name="activity_settings_server_incoming_md5_summary">Zaznacz, aby sprawdzać MD5 przychodzących wiadomości</string>
+    <string name="activity_settings_server_incoming_md5_title">Sprawdzaj przychodzące MD5</string>
+    <string name="activity_settings_server_outgoing_md5_summary">Dodawaj MD5 do wychodzących wiadomości</string>
+    <string name="activity_settings_server_outgoing_md5_title">Dodawaj MD5 do wychodzących</string>
+    <string name="activity_settings_server_port_summary">Port, na którym klient będzie łączy się z serwerem</string>
+    <string name="activity_settings_server_port_title">Post serwera</string>
+    <string name="activity_settings_server_realm_summary">Nazwa przestrzeni autentykacji</string>
+    <string name="activity_settings_server_realm_title">Przestrzeń autentykacji</string>
+    <string name="activity_settings_server_ws_context_path_summary">Kontekst web serwisu</string>
+    <string name="activity_settings_server_ws_context_path_title">Kontekst</string>
+    <string name="activity_settings_title">Ustawienia</string>
+    <string name="activity_settings_username_summary">Twoja nazwa użytkownika w systemie</string>
+    <string name="activity_settings_username_title">Nazwa użytkownika</string>
+
+</resources>
