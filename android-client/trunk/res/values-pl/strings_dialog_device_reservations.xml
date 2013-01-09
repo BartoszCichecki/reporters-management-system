@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="dialog_device_reservations_title">%s rezerwacji</string>
+    <string name="dialog_device_reservations_title">%s rezerwacje</string>
     <string name="dialog_device_reservations_empty">Nie ma rezerwacji dla tego urządzenia.</string>
 
 </resources>

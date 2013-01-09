@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="dialog_event_details_title">Szegóły %s</string>
+    <string name="dialog_event_details_title">Szczegóły %s</string>
     <string name="dialog_event_details_title_title">Tytuł:</string>
     <string name="dialog_event_details_starts_title">Rozpoczęcie:</string>
     <string name="dialog_event_details_ends_title">Zakończenie:</string>
