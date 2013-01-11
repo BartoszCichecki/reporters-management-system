@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_edit_event_title_edit">Edytuj wydarzenie</string>
+    <string name="activity_edit_event_title_new">Nowe wydarzenie</string>
+    <string name="activity_edit_event_menu_save">Zapisz</string>
+    <string name="activity_edit_event_title_title">Tytuł</string>
+    <string name="activity_edit_event_title_text_hint">np. Spotkanie z Janem</string>
+    <string name="activity_edit_event_description_title">Opis</string>
+    <string name="activity_edit_event_description_text_hint">np. Dotyczy nowego filmu.</string>
+    <string name="activity_edit_event_field_is_required">To pole jest wymagane</string>
+    <string name="activity_edit_event_participants_title">Uczestnicy</string>
+    <string name="activity_edit_event_participants_text_hint">Brak uczestników</string>
+    <string name="activity_edit_event_devices_title">Urządzenia</string>
+    <string name="activity_edit_event_starts_on_title">Rozpoczęcie</string>
+    <string name="activity_edit_event_ends_on_title">Zakończenie</string>
+    <string name="activity_edit_event_devices_text_hint">Brak urządzeń</string>
+    <string name="activity_edit_event_pick_devices">Wybierz urządzenia</string>
+    <string name="activity_edit_event_pick_participants">Wybierz uczestników</string>
+    <string name="activity_edit_event_pick_start_time">Czas rozpoczęcia</string>
+    <string name="activity_edit_event_pick_start_date">Data rozpoczęcia</string>
+    <string name="activity_edit_event_pick_end_time">Czas zakończenia</string>
+    <string name="activity_edit_event_pick_end_date">Data zakończenia</string>
+    <string name="activity_edit_event_error_start_after_end">Data rozpoczęcie nie może być poźniejsza niż data zakończenia</string>
+    <string name="activity_edit_event_type">Typ wydarzenia</string>
+    <string name="activity_edit_event_type_meeting">Spotkanie</string>
+    <string name="activity_edit_event_type_interview">Wywiad</string>
+
+</resources>

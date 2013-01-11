@@ -76,21 +76,6 @@ public class EventsRestWS extends AbstractRestWS {
 		}
 	}
 
-	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.POST_EVENTS_TO_WAITING_ROOM + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
-	@RequestMapping(value = "/waitingRoom", method = RequestMethod.PUT)
-	void createEventInWaitingRoom(HttpServletRequest request, HttpServletResponse response) throws ServiceException, BadRequestException {
-		String requestBody = RestUtils.getRequestBody(request);
-		if (StringUtils.isBlank(requestBody)) {
-			throw new BadRequestException("You can't create \"nothing\".", "exceptions.badRequestExceptions.cantCreateNothing");
-		}
-		try {
-			EventEntity event = GsonHolder.getGson().fromJson(requestBody, EventEntity.class);
-			eventsService.createLockedEvent(event);
-		} catch (JsonParseException ex) {
-			throw new BadRequestException("Error in submitted JSON!", "exceptions.badRequestExceptions.badJson", ex);
-		}
-	}
-
 	@PreAuthorize("hasRole('" + PrivilegeUtils.Values.DELETE_EVENTS + "','" + PrivilegeUtils.Values.MANAGE_EVENTS + "')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	void deleteEvent(HttpServletRequest request, HttpServletResponse response, @PathVariable String id, @RequestParam(

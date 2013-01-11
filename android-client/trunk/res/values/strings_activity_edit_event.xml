@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_edit_event_title_edit">Edit event</string>
+    <string name="activity_edit_event_title_new">New event</string>
+    <string name="activity_edit_event_menu_save">Save</string>
+    <string name="activity_edit_event_title_title">Title</string>
+    <string name="activity_edit_event_title_text_hint">eg. Meeting with Jonh</string>
+    <string name="activity_edit_event_description_title">Description</string>
+    <string name="activity_edit_event_description_text_hint">eg. Meeting about his newest movie.</string>
+    <string name="activity_edit_event_field_is_required">This field is required!</string>
+    <string name="activity_edit_event_participants_title">Participants</string>
+    <string name="activity_edit_event_participants_text_hint">No participants</string>
+    <string name="activity_edit_event_devices_title">Devices</string>
+    <string name="activity_edit_event_starts_on_title">Starts on</string>
+    <string name="activity_edit_event_ends_on_title">Ends on</string>
+    <string name="activity_edit_event_devices_text_hint">No devices</string>
+    <string name="activity_edit_event_pick_devices">Pick devices</string>
+    <string name="activity_edit_event_pick_participants">Pick participants</string>
+    <string name="activity_edit_event_pick_start_time">Pick start time</string>
+    <string name="activity_edit_event_pick_start_date">Pick start date</string>
+    <string name="activity_edit_event_pick_end_time">Pick end time</string>
+    <string name="activity_edit_event_pick_end_date">Pick end date</string>
+    <string name="activity_edit_event_error_start_after_end">Start date cannot be after end date</string>
+    <string name="activity_edit_event_type">Event type</string>
+    <string name="activity_edit_event_type_meeting">Meeting</string>
+    <string name="activity_edit_event_type_interview">Interview</string>
+
+</resources>

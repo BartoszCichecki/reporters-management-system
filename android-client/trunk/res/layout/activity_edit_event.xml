@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" >
+
+        <TextView
+            android:id="@+id/activity_edit_event_title_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/activity_edit_event_title_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/activity_edit_event_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_title_title"
+            android:ems="10"
+            android:hint="@string/activity_edit_event_title_text_hint"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:singleLine="true" >
+
+            <requestFocus />
+        </EditText>
+        
+        
+        <TextView
+            android:id="@+id/activity_edit_event_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_title_text"
+            android:paddingTop="6dp"
+            android:text="@string/activity_edit_event_type"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RadioGroup
+            android:id="@+id/activity_edit_event_type_rdbtn_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_type_title" >
+
+            <RadioButton
+                android:id="@+id/activity_edit_event_type_rdbtn_meeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/activity_edit_event_type_meeting" />
+
+            <RadioButton
+                android:id="@+id/activity_edit_event_type_rdbtn_interview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_edit_event_type_interview" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/activity_edit_event_starts_on_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_type_rdbtn_group"
+            android:paddingTop="6dp"
+            android:text="@string/activity_edit_event_starts_on_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/activity_edit_event_starts_on_time"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_starts_on_title" />
+
+        <Button
+            android:id="@+id/activity_edit_event_starts_on_date"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/activity_edit_event_starts_on_time"
+            android:layout_toRightOf="@id/activity_edit_event_starts_on_time" />
+
+        <TextView
+            android:id="@+id/activity_edit_event_ends_on_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_starts_on_time"
+            android:paddingTop="6dp"
+            android:text="@string/activity_edit_event_ends_on_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/activity_edit_event_ends_on_time"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_ends_on_title" />
+
+        <Button
+            android:id="@+id/activity_edit_event_ends_on_date"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/activity_edit_event_ends_on_time"
+            android:layout_toRightOf="@id/activity_edit_event_ends_on_time" />
+
+        <TextView
+            android:id="@+id/activity_edit_event_description_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_ends_on_time"
+            android:paddingTop="6dp"
+            android:text="@string/activity_edit_event_description_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/activity_edit_event_description_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_description_title"
+            android:ems="10"
+            android:hint="@string/activity_edit_event_description_text_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:minLines="1" />
+
+        <TextView
+            android:id="@+id/activity_edit_event_participants_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_description_text"
+            android:paddingTop="6dp"
+            android:text="@string/activity_edit_event_participants_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/activity_edit_event_participants_add"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/activity_edit_event_participants_title"
+            android:drawableStart="@drawable/add_recipent" />
+
+        <EditText
+            android:id="@+id/activity_edit_event_participants_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/activity_edit_event_participants_add"
+            android:layout_toLeftOf="@id/activity_edit_event_participants_add"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/activity_edit_event_participants_text_hint"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/activity_edit_event_devices_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/activity_edit_event_participants_add"
+            android:paddingTop="6dp"
+            android:text="@string/activity_edit_event_devices_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/activity_edit_event_devices_add"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/activity_edit_event_devices_title"
+            android:drawableStart="@drawable/add_device" />
+
+        <EditText
+            android:id="@+id/activity_edit_event_devices_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/activity_edit_event_devices_add"
+            android:layout_toLeftOf="@id/activity_edit_event_devices_add"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/activity_edit_event_devices_text_hint"
+            android:singleLine="true" />
+
+    </RelativeLayout>
+
+</ScrollView>

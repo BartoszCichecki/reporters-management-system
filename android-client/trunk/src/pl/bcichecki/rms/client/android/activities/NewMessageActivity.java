@@ -1,3 +1,13 @@
+/**
+ * Project:   rms-client-android
+ * File:      NewMessageActivity.java
+ * License: 
+ *            This file is licensed under GNU General Public License version 3
+ *            http://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Copyright: Bartosz Cichecki [ cichecki.bartosz@gmail.com ]
+ * Date:      09-01-2013
+ */
 
 package pl.bcichecki.rms.client.android.activities;
 
@@ -80,6 +90,9 @@ public class NewMessageActivity extends FragmentActivity {
 	private void cancelRequests() {
 		if (messagesRestClient != null) {
 			messagesRestClient.cancelRequests(this, true);
+		}
+		if (usersRestClient != null) {
+			usersRestClient.cancelRequests(this, true);
 		}
 	}
 

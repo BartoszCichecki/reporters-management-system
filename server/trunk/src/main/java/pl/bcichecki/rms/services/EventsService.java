@@ -26,8 +26,6 @@ public interface EventsService {
 
 	boolean createEvent(EventEntity event) throws ServiceException;
 
-	boolean createLockedEvent(EventEntity event) throws ServiceException;
-
 	boolean deleteEvent(String id, Boolean markDeleted) throws ServiceException;
 
 	boolean deleteMyEvent(String id, Boolean markDeleted) throws ServiceException;

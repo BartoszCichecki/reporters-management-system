@@ -73,8 +73,6 @@ public class PrivilegeUtils {
 
 		public static final String POST_EVENTS = "POST_EVENTS";
 
-		public static final String POST_EVENTS_TO_WAITING_ROOM = "POST_EVENTS_TO_WAITING_ROOM";
-
 		public static final String SEND_MESSAGES = "SEND_MESSAGES";
 
 		public static final String SIGN_UP_FOR_EVENT = "SIGN_UP_FOR_EVENT";

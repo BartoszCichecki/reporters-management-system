@@ -39,6 +39,7 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import pl.bcichecki.rms.client.android.R;
+import pl.bcichecki.rms.client.android.activities.EditEventActivity;
 import pl.bcichecki.rms.client.android.dialogs.EventDetailsDialog;
 import pl.bcichecki.rms.client.android.fragments.listAdapters.EventsListAdapter;
 import pl.bcichecki.rms.client.android.holders.SharedPreferencesWrapper;
@@ -69,6 +70,16 @@ public class EventsListFragment extends ListFragment {
 	private EventsRestClient eventsRestClient;
 
 	private boolean showArchivedEvents = false;
+
+	private static final String EDIT_EVENT_EXTRA = "EDIT_EVENT_EXTRA";
+
+	private static final String EDIT_EVENT_EXTRA_RET = "EDIT_EVENT_EXTRA_RET";
+
+	private static final int REQUEST_CODE_EDIT_EVENT = 413;
+
+	private static final int REQUEST_CODE_NEW_EVENT = 791;
+
+	private static final int RESULT_CODE_OK = 113;
 
 	private void cancelRequests() {
 		if (eventsRestClient != null) {
@@ -216,6 +227,17 @@ public class EventsListFragment extends ListFragment {
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_CODE_NEW_EVENT && resultCode == RESULT_CODE_OK) {
+			downloadData();
+		}
+		if (requestCode == REQUEST_CODE_EDIT_EVENT && resultCode == RESULT_CODE_OK) {
+			Event eventToRefresh = (Event) data.getSerializableExtra(EDIT_EVENT_EXTRA_RET);
+			refreshEvent(eventToRefresh);
+		}
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		load();
@@ -255,7 +277,7 @@ public class EventsListFragment extends ListFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.fragment_events_list_menu_new) {
-			// TODO performActionNew
+			performActionNew(item);
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_events_list_menu_refresh) {
@@ -296,7 +318,7 @@ public class EventsListFragment extends ListFragment {
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_events_list_context_menu_edit) {
-			// TODO performActionEdit
+			performActionEdit(mode, item, selectedEvent);
 			return true;
 		}
 		if (item.getItemId() == R.id.fragment_events_list_context_menu_lock) {
@@ -391,6 +413,12 @@ public class EventsListFragment extends ListFragment {
 		});
 	}
 
+	private void performActionEdit(ActionMode mode, MenuItem item, Event selectedDevice) {
+		Intent editEventIntent = new Intent(getActivity(), EditEventActivity.class);
+		editEventIntent.putExtra(EDIT_EVENT_EXTRA, selectedDevice);
+		startActivityForResult(editEventIntent, REQUEST_CODE_EDIT_EVENT);
+	}
+
 	private void performActionLock(final ActionMode mode, MenuItem item, final Event selectedEvent) {
 		eventsRestClient.lockEvent(selectedEvent, true, new AsyncHttpResponseHandler() {
 
@@ -426,6 +454,11 @@ public class EventsListFragment extends ListFragment {
 				mode.finish();
 			}
 		});
+	}
+
+	private void performActionNew(MenuItem item) {
+		Intent editEventIntent = new Intent(getActivity(), EditEventActivity.class);
+		startActivityForResult(editEventIntent, REQUEST_CODE_NEW_EVENT);
 	}
 
 	private void performActionShare(ActionMode mode, MenuItem item, Event selectedEvent) {

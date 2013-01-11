@@ -68,16 +68,6 @@ public class EventsServiceImpl implements EventsService {
 		if (eventsDao.contains(event)) {
 			throw new ServiceException("Could not create duplicate event!", "exceptions.serviceExceptions.events.duplicateEvent");
 		}
-		eventsDao.create(event);
-		return true;
-	}
-
-	@Override
-	public boolean createLockedEvent(EventEntity event) throws ServiceException {
-		event.setLocked(true);
-		if (eventsDao.contains(event)) {
-			throw new ServiceException("Could not create duplicate event!", "exceptions.serviceExceptions.events.duplicateEvent");
-		}
 		event.setParticipants(reloadParticipants(event.getParticipants()));
 		event.setDevices(reloadDevices(event.getDevices()));
 		eventsDao.create(event);

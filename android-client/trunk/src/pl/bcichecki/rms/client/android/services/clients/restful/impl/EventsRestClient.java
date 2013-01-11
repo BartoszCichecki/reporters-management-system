@@ -56,9 +56,25 @@ public class EventsRestClient extends AbstractRestClient {
 		        handler);
 	}
 
+	public void createEvent(Event event, AsyncHttpResponseHandler handler) {
+		String eventAsJson = GsonHolder.getGson().toJson(event);
+		HttpEntity eventAsHttpEntity;
+
+		try {
+			eventAsHttpEntity = new StringEntity(eventAsJson, HttpConstants.CHARSET_UTF8);
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, "This system does not support required encoding.", e);
+			throw new IllegalStateException("This system does not support required encoding.", e);
+		}
+		List<Header> headers = new ArrayList<Header>();
+		RestUtils.decorareHeaderWithMD5(headers, eventAsJson);
+
+		put(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS), getHeadersAsArray(headers), eventAsHttpEntity,
+		        HttpConstants.CONTENT_TYPE_APPLICATION_JSON_CHARSET_UTF8, handler);
+	}
+
 	public void deleteMyEvent(Event eventToDelete, AsyncHttpResponseHandler handler) {
-		delete(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, RestConstants.RESOURCE_PATH_MY, eventToDelete.getId()),
-		        handler);
+		delete(getContext(), getAbsoluteAddress(RestConstants.RESOURCE_PATH_EVENTS, eventToDelete.getId()), handler);
 	}
 
 	public void getAllArchivedEvents(Date from, Date till, AsyncHttpResponseHandler handler) {
