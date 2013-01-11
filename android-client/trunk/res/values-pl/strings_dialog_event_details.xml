@@ -12,5 +12,8 @@
     <string name="dialog_event_details_no_devices">Nie ma urządzeń</string>
     <string name="dialog_event_details_sign_up">Zapisz się</string>
     <string name="dialog_event_details_sign_out">Zrezygnuj</string>
+    <string name="dialog_event_details_type_title">Typ wydarzenia:</string>
+    <string name="dialog_event_details_type_meeting">Spotkanie</string>
+    <string name="dialog_event_details_type_interview">Wywiad</string>
 
 </resources>

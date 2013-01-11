@@ -35,6 +35,7 @@ import pl.bcichecki.rms.client.android.fragments.listAdapters.EventsListAdapter;
 import pl.bcichecki.rms.client.android.holders.UserProfileHolder;
 import pl.bcichecki.rms.client.android.model.impl.Device;
 import pl.bcichecki.rms.client.android.model.impl.Event;
+import pl.bcichecki.rms.client.android.model.impl.EventType;
 import pl.bcichecki.rms.client.android.model.impl.User;
 import pl.bcichecki.rms.client.android.services.clients.restful.https.GsonHttpResponseHandler;
 import pl.bcichecki.rms.client.android.services.clients.restful.impl.EventsRestClient;
@@ -102,11 +103,19 @@ public class EventDetailsDialog extends DialogFragment {
 				TextView participantsTextView = (TextView) ((AlertDialog) dialog).findViewById(R.id.dialog_event_details_participants_text);
 				TextView startsTextView = (TextView) ((AlertDialog) dialog).findViewById(R.id.dialog_event_details_starts_text);
 				TextView titleTextView = (TextView) ((AlertDialog) dialog).findViewById(R.id.dialog_event_details_title_text);
+				TextView eventTypeTextView = (TextView) ((AlertDialog) dialog).findViewById(R.id.dialog_event_details_type_text);
 
 				titleTextView.setText(event.getTitle());
 				startsTextView.setText(AppUtils.getFormattedDateAsString(event.getStartDate(), Locale.getDefault()));
 				endsTextView.setText(AppUtils.getFormattedDateAsString(event.getEndDate(), Locale.getDefault()));
 				descriptionTextView.setText(event.getDescription());
+
+				if (event.getType().equals(EventType.MEETING)) {
+					eventTypeTextView.setText(R.string.dialog_event_details_type_meeting);
+				}
+				if (event.getType().equals(EventType.INTERVIEW)) {
+					eventTypeTextView.setText(R.string.dialog_event_details_type_interview);
+				}
 
 				if (event.getParticipants() != null && event.getParticipants().size() > 0) {
 					StringBuilder participants = new StringBuilder();

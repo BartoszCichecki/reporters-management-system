@@ -12,5 +12,8 @@
     <string name="dialog_event_details_no_devices">There are no devices</string>
     <string name="dialog_event_details_sign_up">Sign up</string>
     <string name="dialog_event_details_sign_out">Sign out</string>
+    <string name="dialog_event_details_type_title">Event type:</string>
+    <string name="dialog_event_details_type_meeting">Meeting</string>
+    <string name="dialog_event_details_type_interview">Interview</string>
 
 </resources>
