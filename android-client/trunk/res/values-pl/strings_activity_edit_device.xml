@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="activity_edit_device_title_edit">Edytuj sprzęt</string>
-    <string name="activity_edit_device_title_new">Nowy sprzęt</string>
+    <string name="activity_edit_device_title_edit">Edytuj urządzenie</string>
+    <string name="activity_edit_device_title_new">Nowe urządzenie</string>
     <string name="activity_edit_device_menu_save">Zapisz</string>
     <string name="activity_edit_device_name_title">Nazwa</string>
     <string name="activity_edit_device_name_text_hint">np. Sony X-1 Camera</string>
